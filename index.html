@@ -44,19 +44,66 @@
   .nav-cta{padding:10px 18px;border-radius:999px;background:var(--ink);color:var(--paper)!important}
   .nav-cta:hover{background:var(--gold-dark)}
 
-  .hero{position:relative;overflow:hidden;padding:88px 0 100px}
-  .hero-grid{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1.18fr) minmax(320px,.82fr);align-items:center;gap:74px}
-  .hero-kicker{font-family:inherit;font-style:italic;font-weight:600;color:var(--gold-dark);font-size:18px;margin:0 0 18px}
-  h1{max-width:720px;font-size:clamp(42px,5.6vw,68px);line-height:1.08}
-  .hero-copy{max-width:640px;margin:26px 0 0;color:var(--ink-soft);font-size:18px}
-  .hero-copy strong{color:var(--ink);font-weight:600}
-  .hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-top:36px}
+  .hero{
+    position:relative;
+    overflow:hidden;
+    padding:22px 0 24px;
+  }
+
+  .hero-grid{
+    position:relative;
+    z-index:1;
+    display:grid;
+    grid-template-columns:minmax(0,1.4fr) minmax(250px,.6fr);
+    align-items:center;
+    gap:30px;
+  }
+
+  .hero-kicker{
+    font-family:inherit;
+    font-style:italic;
+    font-weight:600;
+    color:var(--gold-dark);
+    font-size:13px;
+    margin:0 0 8px;
+  }
+
+  h1 {
+    max-width: 760px;
+    font-size: clamp(34px, 4vw, 48px);
+    line-height: 1.03;
+  }
+
+  .hero-copy {
+    max-width: 700px;
+    margin: 20px 0 0;
+    color: var(--ink-soft);
+    font-size: 15px;
+    line-height: 1.45;
+  }
+
+  .hero-copy strong{
+    color:var(--ink);
+    font-weight:600;
+  }
+  .hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-top:20px}
   .button{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:10px 24px;border:1.5px solid var(--ink);border-radius:999px;text-decoration:none;font-weight:600;font-size:14.5px;background:transparent;color:var(--ink);cursor:pointer;transition:background .2s ease,color .2s ease,border-color .2s ease}
   .button-primary{background:var(--ink);color:var(--paper)}
   .button-primary:hover{background:var(--gold-dark);border-color:var(--gold-dark)}
   .button-secondary:hover{background:var(--gold-pale);border-color:var(--gold-dark)}
-  .portrait-wrap{position:relative;width:min(100%,400px);margin-left:auto}
-  .portrait-wrap::before{content:"";position:absolute;inset:20px -20px -20px 20px;border-radius:6px;border:1.5px solid var(--gold)}
+  .portrait-wrap{
+    position:relative;
+    width:min(100%,280px);
+    margin-left:auto;
+  }
+
+  .portrait-wrap::before{
+    content:"";
+    position:absolute;
+    inset:12px -12px -12px 12px;
+    border-radius:6px;
+    border:1.5px solid var(--gold);
+  }  
   .portrait-wrap img{position:relative;display:block;width:100%;aspect-ratio:4/5;object-fit:cover;object-position:center 34%;border-radius:6px;box-shadow:var(--shadow)}
   .mini-card{position:absolute;z-index:2;left:-40px;bottom:32px;padding:16px 20px;background:var(--paper);border-left:3px solid var(--gold);box-shadow:var(--shadow)}
   .mini-card strong{display:block;font-family:inherit;font-size:16px;font-weight:600;color:var(--ink)}
@@ -250,6 +297,7 @@
   .report-frame{border:1px solid rgba(17,22,64,.08);border-radius:24px;box-shadow:var(--shadow)}
   .report-frame-overlay{border-radius:24px}
   .report-frame-hint,.project-link{border-radius:14px}
+
   .project-content{padding:22px 0}
   .project-link{background:var(--ink)}
   .project-link:hover{background:#272d66}
@@ -309,9 +357,9 @@
       <div>
         <p class="hero-kicker">Data &amp; business intelligence</p>
         <h1>Better education decisions start with better data.</h1>
-        <p class="hero-copy">Data &amp; BI professional with <strong>6+ years of experience</strong> across Higher Education, Multi-Academy Trusts and education groups. I combine hands-on expertise in <strong>Power BI, SQL, Python, data modelling and automation</strong> with experience leading BI teams, building reporting capabilities from the ground up and working directly with senior leadership.</p>
-        <p class="hero-copy">I am particularly interested in using <strong>AI, automation and modern data tools</strong> to improve how reporting is built, maintained and used—reducing manual work, improving data quality and helping organisations get more value from their data.</p>
-        <div class="hero-actions"><a class="button button-primary" href="#work">View my projects</a><a class="button button-secondary" href="#experience">View my experience</a></div>
+        <p class="hero-copy">
+          Data &amp; BI professional with <strong>6+ years of experience</strong> across Higher Education, Multi-Academy Trusts and education groups. I combine hands-on expertise in <strong>Power BI, SQL, Python, data modelling, automation and AI-enabled analytics</strong> with experience leading BI teams, building reporting capabilities from the ground up and working directly with senior leadership. I also explore and <strong>apply AI</strong> to automate analysis, improve data accessibility and support faster decision-making.
+        </p>        <div class="hero-actions"><a class="button button-primary" href="#work">View my projects</a><a class="button button-secondary" href="#experience">View my experience</a></div>
       </div>
       <div class="portrait-wrap"><img src="avatar.jpg" alt="Portrait of Thi Nguyen"><div class="mini-card"><strong>Thi Nguyen</strong><span>Data &amp; BI Manager · Leeds, UK</span></div></div>
     </div>
@@ -326,45 +374,123 @@
     </div>
   </aside>
 
-  <section class="work" id="work">
-    <div class="wrap">
-      <div class="section-head"><p class="section-kicker">Selected projects</p><h2>Reporting designed around the decisions schools need to make</h2><p class="section-intro">Two interactive Power BI solutions, embedded here in full — open either one to explore it up close.</p></div>
-      <div class="project-list">
-        <article class="project">
-          <div class="project-media">
-            <div class="report-frame">
-              <iframe title="School Attendance Performance and Analysis Dashboard" src="https://app.powerbi.com/view?r=eyJrIjoiMjM2ODU4YjktNTEzYi00NDRmLWIxNjUtNjgyMTdjOGQ0Yjg0IiwidCI6ImEyMzgyMjYyLWEzYjEtNGMyMi1hOTY4LTY2ODQ0ZWViMzg2MCJ9" loading="lazy" tabindex="-1"></iframe>
-              <button type="button" class="report-frame-overlay" data-src="https://app.powerbi.com/view?r=eyJrIjoiMjM2ODU4YjktNTEzYi00NDRmLWIxNjUtNjgyMTdjOGQ0Yjg0IiwidCI6ImEyMzgyMjYyLWEzYjEtNGMyMi1hOTY4LTY2ODQ0ZWViMzg2MCJ9" data-title="School Attendance Performance &amp; Analysis" aria-label="Open full report: School Attendance Performance &amp; Analysis">
-                <span class="report-frame-hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>View full report</span>
-              </button>
-            </div>
-          </div>
-          <div class="project-content">
-            <h3>School Attendance Performance &amp; Analysis</h3>
-            <p class="project-meta">School attendance analytics</p>
-            <p>A comprehensive dashboard covering daily and year-to-date performance, attendance and absence measures, key pupil groups, year groups, classes and individual students. Historical, half-term and weekly trends allow users to move from a whole-school overview to the pupils behind the figures.</p>
-            <button type="button" class="project-link" data-src="https://app.powerbi.com/view?r=eyJrIjoiMjM2ODU4YjktNTEzYi00NDRmLWIxNjUtNjgyMTdjOGQ0Yjg0IiwidCI6ImEyMzgyMjYyLWEzYjEtNGMyMi1hOTY4LTY2ODQ0ZWViMzg2MCJ9" data-title="School Attendance Performance &amp; Analysis">View full screen<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></button>
-          </div>
-        </article>
-        <article class="project">
-          <div class="project-media">
-            <div class="report-frame">
-              <iframe title="Student Weekly Attendance and Intervention Management" src="https://app.powerbi.com/view?r=eyJrIjoiMTQxOTM3ZWUtYzk3OS00MDJmLThkM2EtZWVkMjZiYjlmMjkxIiwidCI6ImEyMzgyMjYyLWEzYjEtNGMyMi1hOTY4LTY2ODQ0ZWViMzg2MCJ9" loading="lazy" tabindex="-1"></iframe>
-              <button type="button" class="report-frame-overlay" data-src="https://app.powerbi.com/view?r=eyJrIjoiMTQxOTM3ZWUtYzk3OS00MDJmLThkM2EtZWVkMjZiYjlmMjkxIiwidCI6ImEyMzgyMjYyLWEzYjEtNGMyMi1hOTY4LTY2ODQ0ZWViMzg2MCJ9" data-title="Student Weekly Attendance &amp; Intervention Management" aria-label="Open full report: Student Weekly Attendance &amp; Intervention Management">
-                <span class="report-frame-hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>View full report</span>
-              </button>
-            </div>
-          </div>
-          <div class="project-content">
-            <h3>Student Weekly Attendance &amp; Intervention Management</h3>
-            <p class="project-meta">Power BI · Power Apps · Intervention</p>
-            <p>An interactive student-level report showing weekly attendance patterns alongside each stage of attendance intervention. Designed to combine Power BI with Power Apps, it enables staff to record notes and interventions from the report and feed them back into the dataset, reducing the need for separate Excel trackers.</p>
-            <button type="button" class="project-link" data-src="https://app.powerbi.com/view?r=eyJrIjoiMTQxOTM3ZWUtYzk3OS00MDJmLThkM2EtZWVkMjZiYjlmMjkxIiwidCI6ImEyMzgyMjYyLWEzYjEtNGMyMi1hOTY4LTY2ODQ0ZWViMzg2MCJ9" data-title="Student Weekly Attendance &amp; Intervention Management">View full screen<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></button>
-          </div>
-        </article>
-      </div>
+<section class="work" id="work">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="section-kicker">Selected projects</p>
+      <h2>Sample Power BI Reports</h2>
+      <p class="section-intro">
+        Explore two interactive education reporting examples.
+      </p>
     </div>
-  </section>
+
+    <div class="project-list">
+      <article class="project">
+        <div class="project-media">
+          <div class="report-frame">
+            <iframe
+              title="School Attendance Performance and Analysis Dashboard"
+              src="https://app.powerbi.com/view?r=eyJrIjoiMjM2ODU4YjktNTEzYi00NDRmLWIxNjUtNjgyMTdjOGQ0Yjg0IiwidCI6ImEyMzgyMjYyLWEzYjEtNGMyMi1hOTY4LTY2ODQ0ZWViMzg2MCJ9"
+              loading="lazy"
+              tabindex="-1"
+            ></iframe>
+
+            <button
+              type="button"
+              class="report-frame-overlay"
+              data-src="https://app.powerbi.com/view?r=eyJrIjoiMjM2ODU4YjktNTEzYi00NDRmLWIxNjUtNjgyMTdjOGQ0Yjg0IiwidCI6ImEyMzgyMjYyLWEzYjEtNGMyMi1hOTY4LTY2ODQ0ZWViMzg2MCJ9"
+              data-title="School Attendance Performance &amp; Analysis"
+              aria-label="Open full report: School Attendance Performance &amp; Analysis"
+            >
+              <span class="report-frame-hint">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                </svg>
+                View full report
+              </span>
+            </button>
+          </div>
+        </div>
+
+        <div class="project-content">
+          <h3>School Attendance Performance &amp; Analysis</h3>
+
+          <p class="project-meta">
+            School attendance analytics
+          </p>
+
+          <p>
+            A comprehensive dashboard covering daily and year-to-date
+            performance, attendance and absence measures, key pupil groups,
+            year groups, classes and individual students. Historical,
+            half-term and weekly trends allow users to move from a whole-school
+            overview to the pupils behind the figures.
+          </p>
+        </div>
+      </article>
+
+      <article class="project">
+        <div class="project-media">
+          <div class="report-frame">
+            <iframe
+              title="Student Weekly Attendance and Intervention Management"
+              src="https://app.powerbi.com/view?r=eyJrIjoiMTQxOTM3ZWUtYzk3OS00MDJmLThkM2EtZWVkMjZiYjlmMjkxIiwidCI6ImEyMzgyMjYyLWEzYjEtNGMyMi1hOTY4LTY2ODQ0ZWViMzg2MCJ9"
+              loading="lazy"
+              tabindex="-1"
+            ></iframe>
+
+            <button
+              type="button"
+              class="report-frame-overlay"
+              data-src="https://app.powerbi.com/view?r=eyJrIjoiMTQxOTM3ZWUtYzk3OS00MDJmLThkM2EtZWVkMjZiYjlmMjkxIiwidCI6ImEyMzgyMjYyLWEzYjEtNGMyMi1hOTY4LTY2ODQ0ZWViMzg2MCJ9"
+              data-title="Student Weekly Attendance &amp; Intervention Management"
+              aria-label="Open full report: Student Weekly Attendance &amp; Intervention Management"
+            >
+              <span class="report-frame-hint">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                </svg>
+                View full report
+              </span>
+            </button>
+          </div>
+        </div>
+
+        <div class="project-content">
+          <h3>Student Weekly Attendance &amp; Intervention Management</h3>
+
+          <p class="project-meta">
+            Power BI · Power Apps · Intervention
+          </p>
+
+          <p>
+            An interactive student-level report showing weekly attendance
+            patterns alongside each stage of attendance intervention. Designed
+            to combine Power BI with Power Apps, it enables staff to record
+            notes and interventions from the report and feed them back into
+            the dataset, reducing the need for separate Excel trackers.
+          </p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
 
   <section class="skills" id="skills">
     <div class="wrap">
@@ -567,7 +693,7 @@
         <a class="contact-item" href="mailto:Thiminhphuong.nguyen@outlook.com"><span class="contact-label">Email</span><span class="contact-value">Thiminhphuong.nguyen@outlook.com</span></a>
         <a class="contact-item" href="tel:+447563340835"><span class="contact-label">Phone</span><span class="contact-value">+44 7563 340835</span></a>
         <a class="contact-item" href="https://www.linkedin.com/in/thi-nguyen-792a4b1a4/" target="_blank" rel="noopener"><span class="contact-label">LinkedIn</span><span class="contact-value">Thi Nguyen</span></a>
-        <div class="contact-item"><span class="contact-label">Location</span><span class="contact-value">LS17, Leeds, UK</span></div>
+        <div class="contact-item"><span class="contact-label">Location</span><span class="contact-value">Leeds, UK</span></div>
       </div>
     </div>
   </section>
