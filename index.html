@@ -1,0 +1,505 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Thi Nguyen — Data and Business Intelligence professional specialising in education analytics, Power BI, SQL and reporting automation.">
+<title>Thi Nguyen | Education Data &amp; BI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500;1,9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1c2333;
+    --ink-soft:#3a3f52;
+    --paper:#fffdfa;
+    --cream:#f6f1e7;
+    --muted:#767b8c;
+    --gold:#a9812f;
+    --gold-dark:#83641f;
+    --gold-pale:#f1e6cd;
+    --line:#e3dbc9;
+    --navy-panel:#161b2b;
+    --navy-panel-line:#2c3247;
+    --max:1180px;
+    --shadow:0 20px 50px rgba(28,35,51,.12);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--cream);color:var(--ink-soft);font-family:'Inter',"Segoe UI",Arial,sans-serif;font-size:16px;line-height:1.65}
+  img{max-width:100%;display:block}
+  a{color:inherit}
+  h1,h2,h3,h4{margin:0;font-family:'Fraunces',Georgia,serif;font-weight:500;letter-spacing:-.01em;color:var(--ink)}
+  .wrap{width:min(var(--max),calc(100% - 48px));margin-inline:auto}
+  .skip{position:absolute;left:-9999px;top:0;background:var(--gold);color:#fff;padding:10px 14px;font-weight:600;z-index:200}
+  .skip:focus{left:12px;top:12px}
+  :focus-visible{outline:2.5px solid var(--gold-dark);outline-offset:3px}
+
+  header{position:sticky;top:0;z-index:30;background:rgba(246,241,231,.92);border-bottom:1px solid var(--line);backdrop-filter:blur(10px)}
+  nav{height:78px;display:flex;align-items:center;justify-content:space-between;gap:30px}
+  .brand{display:flex;align-items:center;gap:13px;text-decoration:none}
+  .brand-mark{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:var(--ink);color:var(--gold);font-family:'Fraunces';font-size:14px;font-weight:500;border:1px solid var(--ink)}
+  .brand strong{display:block;font-family:'Fraunces';font-size:16px;font-weight:500;line-height:1.2;color:var(--ink)}
+  .brand em{display:block;font-style:normal;color:var(--muted);font-size:12px;margin-top:2px}
+  .nav-links{display:flex;align-items:center;gap:28px}
+  .nav-links a{text-decoration:none;font-size:14px;font-weight:500;color:var(--ink-soft)}
+  .nav-links a:hover{color:var(--gold-dark)}
+  .nav-cta{padding:10px 18px;border-radius:999px;background:var(--ink);color:var(--paper)!important}
+  .nav-cta:hover{background:var(--gold-dark)}
+
+  .hero{position:relative;overflow:hidden;padding:88px 0 100px}
+  .hero-grid{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1.18fr) minmax(320px,.82fr);align-items:center;gap:74px}
+  .hero-kicker{font-family:'Fraunces';font-style:italic;font-weight:500;color:var(--gold-dark);font-size:18px;margin:0 0 18px}
+  h1{max-width:720px;font-size:clamp(42px,5.6vw,68px);line-height:1.08}
+  .hero-copy{max-width:640px;margin:26px 0 0;color:var(--ink-soft);font-size:18px}
+  .hero-copy strong{color:var(--ink);font-weight:600}
+  .hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-top:36px}
+  .button{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:10px 24px;border:1.5px solid var(--ink);border-radius:999px;text-decoration:none;font-weight:600;font-size:14.5px;background:transparent;color:var(--ink);cursor:pointer;transition:background .2s ease,color .2s ease,border-color .2s ease}
+  .button-primary{background:var(--ink);color:var(--paper)}
+  .button-primary:hover{background:var(--gold-dark);border-color:var(--gold-dark)}
+  .button-secondary:hover{background:var(--gold-pale);border-color:var(--gold-dark)}
+  .portrait-wrap{position:relative;width:min(100%,400px);margin-left:auto}
+  .portrait-wrap::before{content:"";position:absolute;inset:20px -20px -20px 20px;border-radius:6px;border:1.5px solid var(--gold)}
+  .portrait-wrap img{position:relative;display:block;width:100%;aspect-ratio:4/5;object-fit:cover;object-position:center 34%;border-radius:6px;box-shadow:var(--shadow)}
+  .mini-card{position:absolute;z-index:2;left:-40px;bottom:32px;padding:16px 20px;background:var(--paper);border-left:3px solid var(--gold);box-shadow:var(--shadow)}
+  .mini-card strong{display:block;font-family:'Fraunces';font-size:16px;font-weight:500;color:var(--ink)}
+  .mini-card span{display:block;color:var(--muted);font-size:12.5px;margin-top:3px}
+
+  .proof{background:var(--paper);border-block:1px solid var(--line)}
+  .proof-grid{display:grid;grid-template-columns:repeat(4,1fr)}
+  .proof-item{padding:34px 26px;border-left:1px solid var(--line)}
+  .proof-item:first-child{border-left:0}
+  .proof-item strong{display:block;font-family:'Fraunces';font-style:italic;color:var(--gold-dark);font-size:30px;font-weight:500;line-height:1.2}
+  .proof-item span{display:block;margin-top:6px;color:var(--muted);font-size:13.5px}
+
+  section{padding:104px 0}
+  .section-head{max-width:640px;margin:0 0 56px}
+  .section-kicker{font-family:'Fraunces';font-style:italic;font-weight:500;color:var(--gold-dark);font-size:17px;margin:0 0 12px}
+  h2{font-size:clamp(32px,4.2vw,48px);line-height:1.14}
+  .section-intro{max-width:560px;margin:16px 0 0;color:var(--muted);font-size:16.5px}
+
+  .profile{background:var(--paper)}
+  .profile-copy{display:grid;grid-template-columns:1fr 1fr;gap:38px 56px}
+  .profile-copy p{margin:0;color:var(--ink-soft);font-size:16.5px}
+  .profile-copy p:first-child{grid-column:1/-1;font-family:'Fraunces';font-style:italic;font-weight:500;font-size:23px;line-height:1.55;color:var(--ink);padding-left:24px;border-left:2.5px solid var(--gold)}
+  .profile-copy strong{font-weight:600;color:var(--ink)}
+
+  .work{background:var(--cream)}
+  .project-list{display:grid;gap:104px}
+  .project{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(320px,.92fr);align-items:center;gap:64px}
+  .project:nth-child(even) .project-media{order:2}
+  .project:nth-child(even) .project-content{order:1}
+  .project-media{position:relative}
+  .project-media::before{content:"";position:absolute;inset:18px -18px -18px 18px;background:var(--gold-pale);border-radius:8px}
+  .report-frame{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;border-radius:6px;background:#fff;box-shadow:var(--shadow)}
+  .report-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+  .report-frame-overlay{position:absolute;inset:0;width:100%;height:100%;background:rgba(22,27,43,0);border:0;cursor:pointer;display:flex;align-items:flex-end;justify-content:flex-end;padding:18px;transition:background .25s ease}
+  .report-frame-overlay:hover,.report-frame-overlay:focus-visible{background:rgba(22,27,43,.18)}
+  .report-frame-hint{opacity:0;transform:translateY(6px);transition:opacity .25s ease,transform .25s ease;display:inline-flex;align-items:center;gap:8px;background:var(--paper);color:var(--ink);font-size:13px;font-weight:600;padding:9px 15px;border-radius:999px;box-shadow:var(--shadow)}
+  .report-frame-overlay:hover .report-frame-hint,.report-frame-overlay:focus-visible .report-frame-hint{opacity:1;transform:translateY(0)}
+  .report-frame-hint svg{width:14px;height:14px}
+  .project-content{padding:8px 0}
+  h3{font-size:clamp(28px,3.6vw,40px);line-height:1.16}
+  .project-meta{margin:10px 0 0;font-family:'Fraunces';font-style:italic;color:var(--gold-dark);font-size:15px}
+  .project-content p{margin:22px 0;color:var(--ink-soft);font-size:16.5px}
+  .project-link{display:inline-flex;align-items:center;gap:9px;padding:11px 22px;border-radius:999px;background:var(--ink);color:var(--paper);border:0;font:inherit;font-weight:600;font-size:14.5px;cursor:pointer}
+  .project-link:hover{background:var(--gold-dark)}
+  .project-link svg{width:14px;height:14px}
+
+  .skills{background:var(--paper)}
+  .skills-grid{display:grid;grid-template-columns:1fr 1fr;column-gap:48px}
+  .skill{display:flex;gap:20px;padding:30px 0;border-top:1px solid var(--line)}
+  .skill:nth-child(1),.skill:nth-child(2){border-top:2px solid var(--ink)}
+  .skill-icon{width:42px;height:42px;flex:none;display:grid;place-items:center;border-radius:50%;background:var(--gold-pale);color:var(--gold-dark)}
+  .skill-icon svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+  .skill h3{font-size:19px;line-height:1.3}
+  .skill p{margin:10px 0 0;color:var(--muted);font-size:14.5px}
+
+  .moving-bands{background:var(--navy-panel);color:#fff;padding:20px 0 0}
+  .bands-head{display:flex;align-items:center;justify-content:flex-end;gap:20px;margin-bottom:18px}
+  .pause{padding:8px 14px;border:1px solid #4a4f66;border-radius:999px;background:transparent;color:#fff;font:inherit;font-size:12px;font-weight:600;cursor:pointer}
+  .pause:hover,.pause:focus{background:var(--gold);border-color:var(--gold);color:var(--ink)}
+  .marquee{overflow:hidden;border-top:1px solid var(--navy-panel-line)}
+  .marquee:last-child{border-bottom:1px solid var(--navy-panel-line)}
+  .track{display:flex;width:max-content;animation:move-left 38s linear infinite}
+  .marquee.reverse .track{animation-name:move-right;transform:translateX(-50%)}
+  .moving-bands.paused .track{animation-play-state:paused}
+  .group{display:flex;align-items:center;flex-shrink:0}
+  .tech{display:flex;align-items:center;gap:12px;padding:22px 27px;white-space:nowrap;font-weight:500;font-size:14.5px}
+  .tech::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--gold)}
+  .org{display:flex;align-items:center;justify-content:center;width:210px;height:96px;padding:18px 26px;border-right:1px solid var(--navy-panel-line);background:var(--paper)}
+  .org img{max-width:150px;max-height:52px;object-fit:contain}
+  @keyframes move-left{to{transform:translateX(-50%)}}
+  @keyframes move-right{to{transform:translateX(0)}}
+
+  .experience{background:var(--cream)}
+  .career{border-top:2px solid var(--ink)}
+  .career-row{display:grid;grid-template-columns:150px 300px minmax(0,1fr);gap:30px;padding:36px 0;border-bottom:1px solid var(--line)}
+  .career-date{padding-top:4px;color:var(--gold-dark);font-family:'Fraunces';font-style:italic;font-size:14px}
+  .career-org-head{display:flex;align-items:flex-start;gap:14px}
+  .org-badge{width:48px;height:48px;flex:none;border-radius:50%;background:var(--paper);border:1px solid var(--line);display:grid;place-items:center;overflow:hidden;box-shadow:0 6px 14px rgba(28,35,51,.1)}
+  .org-badge img{width:76%;height:76%;object-fit:contain}
+  .org-badge.monogram{background:var(--ink);color:var(--gold);font-family:'Fraunces';font-weight:500;font-size:15px}
+  .career-org{font-family:'Fraunces';font-size:18px;font-weight:500;line-height:1.35;color:var(--ink)}
+  .career-role{display:block;margin-top:4px;color:var(--muted);font-size:13px;font-family:'Inter'}
+  .career-details{min-width:0}
+  .role-summary{margin:0 0 17px;color:var(--ink-soft);font-weight:600}
+  .career-row ul{margin:0;padding-left:19px;color:var(--ink-soft)}
+  .career-row li+li{margin-top:5px}
+  .tool-line{margin:19px 0 0;padding:13px 16px;border-left:3px solid var(--gold);background:var(--gold-pale);color:#5a4a22;font-size:13px}
+  .tool-line strong{font-weight:600;color:var(--ink)}
+
+  .education{background:var(--paper)}
+  .education-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:22px}
+  .degree{padding:32px;border:1px solid var(--line);border-radius:8px;background:var(--cream)}
+  .degree h3{font-size:21px}
+  .degree .institution{margin:12px 0 0;color:var(--ink-soft);font-weight:600}
+  .degree .education-meta{margin:4px 0 0;color:var(--muted);font-size:14px}
+
+  .contact{position:relative;overflow:hidden;background:var(--navy-panel);color:#fff;padding:72px 0}
+  .contact::after{content:"";position:absolute;width:260px;height:260px;right:-70px;bottom:-170px;border:42px solid rgba(169,129,47,.18);border-radius:50%}
+  .contact-grid{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:34px}
+  .contact h2{font-size:38px;color:#fff}
+  .contact p{margin:10px 0 0;color:#c7cad8}
+  .contact .button{background:var(--gold);border-color:var(--gold);color:var(--ink)}
+  .contact .button:hover{background:#c29b45;border-color:#c29b45}
+  footer{padding:28px 0;background:#100f1a;color:#9a9db3;font-size:13px}
+  .footer-inner{display:flex;justify-content:space-between;gap:20px}
+
+  .report-modal{position:fixed;inset:0;z-index:200;display:flex;align-items:stretch;justify-content:stretch;padding:54px 14px 14px;background:rgba(22,27,43,.92);backdrop-filter:blur(5px)}
+  .report-modal[hidden]{display:none}
+  .report-modal-inner{position:relative;width:100%;height:100%;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 40px 90px rgba(0,0,0,.45)}
+  .report-modal-inner iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+  .report-modal-bar{position:absolute;top:-46px;left:0;right:0;display:flex;align-items:center;justify-content:space-between;gap:16px}
+  .report-modal-title{color:#fff;font-family:'Fraunces';font-style:italic;font-size:15px}
+  .report-modal-close{width:36px;height:36px;flex:none;border-radius:50%;background:var(--paper);color:var(--ink);border:0;font-size:19px;line-height:1;cursor:pointer;display:grid;place-items:center}
+  .report-modal-close:hover{background:var(--gold)}
+
+  @media(max-width:930px){
+    .hero-grid{grid-template-columns:1fr;gap:54px}.portrait-wrap{margin:0;width:min(100%,420px)}
+    .proof-grid{grid-template-columns:1fr 1fr}.proof-item:nth-child(odd){border-left:0}.proof-item:nth-child(3),.proof-item:nth-child(4){border-top:1px solid var(--line)}
+    .project{grid-template-columns:1fr;gap:40px}.project:nth-child(even) .project-media,.project:nth-child(even) .project-content{order:initial}
+    .skills-grid{grid-template-columns:1fr}
+    .skill:nth-child(2){border-top:1px solid var(--line)}
+    .career-row{grid-template-columns:130px minmax(0,1fr)}.career-details{grid-column:2}
+  }
+  @media(max-width:650px){
+    .wrap{width:min(var(--max),calc(100% - 32px))}.nav-links a:not(.nav-cta){display:none}
+    .hero{padding:56px 0 72px}.mini-card{left:8px;bottom:10px;padding:12px 16px}
+    .proof-item{padding:22px 16px}section{padding:76px 0}
+    .profile-copy,.education-grid{grid-template-columns:1fr}.profile-copy p:first-child{grid-column:auto}
+    .project-list{gap:76px}.project-media::before{inset:12px -8px -12px 8px}.report-frame{aspect-ratio:4/3}
+    .bands-head,.contact-grid,.footer-inner{align-items:flex-start;flex-direction:column}
+    .career-row{grid-template-columns:1fr;gap:10px}.career-details{grid-column:auto}
+    .report-modal{padding:52px 6px 6px}.report-modal-bar{top:-42px}
+  }
+  @media(prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}.track{animation:none!important;transform:none!important;flex-wrap:wrap;width:auto}.group[aria-hidden="true"]{display:none}.pause{display:none}
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to main content</a>
+<header>
+  <div class="wrap">
+    <nav aria-label="Primary navigation">
+      <a class="brand" href="#top"><span class="brand-mark">TN</span><span><strong>Thi Nguyen</strong><em>Education Data &amp; BI</em></span></a>
+      <div class="nav-links"><a href="#work">Projects</a><a href="#skills">Skills</a><a href="#profile">Profile</a><a href="#experience">Experience</a><a href="#education">Education</a><a class="nav-cta" href="https://www.linkedin.com/" target="_blank" rel="noopener">LinkedIn</a></div>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero" id="top">
+    <div class="wrap hero-grid">
+      <div>
+        <p class="hero-kicker">Data &amp; business intelligence</p>
+        <h1>Better education decisions start with better data.</h1>
+        <p class="hero-copy">Data &amp; Business Intelligence professional with <strong>6+ years of experience</strong> delivering reporting, analytics, automation and data solutions across Education and Higher Education. Strong hands-on expertise in <strong>Power BI, SQL, data modelling and automation</strong>, combined with experience <strong>leading and developing data teams of 2–6 people</strong>.</p>
+        <div class="hero-actions"><a class="button button-primary" href="#work">View my projects</a><a class="button button-secondary" href="#experience">View my experience</a></div>
+      </div>
+      <div class="portrait-wrap"><img src="assets/avatar.jpg" alt="Portrait of Thi Nguyen"><div class="mini-card"><strong>Thi Nguyen</strong><span>Data &amp; BI Manager · Leeds, UK</span></div></div>
+    </div>
+  </section>
+
+  <aside class="proof" aria-label="Professional highlights">
+    <div class="wrap proof-grid">
+      <div class="proof-item"><strong>6+ years</strong><span>Data, insight and BI experience</span></div>
+      <div class="proof-item"><strong>16 schools</strong><span>Trust-wide reporting delivered</span></div>
+      <div class="proof-item"><strong>150+ leaders</strong><span>Supported with reliable insight</span></div>
+      <div class="proof-item"><strong>Teams of 2–6</strong><span>Led and developed</span></div>
+    </div>
+  </aside>
+
+  <section class="work" id="work">
+    <div class="wrap">
+      <div class="section-head"><p class="section-kicker">Selected projects</p><h2>Reporting designed around the decisions schools need to make</h2><p class="section-intro">Two interactive Power BI solutions, embedded here in full — open either one to explore it up close.</p></div>
+      <div class="project-list">
+        <article class="project">
+          <div class="project-media">
+            <div class="report-frame">
+              <iframe title="School Attendance Performance and Analysis Dashboard" src="https://app.powerbi.com/view?r=eyJrIjoiMjM2ODU4YjktNTEzYi00NDRmLWIxNjUtNjgyMTdjOGQ0Yjg0IiwidCI6ImEyMzgyMjYyLWEzYjEtNGMyMi1hOTY4LTY2ODQ0ZWViMzg2MCJ9" loading="lazy" tabindex="-1"></iframe>
+              <button type="button" class="report-frame-overlay" data-src="https://app.powerbi.com/view?r=eyJrIjoiMjM2ODU4YjktNTEzYi00NDRmLWIxNjUtNjgyMTdjOGQ0Yjg0IiwidCI6ImEyMzgyMjYyLWEzYjEtNGMyMi1hOTY4LTY2ODQ0ZWViMzg2MCJ9" data-title="School Attendance Performance &amp; Analysis" aria-label="Open full report: School Attendance Performance &amp; Analysis">
+                <span class="report-frame-hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>View full report</span>
+              </button>
+            </div>
+          </div>
+          <div class="project-content">
+            <h3>School Attendance Performance &amp; Analysis</h3>
+            <p class="project-meta">Trust-wide attendance analytics</p>
+            <p>A comprehensive dashboard covering daily and year-to-date performance, attendance and absence measures, key pupil groups, year groups, classes and individual students. Historical, half-term and weekly trends allow users to move from a whole-school overview to the pupils behind the figures.</p>
+            <button type="button" class="project-link" data-src="https://app.powerbi.com/view?r=eyJrIjoiMjM2ODU4YjktNTEzYi00NDRmLWIxNjUtNjgyMTdjOGQ0Yjg0IiwidCI6ImEyMzgyMjYyLWEzYjEtNGMyMi1hOTY4LTY2ODQ0ZWViMzg2MCJ9" data-title="School Attendance Performance &amp; Analysis">View full screen<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></button>
+          </div>
+        </article>
+        <article class="project">
+          <div class="project-media">
+            <div class="report-frame">
+              <iframe title="Student Weekly Attendance and Intervention Management" src="https://app.powerbi.com/view?r=eyJrIjoiMTQxOTM3ZWUtYzk3OS00MDJmLThkM2EtZWVkMjZiYjlmMjkxIiwidCI6ImEyMzgyMjYyLWEzYjEtNGMyMi1hOTY4LTY2ODQ0ZWViMzg2MCJ9" loading="lazy" tabindex="-1"></iframe>
+              <button type="button" class="report-frame-overlay" data-src="https://app.powerbi.com/view?r=eyJrIjoiMTQxOTM3ZWUtYzk3OS00MDJmLThkM2EtZWVkMjZiYjlmMjkxIiwidCI6ImEyMzgyMjYyLWEzYjEtNGMyMi1hOTY4LTY2ODQ0ZWViMzg2MCJ9" data-title="Student Weekly Attendance &amp; Intervention Management" aria-label="Open full report: Student Weekly Attendance &amp; Intervention Management">
+                <span class="report-frame-hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>View full report</span>
+              </button>
+            </div>
+          </div>
+          <div class="project-content">
+            <h3>Student Weekly Attendance &amp; Intervention Management</h3>
+            <p class="project-meta">Power BI · Power Apps · Intervention</p>
+            <p>An interactive student-level report showing weekly attendance patterns alongside each stage of attendance intervention. Designed to combine Power BI with Power Apps, it enables staff to record notes and interventions from the report and feed them back into the dataset, reducing the need for separate Excel trackers.</p>
+            <button type="button" class="project-link" data-src="https://app.powerbi.com/view?r=eyJrIjoiMTQxOTM3ZWUtYzk3OS00MDJmLThkM2EtZWVkMjZiYjlmMjkxIiwidCI6ImEyMzgyMjYyLWEzYjEtNGMyMi1hOTY4LTY2ODQ0ZWViMzg2MCJ9" data-title="Student Weekly Attendance &amp; Intervention Management">View full screen<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></button>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="skills" id="skills">
+    <div class="wrap">
+      <div class="section-head"><p class="section-kicker">Core skills</p><h2>End-to-end BI capability</h2><p class="section-intro">From business requirements and data architecture through to delivery, adoption and team development.</p></div>
+      <div class="skills-grid">
+        <article class="skill">
+          <div class="skill-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 19V9m6 10V5m6 14v-7m4 7H2"/></svg></div>
+          <div><h3>BI &amp; Analytics</h3><p>Power BI, DAX, Power Query, semantic modelling, KPI design, dashboard UX and Row-Level Security.</p></div>
+        </article>
+        <article class="skill">
+          <div class="skill-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 11v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg></div>
+          <div><h3>Data &amp; Automation</h3><p>SQL, T-SQL, Python, Snowflake, BigQuery, Power Automate, Power Apps, APIs and ETL/ELT.</p></div>
+        </article>
+        <article class="skill">
+          <div class="skill-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m3 10 9-5 9 5-9 5-9-5Z"/><path d="M7 12.5V17c2.8 2 7.2 2 10 0v-4.5M21 10v6"/></svg></div>
+          <div><h3>Education Systems</h3><p>Arbor MIS, Thesis, Moodle, Unit4, PeopleXD, SISRA Analytics, DfE/ESFA datasets, School Census and Explorance Blue.</p></div>
+        </article>
+        <article class="skill">
+          <div class="skill-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5c0-1 1-2 2-2h4c1 0 2 1 2 2v2M3 12h18M10 12v2h4v-2"/></svg></div>
+          <div><h3>Business &amp; Delivery</h3><p>BI strategy, stakeholder management, requirements gathering, governance, training, mentoring and project delivery.</p></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="moving-bands" id="platforms">
+    <div class="wrap">
+      <div class="bands-head"><button class="pause" type="button" aria-pressed="false" aria-controls="skillsBand organisationsBand">Pause movement</button></div>
+    </div>
+    <div class="marquee" id="skillsBand"><div class="track">
+      <div class="group"><span class="tech">Power BI</span><span class="tech">DAX</span><span class="tech">Power Query</span><span class="tech">SQL</span><span class="tech">Snowflake</span><span class="tech">BigQuery</span><span class="tech">Python</span><span class="tech">Microsoft Fabric</span><span class="tech">Power Automate</span><span class="tech">Arbor MIS</span><span class="tech">Thesis</span><span class="tech">Moodle</span><span class="tech">Unit4</span><span class="tech">Explorance</span><span class="tech">AAS</span><span class="tech">PeopleXD</span><span class="tech">PS Financials</span><span class="tech">Salesforce</span></div>
+      <div class="group" aria-hidden="true"><span class="tech">Power BI</span><span class="tech">DAX</span><span class="tech">Power Query</span><span class="tech">SQL</span><span class="tech">Snowflake</span><span class="tech">BigQuery</span><span class="tech">Python</span><span class="tech">Microsoft Fabric</span><span class="tech">Power Automate</span><span class="tech">Arbor MIS</span><span class="tech">Thesis</span><span class="tech">Moodle</span><span class="tech">Unit4</span><span class="tech">Explorance</span><span class="tech">AAS</span><span class="tech">PeopleXD</span><span class="tech">PS Financials</span><span class="tech">Salesforce</span></div>
+    </div></div>
+    <div class="marquee reverse" id="organisationsBand"><div class="track">
+      <div class="group">
+        <a class="org" href="https://www.rklt.co.uk/" target="_blank" rel="noopener" aria-label="Red Kite Learning Trust"><img src="assets/red-kite-logo.png" alt="Red Kite Learning Trust"></a>
+        <a class="org" href="#" aria-label="Collaborative Learning Trust"><img src="assets/collaborative-logo.jpg" alt="Collaborative Learning Trust"></a>
+        <a class="org" href="https://luminate.ac.uk/" target="_blank" rel="noopener" aria-label="Luminate Education Group"><img src="assets/luminate-logo.png" alt="Luminate Education Group"></a>
+        <a class="org" href="https://globalbanking.ac.uk/" target="_blank" rel="noopener" aria-label="Global Banking School"><img src="assets/gbs-logo.png" alt="Global Banking School"></a>
+        <a class="org" href="https://www.kantar.com/" target="_blank" rel="noopener" aria-label="Kantar"><img src="assets/kantar-logo.jpg" alt="Kantar"></a>
+      </div>
+      <div class="group" aria-hidden="true">
+        <span class="org"><img src="assets/red-kite-logo.png" alt=""></span>
+        <span class="org"><img src="assets/collaborative-logo.jpg" alt=""></span>
+        <span class="org"><img src="assets/luminate-logo.png" alt=""></span>
+        <span class="org"><img src="assets/gbs-logo.png" alt=""></span>
+        <span class="org"><img src="assets/kantar-logo.jpg" alt=""></span>
+      </div>
+    </div></div>
+  </section>
+
+  <section class="profile" id="profile">
+    <div class="wrap">
+      <div class="section-head"><p class="section-kicker">Professional profile</p><h2>Technical delivery, education expertise and team leadership</h2></div>
+      <div class="profile-copy">
+        <p>Data &amp; Business Intelligence professional with <strong>6+ years of experience</strong> delivering reporting, analytics, automation and data solutions across Education and Higher Education. Strong hands-on expertise in <strong>Power BI, SQL, data modelling and automation</strong>, combined with experience <strong>leading and developing data teams of 2–6 people</strong>.</p>
+        <p>Experienced in building BI capability from the ground up, designing scalable reporting solutions, integrating data across complex systems and translating business requirements into practical data products. Proven track record of <strong>reducing manual reporting, improving self-service analytics and supporting senior leaders with reliable performance insight</strong>.</p>
+        <p>Brings a combination of <strong>technical delivery, stakeholder engagement and team leadership</strong>, with experience across student, admissions, academic, workforce, finance, marketing and operational data. Particularly strong in turning fragmented or manual processes into <strong>automated, reusable and user-friendly BI solutions</strong>.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="experience" id="experience">
+    <div class="wrap">
+      <div class="section-head"><p class="section-kicker">Professional experience</p><h2>Experience across schools, FE, HE and research</h2></div>
+      <div class="career">
+        <article class="career-row">
+          <div class="career-date">Nov 2025–Present</div>
+          <div class="career-org-head">
+            <span class="org-badge"><img src="assets/gbs-logo.png" alt=""></span>
+            <div class="career-org">Global Banking School<span class="career-role">Data &amp; Business Intelligence Manager</span></div>
+          </div>
+          <div class="career-details">
+            <p class="role-summary">Lead a 6-person reporting team within the Data &amp; Information function of a 35,000+ student, 10-campus higher education provider, delivering business-critical BI projects and working closely with Data Warehouse, Data Quality and other reporting teams.</p>
+            <ul>
+              <li>Lead and manage a 6-person reporting team, setting priorities, coordinating delivery and overseeing end-to-end BI projects with direct engagement across Executive Leadership, Academic teams and Professional Services.</li>
+              <li>Delivered and enhanced 10+ business-critical Power BI solutions, including Admissions, Degree Outcomes, Student &amp; Staff KPI, Lecturer Allocation, MEQ, Careers and Marketing reporting.</li>
+              <li>Delivered high-impact institutional analysis including NSS, TEF and Graduate Outcomes, providing insight to the CEO, Provost, Executive Leadership Team, Deans and Directors.</li>
+              <li>Standardised the BI reporting estate through a consistent framework across 117 reports and a Power App feedback process embedded across 103 reports.</li>
+              <li>Partnered with Data Quality and Data Warehouse teams to improve reporting accuracy, resolve data issues and deliver high-priority analysis under tight deadlines.</li>
+              <li>Strengthened self-service reporting through Power BI training, guidance and consistent development standards.</li>
+            </ul>
+            <p class="tool-line"><strong>Tools &amp; Systems:</strong> Power BI, DAX, Power Query, SQL/T-SQL, Excel, Power Apps, Power Automate, Microsoft Fabric, Jira, Thesis, Moodle, Unit4 and Explorance Blue.</p>
+          </div>
+        </article>
+        <article class="career-row">
+          <div class="career-date">2026–Present</div>
+          <div class="career-org-head">
+            <span class="org-badge monogram" aria-hidden="true">MAT</span>
+            <div class="career-org">Multi-Academy Trust Client<span class="career-role">Freelance Data &amp; BI Consultant · Remote</span></div>
+          </div>
+          <div class="career-details">
+            <p class="role-summary">Provide specialist Power BI and education analytics support to a Multi-Academy Trust, applying prior MAT experience to develop scalable reporting solutions using Arbor data.</p>
+            <ul>
+              <li>Designed and built a multi-school attendance Power BI solution from the ground up, replacing manual Excel-based reporting with a centralised, reusable reporting model.</li>
+              <li>Developed an Arbor-based model with school-level views, filters, drill-through, Row-Level Security and tailored reporting across multiple academies.</li>
+              <li>Introduced SAT1 and SAT2 intervention-note fields, bringing attendance performance and intervention context into a single analytical view.</li>
+              <li>Built reusable measures and reporting logic to accelerate future development and reduce dependence on manual processes.</li>
+              <li>Produced documentation and handover material to support maintainability and future development.</li>
+            </ul>
+            <p class="tool-line"><strong>Tools &amp; Systems:</strong> Power BI, DAX, Power Query, Arbor MIS, Excel, RLS, data modelling and attendance analytics.</p>
+          </div>
+        </article>
+        <article class="career-row">
+          <div class="career-date">2023–2025</div>
+          <div class="career-org-head">
+            <span class="org-badge"><img src="assets/red-kite-logo.png" alt=""></span>
+            <div class="career-org">Red Kite Learning Trust<span class="career-role">Senior Data Analyst</span></div>
+          </div>
+          <div class="career-details">
+            <p class="role-summary">Held end-to-end responsibility for Data &amp; BI across a 16-school Multi-Academy Trust supporting 10,000+ pupils and 1,800+ staff, building its central reporting capability from the ground up.</p>
+            <ul>
+              <li>Led the Trust’s data and BI strategy, defining the approach to reporting, integration, governance and analytics across primary, secondary and sixth-form settings.</li>
+              <li>Built a centralised Power BI ecosystem integrating MIS, HR and Finance data into shared semantic models used by 150+ senior stakeholders.</li>
+              <li>Delivered analytics across 6+ domains, including attendance, KS1/KS2 attainment, HR/workforce, Finance, Estates and operational performance.</li>
+              <li>Supported data-informed improvement alongside a 2.8% improvement in KS1 outcomes and 5.6% improvement in KS2 performance within one year.</li>
+              <li>Automated ELT workflows using Python and Snowflake, reducing data-processing time by 90% within six months.</li>
+              <li>Worked directly with the Director of Education, COO and school leadership teams to translate strategic priorities into KPIs and governance reporting.</li>
+              <li>Designed common KPI definitions, validation processes, role-level security and user permissions for secure, GDPR-compliant reporting.</li>
+              <li>Mentored two data officers and trained 80+ users, increasing non-technical BI engagement by 30% within six months.</li>
+            </ul>
+            <p class="tool-line"><strong>Tools &amp; Systems:</strong> Power BI, DAX, Power Query, SQL, Python, Snowflake, Excel, Power Automate, Power Apps, Arbor MIS, PeopleXD, SISRA Analytics, DfE/ESFA datasets and School Census.</p>
+          </div>
+        </article>
+        <article class="career-row">
+          <div class="career-date">Apr 2022–Nov 2023</div>
+          <div class="career-org-head">
+            <span class="org-badge"><img src="assets/luminate-logo.png" alt=""></span>
+            <div class="career-org">Luminate Education Group<span class="career-role">Senior Insight Analyst / Insight Analyst</span></div>
+          </div>
+          <div class="career-details">
+            <p class="role-summary">Delivered BI and market insight across a large education group serving 30,000+ students and apprentices and 2,000+ staff, progressing from Insight Analyst to Senior Insight Analyst.</p>
+            <ul>
+              <li>Led the Market Insight function, translating market, campaign and recruitment data into actionable insight and contributing to a 12% increase in student applications.</li>
+              <li>Redesigned the Power BI suite into six strategic dashboards, standardising KPIs and reducing ad hoc requests by 40% within two quarters.</li>
+              <li>Integrated 10+ sources including Google Analytics, Salesforce and Meta Ads using APIs, Power Automate and BigQuery, reducing manual processing by 80%.</li>
+              <li>Developed a Python machine-learning model with 90% predictive accuracy to forecast enrolment demand and support capacity planning.</li>
+              <li>Improved BI adoption through documentation, user guidance and training.</li>
+            </ul>
+            <p class="tool-line"><strong>Tools &amp; Systems:</strong> Power BI, DAX, Power Query, SQL, Python, BigQuery, Power Automate, APIs, Google Analytics, Salesforce and Meta Ads.</p>
+          </div>
+        </article>
+        <article class="career-row">
+          <div class="career-date">Mar 2020–Jul 2021</div>
+          <div class="career-org-head">
+            <span class="org-badge"><img src="assets/kantar-logo.jpg" alt=""></span>
+            <div class="career-org">Kantar<span class="career-role">Quantitative Research Executive</span></div>
+          </div>
+          <div class="career-details">
+            <p class="role-summary">Delivered quantitative consumer and brand insight within a global marketing data and analytics organisation operating across 90+ markets.</p>
+            <ul>
+              <li>Delivered consumer, brand and market insights across 10+ quantitative research projects for FMCG clients in Vietnam and Singapore.</li>
+              <li>Translated quantitative findings into actionable recommendations and client presentations covering brand positioning, product performance and marketing strategy.</li>
+              <li>Worked with cross-functional and regional teams to deliver accurate, methodologically consistent research with 100% on-time project delivery.</li>
+              <li>Helped strengthen client accounts through data-driven insight and consultancy, contributing to a 30% increase in contract revenue.</li>
+            </ul>
+            <p class="tool-line"><strong>Skills &amp; Tools:</strong> Quantitative research, survey analysis, consumer insight, brand tracking, statistical analysis, questionnaire design, insight storytelling, Excel and SPSS.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="education" id="education">
+    <div class="wrap">
+      <div class="section-head"><p class="section-kicker">Education</p><h2>Academic background</h2></div>
+      <div class="education-grid">
+        <article class="degree">
+          <h3>MSc Management &amp; Marketing</h3>
+          <p class="institution">Leeds Beckett University</p>
+          <p class="education-meta">Leeds, UK · Sep 2017–Nov 2018</p>
+        </article>
+        <article class="degree">
+          <h3>BA International Business Economics</h3>
+          <p class="institution">Foreign Trade University</p>
+          <p class="education-meta">Hanoi, Vietnam · Sep 2013–Jul 2017</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact"><div class="wrap contact-grid"><div><h2>Let’s make education data easier to use.</h2><p>Available for selected consultancy, contract and leadership opportunities.</p></div><a class="button" href="https://www.linkedin.com/" target="_blank" rel="noopener">Connect on LinkedIn</a></div></section>
+</main>
+<footer><div class="wrap footer-inner"><span>© 2026 Thi Nguyen</span><span>Education Data &amp; Business Intelligence</span></div></footer>
+
+<div class="report-modal" id="reportModal" hidden role="dialog" aria-modal="true" aria-labelledby="reportModalTitle">
+  <div class="report-modal-inner">
+    <div class="report-modal-bar"><span class="report-modal-title" id="reportModalTitle"></span><button type="button" class="report-modal-close" id="reportModalClose" aria-label="Close report">&times;</button></div>
+    <iframe id="reportModalFrame" src="" title="" loading="lazy" allowfullscreen></iframe>
+  </div>
+</div>
+
+<script>
+  const bands=document.querySelector('.moving-bands');
+  const pauseButton=document.querySelector('.pause');
+  pauseButton.addEventListener('click',()=>{
+    const paused=bands.classList.toggle('paused');
+    pauseButton.setAttribute('aria-pressed',String(paused));
+    pauseButton.textContent=paused?'Resume movement':'Pause movement';
+  });
+
+  const modal=document.getElementById('reportModal');
+  const modalFrame=document.getElementById('reportModalFrame');
+  const modalTitle=document.getElementById('reportModalTitle');
+  const modalClose=document.getElementById('reportModalClose');
+  let lastTrigger=null;
+
+  function openReport(src,title,trigger){
+    lastTrigger=trigger||null;
+    modalFrame.src=src;
+    modalFrame.title=title;
+    modalTitle.textContent=title;
+    modal.hidden=false;
+    document.body.style.overflow='hidden';
+    modalClose.focus();
+  }
+  function closeReport(){
+    modal.hidden=true;
+    modalFrame.src='';
+    document.body.style.overflow='';
+    if(lastTrigger) lastTrigger.focus();
+  }
+  document.querySelectorAll('[data-src]').forEach(el=>{
+    el.addEventListener('click',()=>{
+      openReport(el.getAttribute('data-src'), el.getAttribute('data-title')||'Report', el);
+    });
+  });
+  modalClose.addEventListener('click',closeReport);
+  modal.addEventListener('click',e=>{ if(e.target===modal) closeReport(); });
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape' && !modal.hidden) closeReport(); });
+</script>
+</body>
+</html>
