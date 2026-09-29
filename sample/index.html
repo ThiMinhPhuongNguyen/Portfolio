@@ -1,0 +1,4801 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Northstar Learning Trust | Synthetic Dashboard</title>
+<style>
+:root{
+  --navy:#273155;--navy2:#4C426E;--gold:#13A59B;--bg:#F4F4FA;--card:#fff;
+  --text:#202B38;--muted:#6E7884;--line:#E4E8EE;
+  --green:#157A4C;--green-soft:#E9F5EE;--red:#C53E3E;--red-soft:#FCEBEC;
+  --grey:#7C8791;--grey-soft:#F1F3F5;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:"Segoe UI",Arial,sans-serif}
+.header{background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;padding:24px 34px 20px}
+.header-row{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap}
+.header h1{margin:0;font-size:20px}.header p{margin:6px 0 0;color:#DCE5EF;font-size:9.333px}
+.year{border:1px solid rgba(255,255,255,.25);padding:8px 12px;border-radius:999px;font-size:8px;color:#BCE9E3}
+.page{max-width:1500px;margin:auto;padding:20px 28px 38px}
+.school-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:18px}
+.school-card,.controls,.section,.attention-strip{background:#fff;border:1px solid var(--line);border-radius:15px;box-shadow:0 3px 14px rgba(15,47,84,.05)}
+.school-card{padding:16px 18px}.school-card .label{font-size:7.333px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted)}
+.school-card .value{font-size:20px;font-weight:760;color:var(--navy);margin-top:3px}.school-card .sub{margin-top:3px;font-size:7.333px;color:var(--muted)}
+.controls{padding:11px 12px;margin-bottom:18px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.toggle{display:flex;gap:8px}.toggle button{border:1px solid var(--line);background:#fff;color:var(--navy);padding:10px 18px;border-radius:10px;font-weight:700;cursor:pointer}
+.toggle button.active{background:var(--navy);color:#fff;border-color:var(--navy)}.help{font-size:7.333px;color:var(--muted)}
+.view{display:none}.view.active{display:block}
+
+.attention-strip{margin-bottom:16px;overflow:hidden}
+.attention-head{padding:13px 16px 10px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:12px}
+.attention-head h3{margin:0;color:var(--navy);font-size:10px}.attention-head .method{font-size:6.667px;color:var(--muted);text-align:right;max-width:780px}
+.attention-body{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:12px 16px 14px}
+.attention-school{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 12px;border-radius:12px;background:#F2FAF9;border:1px solid #D0E9E6}
+.rank{font-size:6.667px;text-transform:uppercase;letter-spacing:.05em;color:#967051;font-weight:700}
+.school-name{font-size:10px;font-weight:800;color:var(--navy);margin-top:2px}.why{font-size:6.667px;color:var(--muted);margin-top:3px}
+.score-badge{min-width:92px;text-align:center;padding:8px 10px;border-radius:10px;background:#FFF;border:1px solid #E7CDB8}
+.score-badge b{display:block;font-size:13.333px;color:#986237;line-height:1.1}.score-badge span{font-size:6px;color:#8C6A56}
+.score-pct{margin-top:3px;font-size:6.667px;font-weight:700;color:#986237}
+
+.section{overflow:hidden;margin-bottom:16px}.section-head{padding:15px 18px;border-bottom:1px solid var(--line)}
+.section-head h2{margin:0;color:var(--navy);font-size:12px}.section-head .sub{margin-top:3px;font-size:7.333px;color:var(--muted)}
+.metric-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;padding:16px}
+.metric{border:1px solid var(--line);border-radius:14px;background:#FCFDFE;padding:16px}
+.metric-title{font-size:8px;font-weight:700;color:var(--navy);margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.year-tag{display:inline-flex;padding:4px 7px;border-radius:999px;background:#EEF2F6;color:#66717C;font-size:6px;font-weight:700}
+.metric-body{display:grid;grid-template-columns:1.15fr .85fr;gap:14px;align-items:stretch}
+.overall-panel{border-right:1px solid var(--line);padding-right:14px}.overall-label{font-size:6.667px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.overall-value{font-size:25.333px;line-height:1;font-weight:800;color:var(--navy);margin:5px 0 14px}
+.national-box{border-radius:12px;padding:11px 12px;margin-bottom:10px}.national-box.good{background:var(--green-soft);border:1px solid #CFE8DA}.national-box.bad{background:var(--red-soft);border:1px solid #F3D1D1}.national-box.neutral{background:var(--grey-soft);border:1px solid var(--line)}
+.national-label-row{display:flex;justify-content:space-between;align-items:center;gap:8px}.national-label{font-size:6.667px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}.benchmark-year{font-size:6px;font-weight:700;color:#6E7884}
+.national-value{font-size:10.667px;font-weight:800;color:var(--text);margin-top:3px}.national-variance{margin-top:4px;font-size:9.333px;font-weight:800}
+.good-text{color:var(--green)}.bad-text{color:var(--red)}.neutral-text{color:var(--grey)}
+.school-spread{margin-top:10px}.school-spread-label{font-size:6.667px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:6px}
+.school-spread-pills{display:flex;gap:6px;flex-wrap:wrap}
+.spread-neutral,.spread-pill{display:inline-flex;align-items:center;padding:5px 8px;border-radius:999px;font-size:6.667px;font-weight:700}
+.spread-neutral{background:#EEF2F6;color:#52606D}.spread-pill.good{background:var(--green-soft);color:var(--green)}.spread-pill.bad{background:var(--red-soft);color:var(--red)}
+.breakdown-side-title{font-size:6.667px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:6px}
+.breakdown-line{padding:10px 0;border-bottom:1px solid #EEF1F4}.breakdown-line:last-child{border-bottom:none}
+.breakdown-top{display:flex;justify-content:space-between;gap:8px;align-items:baseline}.breakdown-name{font-size:7.333px;font-weight:700}.breakdown-value{font-size:12px;font-weight:800;color:var(--navy)}
+.breakdown-meta{display:grid;grid-template-columns:1fr auto;gap:8px;margin-top:5px;font-size:6.667px;color:var(--muted)}.breakdown-bench b{color:var(--text)}.breakdown-delta{font-weight:800}
+.breakdown-spread{margin-top:5px;font-size:6.667px;color:#5D6975}
+
+.behaviour-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;padding:16px}
+.bcard{border:1px solid var(--line);border-radius:13px;padding:14px;background:#FCFDFE}.bcard .label{font-size:7.333px;color:var(--muted)}.bcard .value{font-size:18px;font-weight:760;color:var(--navy);margin-top:4px}.bcard .small{font-size:6.667px;color:var(--muted);margin-top:5px}.behaviour-year{font-size:6px;color:var(--muted);font-weight:700;margin-top:4px}
+.behaviour-share{margin-top:8px;padding-top:8px;border-top:1px solid var(--line)}.behaviour-share-label{font-size:6px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.behaviour-share-value{margin-top:3px;font-size:10.667px;font-weight:800;color:var(--navy)}.behaviour-share-value.alert{color:var(--red);background:var(--red-soft);display:inline-block;padding:3px 7px;border-radius:8px}
+.note{padding:0 16px 14px;font-size:7px;color:var(--muted);line-height:1.45}
+@media(max-width:1150px){.metric-grid{grid-template-columns:1fr}}
+@media(max-width:850px){.metric-body{grid-template-columns:1fr}.overall-panel{border-right:none;border-bottom:1px solid var(--line);padding-right:0;padding-bottom:12px}.school-cards{grid-template-columns:1fr}.attention-body{grid-template-columns:1fr}.behaviour-grid{grid-template-columns:repeat(2,1fr)}}
+
+.suspension-main{
+  display:flex;
+  align-items:baseline;
+  gap:8px;
+  flex-wrap:wrap;
+}
+.suspension-share-inline{
+  font-size:8px;
+  font-weight:800;
+  padding:4px 7px;
+  border-radius:8px;
+  background:var(--red-soft);
+  color:var(--red);
+}
+
+.behaviour-value-row{
+  display:flex;
+  align-items:baseline;
+  gap:8px;
+  flex-wrap:wrap;
+}
+.behaviour-percent-inline{
+  font-size:7.333px;
+  font-weight:800;
+  padding:3px 7px;
+  border-radius:8px;
+  background:#EEF2F6;
+  color:#52606D;
+}
+.behaviour-percent-inline.alert{
+  background:var(--red-soft);
+  color:var(--red);
+}
+
+.section-head-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+}
+.critical-flags{
+  padding:0 16px 14px;
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap;
+}
+.critical-label{
+  font-size:6.667px;
+  font-weight:800;
+  color:var(--red);
+  margin-right:4px;
+  align-self:center;
+}
+.critical-tag{
+  font-size:6.333px;
+  font-weight:700;
+  color:var(--red);
+  background:var(--red-soft);
+  border:1px solid #F1CACA;
+  padding:4px 7px;
+  border-radius:999px;
+}
+
+.school-selector-wrap{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.school-selector-wrap label{
+  font-size:6.667px;
+  font-weight:700;
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:.05em;
+}
+.school-selector{
+  min-width:170px;
+  border:1px solid var(--line);
+  background:#fff;
+  color:var(--navy);
+  padding:9px 30px 9px 10px;
+  border-radius:10px;
+  font-size:7.333px;
+  font-weight:700;
+}
+.single-school .school-spread{display:none}
+.single-school .attention-strip{display:none}
+.single-school .overall-label::after{content:" school";}
+.single-school .overall-label{font-size:6.667px}
+
+.priority-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px;
+  padding:12px 16px 14px;
+}
+.priority-card{
+  border:1px solid #F0D5CF;
+  background:#FFF8F6;
+  border-radius:12px;
+  padding:12px 14px;
+}
+.priority-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:10px;
+}
+.priority-name{
+  font-size:10px;
+  font-weight:800;
+  color:var(--navy);
+}
+.priority-level{
+  font-size:6.667px;
+  font-weight:800;
+  color:var(--red);
+  background:var(--red-soft);
+  padding:4px 7px;
+  border-radius:999px;
+}
+.priority-scores{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+  margin-top:10px;
+}
+.priority-score{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:8px;
+}
+.priority-score .k{
+  font-size:6px;
+  text-transform:uppercase;
+  letter-spacing:.04em;
+  color:var(--muted);
+}
+.priority-score .v{
+  margin-top:2px;
+  font-size:10.667px;
+  font-weight:800;
+  color:var(--navy);
+}
+.priority-score .v.flag{
+  color:var(--red);
+}
+.priority-narrative{
+  margin-top:10px;
+  padding-top:9px;
+  border-top:1px solid #F1E2DE;
+  font-size:7px;
+  line-height:1.45;
+  color:#58636F;
+}
+.priority-method{
+  padding:0 16px 12px;
+  font-size:6.667px;
+  color:var(--muted);
+}
+@media(max-width:800px){
+  .priority-grid{grid-template-columns:1fr}
+}
+
+/* ===== Integrated Breakdown ===== */
+.metric-title .metric-link,
+.section-head-row .metric-link,
+.section-head .metric-link{
+  margin-left:auto;
+}
+.metric-link{
+  border:1px solid #CAD5E1;
+  background:#fff;
+  color:var(--navy);
+  padding:6px 9px;
+  border-radius:8px;
+  font-size:6.667px;
+  font-weight:800;
+  cursor:pointer;
+  white-space:nowrap;
+}
+.metric-link:hover{background:#F4F7FA}
+.bd-page{min-height:100vh}
+.bd-backline{margin-bottom:8px}
+.bd-back{
+  border:1px solid rgba(255,255,255,.35);
+  background:rgba(255,255,255,.08);
+  color:#fff;
+  padding:7px 10px;
+  border-radius:9px;
+  font-size:7.333px;
+  font-weight:800;
+  cursor:pointer;
+}
+.bd-controls{margin-bottom:16px}
+.bd-current{
+  font-size:8px;
+  font-weight:700;
+  color:var(--muted);
+}
+.bd-section-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:16px;
+}
+.bd-subtoggle{display:flex;gap:8px}
+.bd-subtoggle button{
+  border:1px solid var(--line);
+  background:#fff;
+  color:var(--navy);
+  padding:9px 12px;
+  border-radius:9px;
+  font-size:7.333px;
+  font-weight:800;
+  cursor:pointer;
+}
+.bd-subtoggle button.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+.bd-kpis{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+  padding:16px;
+  border-bottom:1px solid var(--line);
+}
+.bd-kpi{
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:14px 16px;
+  background:#FCFDFE;
+}
+.bd-kpi-label{
+  font-size:7.333px;
+  text-transform:uppercase;
+  letter-spacing:.05em;
+  color:var(--muted);
+}
+.bd-kpi-value{
+  margin-top:4px;
+  font-size:20px;
+  line-height:1;
+  font-weight:800;
+  color:var(--navy);
+}
+.bd-kpi-delta{
+  margin-top:7px;
+  font-size:8.667px;
+  font-weight:800;
+}
+.bd-table-wrap{overflow-x:auto;padding:0 16px 16px}
+.bd-table{
+  width:100%;
+  border-collapse:collapse;
+  font-size:8.667px;
+}
+.bd-table th{
+  text-align:left;
+  padding:12px 10px;
+  color:var(--muted);
+  font-weight:800;
+  background:#FAFBFC;
+  border-bottom:1px solid var(--line);
+  white-space:nowrap;
+}
+.bd-table td{
+  padding:12px 10px;
+  border-bottom:1px solid #EEF1F4;
+  vertical-align:middle;
+}
+.bd-table tr:last-child td{border-bottom:none}
+.bd-school{font-weight:800;color:var(--navy);font-size:8.667px}
+.bd-metric-cell{min-width:155px}
+.bd-metric-value{font-size:8.667px;font-weight:800;color:var(--navy)}
+.bd-mini-track{
+  margin-top:6px;height:7px;background:#EDF1F5;border-radius:999px;overflow:hidden;
+}
+.bd-mini-fill{height:100%;background:#B9C8D8;border-radius:999px}
+.bd-vs{
+  display:inline-block;
+  border:1px solid;
+  border-radius:8px;
+  padding:5px 8px;
+  font-size:7.333px;
+  font-weight:800;
+  white-space:nowrap;
+}
+.bd-vs.good{color:var(--green);border-color:#73B791;background:#F2FAF5}
+.bd-vs.bad{color:var(--red);border-color:#DF9999;background:#FFF5F5}
+.bd-vs.neutral{color:var(--grey);border-color:#C8D0D8;background:#F6F7F8}
+.bd-beh-chart{
+  padding:18px 18px 8px;
+}
+.bd-bar-row{
+  display:grid;
+  grid-template-columns:110px 1fr 60px;
+  gap:12px;
+  align-items:center;
+  margin:14px 0;
+}
+.bd-bar-label{font-size:8px;font-weight:800;color:var(--navy)}
+.bd-bar-track{height:16px;background:#EDF1F5;border-radius:999px;overflow:hidden}
+.bd-bar-fill{height:100%;background:var(--navy2);border-radius:999px}
+.bd-bar-value{text-align:right;font-size:8px;font-weight:800}
+.bd-note{
+  padding:10px 16px 16px;
+  color:var(--muted);
+  font-size:7.333px;
+}
+@media(max-width:850px){
+  .bd-kpis{grid-template-columns:1fr}
+  .bd-section-head{align-items:flex-start;flex-direction:column}
+  .bd-bar-row{grid-template-columns:90px 1fr 45px}
+}
+
+/* ===== Readability + branding refinements ===== */
+.header-row{
+  align-items:center;
+}
+.header-brand{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin-left:auto;
+}
+.seeat-logo{
+  width:92px;
+  height:auto;
+  display:block;
+  background:#fff;
+  border-radius:18px;
+  padding:5px;
+}
+.header .year{
+  font-size:8.667px;
+}
+.school-card .label,
+.school-card .sub,
+.help,
+.attention-head .method,
+.rank,
+.why,
+.score-badge span,
+.section-head .sub,
+.year-tag,
+.overall-label,
+.national-label,
+.benchmark-year,
+.school-spread-label,
+.spread-neutral,
+.spread-pill,
+.breakdown-side-title,
+.breakdown-meta,
+.breakdown-spread,
+.bcard .label,
+.bcard .small,
+.behaviour-year,
+.behaviour-share-label,
+.note,
+.critical-label,
+.critical-tag,
+.school-selector-wrap label,
+.school-selector,
+.priority-level,
+.priority-score .k,
+.priority-narrative,
+.priority-method,
+.bd-current,
+.bd-back,
+.bd-subtoggle button,
+.bd-kpi-label,
+.bd-note{
+  font-size:8px !important;
+}
+.metric-title,
+.breakdown-name,
+.behaviour-percent-inline,
+.suspension-share-inline{
+  font-size:8.667px !important;
+}
+.breakdown-value{
+  font-size:13.333px !important;
+}
+.national-value{
+  font-size:12px !important;
+}
+.national-variance{
+  font-size:10px !important;
+}
+.bd-table{
+  font-size:9.333px !important;
+}
+.bd-table th,
+.bd-table td{
+  padding:13px 11px !important;
+}
+.bd-school,
+.bd-metric-value{
+  font-size:9.333px !important;
+}
+.bd-vs{
+  font-size:8px !important;
+  padding:6px 9px !important;
+}
+.metric-link{
+  position:relative;
+  border:1px solid #AEBFCE !important;
+  background:#F7FAFC !important;
+  color:var(--navy) !important;
+  padding:7px 10px !important;
+  border-radius:9px !important;
+  font-size:7.333px !important;
+  font-weight:800 !important;
+  cursor:pointer !important;
+  transition:background .18s ease,color .18s ease,border-color .18s ease,transform .18s ease,box-shadow .18s ease;
+}
+.metric-link::after{
+  content:"";
+  position:absolute;
+  inset:-3px;
+  border-radius:11px;
+}
+.metric-link:hover{
+  background:var(--navy) !important;
+  color:#fff !important;
+  border-color:var(--navy) !important;
+  transform:translateY(-1px);
+  box-shadow:0 5px 12px rgba(15,47,84,.18);
+}
+.metric-link:focus-visible{
+  outline:3px solid rgba(199,160,67,.45);
+  outline-offset:2px;
+}
+.bd-counts{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:8px;
+}
+.bd-count-pill{
+  display:inline-flex;
+  align-items:center;
+  padding:6px 9px;
+  border-radius:999px;
+  font-size:8px;
+  font-weight:800;
+}
+.bd-count-pill.good{
+  color:var(--green);
+  background:var(--green-soft);
+  border:1px solid #CFE8DA;
+}
+.bd-count-pill.bad{
+  color:var(--red);
+  background:var(--red-soft);
+  border:1px solid #F3D1D1;
+}
+.bd-count-pill.neutral{
+  color:var(--grey);
+  background:var(--grey-soft);
+  border:1px solid var(--line);
+}
+@media(max-width:850px){
+  .header-brand{width:100%;justify-content:flex-start}
+  .seeat-logo{width:78px}
+}
+
+/* ===== Executive top layout ===== */
+.executive-top{
+  display:grid;
+  grid-template-columns:minmax(0,1.65fr) minmax(340px,.85fr);
+  gap:16px;
+  align-items:stretch;
+  margin-bottom:18px;
+}
+.executive-summary-left .school-cards{
+  margin-bottom:0;
+  height:100%;
+}
+.executive-summary-left .school-card{
+  min-height:118px;
+}
+.executive-attention-right{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:15px;
+  box-shadow:0 3px 14px rgba(15,47,84,.05);
+  overflow:hidden;
+}
+.compact-attention-head{
+  padding:14px 16px 11px;
+  border-bottom:1px solid var(--line);
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  align-items:center;
+}
+.compact-attention-head h3{
+  margin:0;
+  color:var(--navy);
+  font-size:10px;
+}
+.compact-attention-phase{
+  font-size:7.333px;
+  font-weight:800;
+  color:var(--red);
+  background:var(--red-soft);
+  border-radius:999px;
+  padding:5px 8px;
+}
+.compact-attention-body{
+  padding:10px 12px 12px;
+  display:grid;
+  gap:8px;
+}
+.compact-school{
+  border:1px solid #F0D5CF;
+  background:#FFF8F6;
+  border-radius:11px;
+  padding:10px 11px;
+}
+.compact-school-top{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  align-items:center;
+}
+.compact-school-name{
+  font-size:8.667px;
+  font-weight:800;
+  color:var(--navy);
+}
+.compact-school-level{
+  font-size:6.667px;
+  font-weight:800;
+  color:var(--red);
+  background:var(--red-soft);
+  border-radius:999px;
+  padding:4px 7px;
+  white-space:nowrap;
+}
+.compact-scores{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:6px;
+  margin-top:8px;
+}
+.compact-score{
+  border:1px solid var(--line);
+  border-radius:8px;
+  background:#fff;
+  padding:6px 7px;
+}
+.compact-score .k{
+  font-size:6px !important;
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:.04em;
+}
+.compact-score .v{
+  margin-top:2px;
+  font-size:9.333px;
+  font-weight:800;
+  color:var(--navy);
+}
+.compact-score .v.flag{color:var(--red)}
+.compact-reason{
+  margin-top:7px;
+  font-size:7.333px;
+  line-height:1.35;
+  color:#5E6975;
+}
+@media(max-width:1100px){
+  .executive-top{grid-template-columns:1fr}
+  .executive-attention-right{order:2}
+}
+
+/* ===== Right-side attention panel ===== */
+.overview-body-layout{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 340px;
+  gap:18px;
+  align-items:start;
+}
+.overview-main-column{min-width:0}
+.overview-attention-sidebar{
+  position:sticky;
+  top:18px;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:15px;
+  box-shadow:0 3px 14px rgba(15,47,84,.05);
+  overflow:hidden;
+}
+.sidebar-attention-head{
+  padding:14px 15px 11px;
+  border-bottom:1px solid var(--line);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+.sidebar-attention-head h3{margin:0;font-size:10.667px;color:var(--navy)}
+.sidebar-phase{
+  font-size:7.333px;font-weight:800;color:var(--red);
+  background:var(--red-soft);padding:5px 8px;border-radius:999px;
+}
+.sidebar-attention-body{padding:11px 12px 12px;display:grid;gap:9px}
+.sidebar-school{
+  border:1px solid #F0D5CF;background:#FFF8F6;border-radius:11px;padding:10px 11px;
+}
+.sidebar-school-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.sidebar-school-name{color:var(--navy);font-size:9.333px;font-weight:800}
+.sidebar-school-level{
+  font-size:6.667px;font-weight:800;color:var(--red);background:var(--red-soft);
+  padding:4px 6px;border-radius:999px;white-space:nowrap;
+}
+.sidebar-scores{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-top:8px}
+.sidebar-score{background:#fff;border:1px solid var(--line);border-radius:8px;padding:6px}
+.sidebar-score .k{font-size:6.667px;color:var(--muted);text-transform:uppercase;line-height:1.2}
+.sidebar-score .v{margin-top:3px;font-size:10px;font-weight:800;color:var(--navy)}
+.sidebar-score .v.flag{color:var(--red)}
+.sidebar-reason{
+  margin-top:8px;padding-top:7px;border-top:1px solid #F1E2DE;
+  font-size:7.333px;line-height:1.4;color:#5B6671;
+}
+.sidebar-method{padding:0 12px 12px;color:var(--muted);font-size:6.667px;line-height:1.35}
+@media(max-width:1180px){
+  .overview-body-layout{grid-template-columns:1fr}
+  .overview-attention-sidebar{position:static;order:-1}
+}
+
+/* ===== Summary cards moved into header ===== */
+#overviewPage .header{
+  padding-bottom:18px;
+}
+#overviewPage .header-school-cards{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+  margin-top:16px;
+}
+#overviewPage .header-school-cards .school-card{
+  background:rgba(255,255,255,.10);
+  border:1px solid rgba(255,255,255,.22);
+  border-radius:12px;
+  box-shadow:none;
+  padding:11px 13px;
+  min-height:auto;
+}
+#overviewPage .header-school-cards .school-card .label{
+  color:#D9E3ED;
+  font-size:7.333px !important;
+}
+#overviewPage .header-school-cards .school-card .value{
+  color:#fff;
+  font-size:16px;
+  margin-top:2px;
+}
+#overviewPage .header-school-cards .school-card .sub{
+  color:#D9E3ED;
+  font-size:7.333px !important;
+  margin-top:2px;
+}
+@media(max-width:850px){
+  #overviewPage .header-school-cards{
+    grid-template-columns:1fr;
+  }
+}
+
+/* ===== Compact single-row header ===== */
+#overviewPage .header{
+  padding:16px 28px;
+}
+#overviewPage .header-row{
+  display:grid;
+  grid-template-columns:minmax(280px,1.15fr) minmax(420px,1.8fr) auto;
+  align-items:center;
+  gap:18px;
+}
+#overviewPage .header-row > div:first-child{
+  min-width:0;
+}
+#overviewPage .header h1{
+  font-size:18px;
+}
+#overviewPage .header p{
+  font-size:8px;
+  margin-top:4px;
+}
+#overviewPage .header-school-cards{
+  margin-top:0 !important;
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:8px;
+}
+#overviewPage .header-school-cards .school-card{
+  padding:8px 10px;
+  border-radius:10px;
+  min-height:64px;
+}
+#overviewPage .header-school-cards .school-card .label{
+  font-size:6.667px !important;
+  line-height:1.15;
+}
+#overviewPage .header-school-cards .school-card .value{
+  font-size:14px;
+  line-height:1;
+  margin-top:3px;
+}
+#overviewPage .header-school-cards .school-card .sub{
+  font-size:6px !important;
+  line-height:1.2;
+  margin-top:3px;
+}
+#overviewPage .header-brand{
+  margin-left:0;
+}
+#overviewPage .seeat-logo{
+  width:78px;
+}
+@media(max-width:1050px){
+  #overviewPage .header-row{
+    grid-template-columns:1fr auto;
+  }
+  #overviewPage .header-school-cards{
+    grid-column:1 / -1;
+  }
+}
+@media(max-width:700px){
+  #overviewPage .header-row{
+    grid-template-columns:1fr;
+  }
+  #overviewPage .header-school-cards{
+    grid-template-columns:repeat(3,1fr);
+  }
+  #overviewPage .header-brand{
+    justify-content:flex-start;
+  }
+}
+
+/* ===== Preserve original title/logo positions; use only middle whitespace ===== */
+#overviewPage .header{
+  padding:24px 34px 20px !important;
+}
+#overviewPage .header-row{
+  display:flex !important;
+  justify-content:space-between !important;
+  align-items:flex-end !important;
+  gap:20px !important;
+  flex-wrap:nowrap !important;
+}
+#overviewPage .header-row > div:first-child{
+  flex:0 0 auto !important;
+  min-width:0 !important;
+}
+#overviewPage .header h1{
+  font-size:20px !important;
+}
+#overviewPage .header p{
+  font-size:9.333px !important;
+  margin:6px 0 0 !important;
+}
+#overviewPage .header-brand{
+  margin-left:0 !important;
+  flex:0 0 auto !important;
+  align-self:center !important;
+}
+#overviewPage .seeat-logo{
+  width:92px !important;
+}
+#overviewPage .header-school-cards{
+  flex:1 1 auto !important;
+  margin:0 auto !important;
+  max-width:560px !important;
+  min-width:360px !important;
+  display:grid !important;
+  grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+  gap:8px !important;
+  align-self:center !important;
+}
+#overviewPage .header-school-cards .school-card{
+  min-height:58px !important;
+  padding:8px 10px !important;
+  border-radius:10px !important;
+  background:rgba(255,255,255,.10) !important;
+  border:1px solid rgba(255,255,255,.22) !important;
+  box-shadow:none !important;
+}
+#overviewPage .header-school-cards .school-card .label{
+  font-size:6.667px !important;
+  line-height:1.15 !important;
+  color:#D9E3ED !important;
+}
+#overviewPage .header-school-cards .school-card .value{
+  font-size:13.333px !important;
+  line-height:1 !important;
+  margin-top:3px !important;
+  color:#fff !important;
+}
+#overviewPage .header-school-cards .school-card .sub{
+  font-size:6px !important;
+  line-height:1.15 !important;
+  margin-top:3px !important;
+  color:#D9E3ED !important;
+}
+@media(max-width:1100px){
+  #overviewPage .header-row{
+    flex-wrap:wrap !important;
+  }
+  #overviewPage .header-school-cards{
+    order:3;
+    max-width:none !important;
+    min-width:0 !important;
+    flex:1 0 100% !important;
+  }
+}
+
+/* ===== Overview layout matched to supplied reference ===== */
+#overviewPage .page{
+  max-width:none !important;
+  padding:18px 28px 28px !important;
+}
+
+#overviewPage .controls{
+  margin-bottom:14px !important;
+}
+
+/* Three-column dashboard body */
+#overviewPage .view.active{
+  display:grid !important;
+  grid-template-columns:minmax(310px,1.05fr) minmax(205px,.62fr) minmax(600px,2fr);
+  grid-template-areas:
+    "attendance behaviour attainment"
+    "attention attention attention";
+  gap:16px;
+  align-items:start;
+}
+
+#overviewPage .view:not(.active){
+  display:none !important;
+}
+
+#overviewPage .overview-attendance-col{
+  grid-area:attendance;
+  margin-bottom:0 !important;
+}
+
+#overviewPage .overview-behaviour-col{
+  grid-area:behaviour;
+  margin-bottom:0 !important;
+}
+
+#overviewPage .overview-attainment-col{
+  grid-area:attainment;
+  margin-bottom:0 !important;
+}
+
+#overviewPage .overview-attention-bottom{
+  grid-area:attention;
+  display:block !important;
+  margin-top:2px !important;
+  margin-bottom:0 !important;
+}
+
+/* Attendance stacked vertically */
+#overviewPage .overview-attendance-col .metric-grid{
+  grid-template-columns:1fr !important;
+  gap:12px !important;
+  padding:12px !important;
+}
+
+/* Behaviour cards vertical */
+#overviewPage .overview-behaviour-col .behaviour-grid{
+  grid-template-columns:1fr !important;
+  gap:12px !important;
+  padding:12px !important;
+}
+#overviewPage .overview-behaviour-col .bcard{
+  min-height:90px;
+}
+
+/* Attainment 2 x 2 */
+#overviewPage .overview-attainment-col .metric-grid{
+  grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  gap:14px !important;
+  padding:12px !important;
+}
+
+/* Slightly tighter sections to reduce vertical length */
+#overviewPage .section{
+  margin-bottom:0 !important;
+}
+#overviewPage .section-head{
+  padding:13px 14px !important;
+}
+#overviewPage .metric{
+  padding:13px !important;
+}
+#overviewPage .metric-title{
+  margin-bottom:10px !important;
+}
+#overviewPage .overall-value{
+  margin:5px 0 11px !important;
+}
+
+/* Attention area full width as in reference */
+#overviewPage .overview-attention-bottom .priority-grid{
+  grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+}
+#overviewPage .overview-attention-bottom .priority-card{
+  min-height:auto !important;
+}
+
+/* Remove any leftover sidebar visual if present */
+#overviewPage .overview-attention-sidebar,
+#overviewPage #overviewAttentionSidebar{
+  display:none !important;
+}
+
+/* Header stays compact */
+#overviewPage .header{
+  padding-top:14px !important;
+  padding-bottom:14px !important;
+}
+#overviewPage .header-school-cards{
+  max-width:520px !important;
+}
+#overviewPage .header-school-cards .school-card{
+  min-height:54px !important;
+  padding:7px 9px !important;
+}
+#overviewPage .seeat-logo{
+  width:78px !important;
+}
+
+/* Responsive */
+@media(max-width:1250px){
+  #overviewPage .view.active{
+    grid-template-columns:1fr 1fr;
+    grid-template-areas:
+      "attendance behaviour"
+      "attainment attainment"
+      "attention attention";
+  }
+}
+@media(max-width:850px){
+  #overviewPage .view.active{
+    grid-template-columns:1fr;
+    grid-template-areas:
+      "attendance"
+      "behaviour"
+      "attainment"
+      "attention";
+  }
+  #overviewPage .overview-attainment-col .metric-grid{
+    grid-template-columns:1fr !important;
+  }
+}
+
+/* ===== v9: laptop-first 16:9 executive overview ===== */
+
+/* Constrain the visual canvas instead of stretching indefinitely */
+#overviewPage .page{
+  width:min(96vw, 1460px) !important;
+  max-width:1460px !important;
+  margin:0 auto !important;
+  padding:16px 20px 22px !important;
+}
+
+/* Keep header content on the same visual width */
+#overviewPage .header{
+  padding:14px max(24px, calc((100vw - 1460px)/2 + 20px)) !important;
+}
+
+/* Make the control strip useful but compact */
+#overviewPage .controls{
+  min-height:54px;
+  padding:9px 12px !important;
+  margin-bottom:14px !important;
+}
+
+/* Balanced desktop proportions: use vertical space, not excessive width */
+#overviewPage .view.active{
+  grid-template-columns:minmax(330px,30fr) minmax(250px,22fr) minmax(540px,48fr) !important;
+  grid-template-areas:
+    "attendance behaviour attainment"
+    "attention attention attention" !important;
+  gap:14px !important;
+}
+
+/* Give the main sections a meaningful screen height */
+#overviewPage .overview-attendance-col,
+#overviewPage .overview-behaviour-col,
+#overviewPage .overview-attainment-col{
+  min-height:490px;
+}
+
+/* Section typography */
+#overviewPage .section-head h2{
+  font-size:12px !important;
+}
+#overviewPage .section-head .sub{
+  font-size:8px !important;
+}
+#overviewPage .metric-title{
+  font-size:9.333px !important;
+}
+#overviewPage .overall-label,
+#overviewPage .national-label,
+#overviewPage .school-spread-label,
+#overviewPage .breakdown-side-title,
+#overviewPage .breakdown-name,
+#overviewPage .bcard .label{
+  font-size:8px !important;
+}
+#overviewPage .overall-value{
+  font-size:21.333px !important;
+}
+#overviewPage .national-value{
+  font-size:13.333px !important;
+}
+#overviewPage .breakdown-value{
+  font-size:13.333px !important;
+}
+#overviewPage .national-variance,
+#overviewPage .breakdown-meta,
+#overviewPage .breakdown-spread,
+#overviewPage .spread-pill,
+#overviewPage .spread-neutral,
+#overviewPage .bcard .small,
+#overviewPage .behaviour-percent-inline,
+#overviewPage .suspension-share-inline{
+  font-size:7.333px !important;
+}
+
+/* Slightly roomier cards */
+#overviewPage .metric{
+  padding:15px !important;
+}
+#overviewPage .overview-attendance-col .metric-grid{
+  gap:14px !important;
+  padding:13px !important;
+}
+#overviewPage .overview-attainment-col .metric-grid{
+  gap:13px !important;
+  padding:13px !important;
+}
+#overviewPage .overview-behaviour-col .behaviour-grid{
+  gap:13px !important;
+  padding:13px !important;
+}
+#overviewPage .overview-behaviour-col .bcard{
+  min-height:98px !important;
+  padding:14px !important;
+}
+#overviewPage .bcard .value{
+  font-size:18px !important;
+}
+
+/* Clearer breakdown CTA */
+#overviewPage .metric-link{
+  font-size:7.333px !important;
+  padding:7px 10px !important;
+}
+
+/* Turn attention area into a low horizontal strip */
+#overviewPage .overview-attention-bottom{
+  margin-top:0 !important;
+}
+#overviewPage .overview-attention-bottom .attention-head{
+  padding:10px 13px !important;
+}
+#overviewPage .overview-attention-bottom .attention-head h3{
+  font-size:9.333px !important;
+}
+#overviewPage .overview-attention-bottom .priority-grid{
+  display:grid !important;
+  grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  gap:10px !important;
+  padding:9px 11px !important;
+}
+#overviewPage .overview-attention-bottom .priority-card{
+  padding:9px 11px !important;
+  min-height:0 !important;
+}
+#overviewPage .overview-attention-bottom .priority-top{
+  margin-bottom:6px !important;
+}
+#overviewPage .overview-attention-bottom .priority-name{
+  font-size:8.667px !important;
+}
+#overviewPage .overview-attention-bottom .priority-level{
+  font-size:6.667px !important;
+}
+#overviewPage .overview-attention-bottom .priority-scores{
+  gap:6px !important;
+}
+#overviewPage .overview-attention-bottom .priority-score{
+  padding:5px 7px !important;
+}
+#overviewPage .overview-attention-bottom .priority-score .k{
+  font-size:6.667px !important;
+}
+#overviewPage .overview-attention-bottom .priority-score .v{
+  font-size:9.333px !important;
+}
+#overviewPage .overview-attention-bottom .priority-narrative{
+  font-size:7px !important;
+  line-height:1.3 !important;
+  margin-top:6px !important;
+}
+#overviewPage .overview-attention-bottom .priority-method{
+  font-size:6.333px !important;
+  line-height:1.25 !important;
+  padding:0 11px 9px !important;
+}
+
+/* Header: preserve title and logo, compact middle KPIs */
+#overviewPage .header-row{
+  align-items:center !important;
+}
+#overviewPage .header-school-cards{
+  max-width:480px !important;
+  min-width:390px !important;
+}
+#overviewPage .header-school-cards .school-card{
+  min-height:50px !important;
+  padding:6px 9px !important;
+}
+#overviewPage .header-school-cards .school-card .label{
+  font-size:6.333px !important;
+}
+#overviewPage .header-school-cards .school-card .value{
+  font-size:12.667px !important;
+}
+#overviewPage .header-school-cards .school-card .sub{
+  font-size:6px !important;
+}
+#overviewPage .seeat-logo{
+  width:72px !important;
+}
+
+/* 1366-ish laptops: preserve 3-column layout but tighten widths */
+@media (min-width:1100px) and (max-width:1390px){
+  #overviewPage .page{
+    width:98vw !important;
+    padding-left:12px !important;
+    padding-right:12px !important;
+  }
+  #overviewPage .view.active{
+    grid-template-columns:minmax(300px,29fr) minmax(220px,21fr) minmax(500px,50fr) !important;
+    gap:10px !important;
+  }
+  #overviewPage .metric{
+    padding:12px !important;
+  }
+  #overviewPage .overall-value{
+    font-size:19.333px !important;
+  }
+}
+
+/* Below laptop landscape, gracefully stack rather than shrink text */
+@media(max-width:1099px){
+  #overviewPage .view.active{
+    grid-template-columns:1fr 1fr !important;
+    grid-template-areas:
+      "attendance behaviour"
+      "attainment attainment"
+      "attention attention" !important;
+  }
+}
+@media(max-width:760px){
+  #overviewPage .view.active{
+    grid-template-columns:1fr !important;
+    grid-template-areas:
+      "attendance"
+      "behaviour"
+      "attainment"
+      "attention" !important;
+  }
+}
+
+/* ===== v10: fluid desktop scaling (no fixed canvas) ===== */
+
+/* Fill the available desktop screen instead of becoming a small centered sheet */
+#overviewPage .page{
+  width:100% !important;
+  max-width:none !important;
+  margin:0 !important;
+  padding:
+    clamp(14px, 1.15vw, 26px)
+    clamp(18px, 1.8vw, 42px)
+    clamp(20px, 1.6vw, 38px) !important;
+}
+#overviewPage .header{
+  padding:
+    clamp(13px, 1.05vw, 24px)
+    clamp(22px, 2vw, 48px) !important;
+}
+
+/* Header scales with screen */
+#overviewPage .header h1{
+  font-size:clamp(16.667px, 1.033vw, 25.333px) !important;
+}
+#overviewPage .header p{
+  font-size:clamp(8px, .52vw, 11.333px) !important;
+}
+#overviewPage .seeat-logo{
+  width:clamp(72px, 5vw, 112px) !important;
+}
+#overviewPage .header-school-cards{
+  max-width:clamp(470px, 38vw, 760px) !important;
+  min-width:390px !important;
+  gap:clamp(7px, .6vw, 13px) !important;
+}
+#overviewPage .header-school-cards .school-card{
+  min-height:clamp(50px, 4.1vw, 78px) !important;
+  padding:clamp(6px,.55vw,11px) clamp(9px,.7vw,15px) !important;
+}
+#overviewPage .header-school-cards .school-card .label{
+  font-size:clamp(6.333px,.413vw,8.667px) !important;
+}
+#overviewPage .header-school-cards .school-card .value{
+  font-size:clamp(12.667px,.833vw,18px) !important;
+}
+#overviewPage .header-school-cards .school-card .sub{
+  font-size:clamp(6px,.387vw,8px) !important;
+}
+
+/* Main dashboard proportions remain stable at every desktop width */
+#overviewPage .view.active{
+  grid-template-columns:minmax(0,30fr) minmax(0,22fr) minmax(0,48fr) !important;
+  gap:clamp(10px,1vw,22px) !important;
+}
+#overviewPage .overview-attendance-col,
+#overviewPage .overview-behaviour-col,
+#overviewPage .overview-attainment-col{
+  min-height:clamp(490px, 38vw, 720px) !important;
+}
+
+/* Controls */
+#overviewPage .controls{
+  min-height:clamp(54px,4vw,72px) !important;
+  padding:clamp(8px,.7vw,13px) clamp(11px,.9vw,18px) !important;
+}
+#overviewPage .toggle button,
+#overviewPage .school-selector{
+  font-size:clamp(8px,.5vw,10.667px) !important;
+}
+#overviewPage .school-selector-wrap label{
+  font-size:clamp(7.333px,.453vw,9.333px) !important;
+}
+
+/* Section and card typography scale with viewport */
+#overviewPage .section-head{
+  padding:clamp(12px,.9vw,18px) !important;
+}
+#overviewPage .section-head h2{
+  font-size:clamp(11.333px,.767vw,16.667px) !important;
+}
+#overviewPage .section-head .sub{
+  font-size:clamp(7.333px,.453vw,10px) !important;
+}
+#overviewPage .metric{
+  padding:clamp(12px,.95vw,20px) !important;
+}
+#overviewPage .metric-title{
+  font-size:clamp(8.667px,.547vw,12px) !important;
+}
+#overviewPage .overall-label,
+#overviewPage .national-label,
+#overviewPage .school-spread-label,
+#overviewPage .breakdown-side-title,
+#overviewPage .breakdown-name,
+#overviewPage .bcard .label{
+  font-size:clamp(7.333px,.453vw,10px) !important;
+}
+#overviewPage .overall-value{
+  font-size:clamp(20px,1.367vw,30px) !important;
+}
+#overviewPage .national-value,
+#overviewPage .breakdown-value{
+  font-size:clamp(12.667px,.833vw,18px) !important;
+}
+#overviewPage .national-variance{
+  font-size:clamp(8px,.533vw,11.333px) !important;
+}
+#overviewPage .breakdown-meta,
+#overviewPage .breakdown-spread,
+#overviewPage .spread-pill,
+#overviewPage .spread-neutral,
+#overviewPage .bcard .small,
+#overviewPage .behaviour-percent-inline,
+#overviewPage .suspension-share-inline,
+#overviewPage .year-tag,
+#overviewPage .benchmark-year{
+  font-size:clamp(7px,.433vw,9.333px) !important;
+}
+#overviewPage .metric-link{
+  font-size:clamp(7px,.44vw,9.333px) !important;
+  padding:clamp(6px,.45vw,9px) clamp(8px,.65vw,13px) !important;
+}
+
+/* Cards use the extra vertical space on larger monitors */
+#overviewPage .overview-attendance-col .metric-grid,
+#overviewPage .overview-behaviour-col .behaviour-grid,
+#overviewPage .overview-attainment-col .metric-grid{
+  gap:clamp(11px,.9vw,18px) !important;
+  padding:clamp(11px,.8vw,17px) !important;
+}
+#overviewPage .overview-behaviour-col .bcard{
+  min-height:clamp(94px,7.3vw,138px) !important;
+  padding:clamp(12px,.9vw,19px) !important;
+}
+#overviewPage .bcard .value{
+  font-size:clamp(17.333px,1.133vw,24.667px) !important;
+}
+
+/* Attention strip also scales, without becoming excessively tall */
+#overviewPage .overview-attention-bottom .attention-head h3{
+  font-size:clamp(9.333px,.6vw,12.667px) !important;
+}
+#overviewPage .overview-attention-bottom .priority-name{
+  font-size:clamp(8.667px,.533vw,11.333px) !important;
+}
+#overviewPage .overview-attention-bottom .priority-score .k{
+  font-size:clamp(6.333px,.387vw,8px) !important;
+}
+#overviewPage .overview-attention-bottom .priority-score .v{
+  font-size:clamp(9.333px,.567vw,12px) !important;
+}
+#overviewPage .overview-attention-bottom .priority-narrative{
+  font-size:clamp(7px,.427vw,9px) !important;
+}
+#overviewPage .overview-attention-bottom .priority-method{
+  font-size:clamp(6.333px,.387vw,8px) !important;
+}
+
+/* Keep 3 columns on ordinary laptops; stack only when genuinely narrow */
+@media(max-width:1099px){
+  #overviewPage .view.active{
+    grid-template-columns:1fr 1fr !important;
+    grid-template-areas:
+      "attendance behaviour"
+      "attainment attainment"
+      "attention attention" !important;
+  }
+}
+@media(max-width:760px){
+  #overviewPage .view.active{
+    grid-template-columns:1fr !important;
+    grid-template-areas:
+      "attendance"
+      "behaviour"
+      "attainment"
+      "attention" !important;
+  }
+}
+
+/* ===== v11: readability pass — increase text by ~2px ===== */
+
+/* Overview */
+#overviewPage .header h1{font-size:clamp(18px,1.1vw,26.667px) !important}
+#overviewPage .header p{font-size:clamp(9.333px,.587vw,12.667px) !important}
+#overviewPage .header-school-cards .school-card .label{font-size:clamp(7.667px,.48vw,10px) !important}
+#overviewPage .header-school-cards .school-card .value{font-size:clamp(14px,.9vw,19.333px) !important}
+#overviewPage .header-school-cards .school-card .sub{font-size:clamp(7.333px,.453vw,9.333px) !important}
+
+#overviewPage .toggle button,
+#overviewPage .school-selector{font-size:clamp(9.333px,.567vw,12px) !important}
+#overviewPage .school-selector-wrap label{font-size:clamp(8.667px,.52vw,10.667px) !important}
+
+#overviewPage .section-head h2{font-size:clamp(12.667px,.833vw,18px) !important}
+#overviewPage .section-head .sub{font-size:clamp(8.667px,.52vw,11.333px) !important}
+#overviewPage .metric-title{font-size:clamp(10px,.613vw,13.333px) !important}
+
+#overviewPage .overall-label,
+#overviewPage .national-label,
+#overviewPage .school-spread-label,
+#overviewPage .breakdown-side-title,
+#overviewPage .breakdown-name,
+#overviewPage .bcard .label{font-size:clamp(8.667px,.52vw,11.333px) !important}
+
+#overviewPage .overall-value{font-size:clamp(21.333px,1.433vw,31.333px) !important}
+#overviewPage .national-value,
+#overviewPage .breakdown-value{font-size:clamp(14px,.9vw,19.333px) !important}
+#overviewPage .national-variance{font-size:clamp(9.333px,.6vw,12.667px) !important}
+
+#overviewPage .breakdown-meta,
+#overviewPage .breakdown-spread,
+#overviewPage .spread-pill,
+#overviewPage .spread-neutral,
+#overviewPage .bcard .small,
+#overviewPage .behaviour-percent-inline,
+#overviewPage .suspension-share-inline,
+#overviewPage .year-tag,
+#overviewPage .benchmark-year{font-size:clamp(8.333px,.5vw,10.667px) !important}
+
+#overviewPage .metric-link{font-size:clamp(8.333px,.507vw,10.667px) !important}
+#overviewPage .bcard .value{font-size:clamp(18.667px,1.2vw,26px) !important}
+
+#overviewPage .overview-attention-bottom .attention-head h3{font-size:clamp(10.667px,.667vw,14px) !important}
+#overviewPage .overview-attention-bottom .priority-name{font-size:clamp(10px,.6vw,12.667px) !important}
+#overviewPage .overview-attention-bottom .priority-level{font-size:8px !important}
+#overviewPage .overview-attention-bottom .priority-score .k{font-size:clamp(7.667px,.453vw,9.333px) !important}
+#overviewPage .overview-attention-bottom .priority-score .v{font-size:clamp(10.667px,.633vw,13.333px) !important}
+#overviewPage .overview-attention-bottom .priority-narrative{font-size:clamp(8.333px,.493vw,10.333px) !important}
+#overviewPage .overview-attention-bottom .priority-method{font-size:clamp(7.667px,.453vw,9.333px) !important}
+
+/* Breakdown pages */
+#breakdownPage .header h1{font-size:clamp(18.667px,1.133vw,26.667px) !important}
+#breakdownPage .header p{font-size:clamp(9.333px,.587vw,12px) !important}
+#breakdownPage .year{font-size:10px !important}
+#breakdownPage .bd-back{font-size:8.667px !important}
+#breakdownPage .bd-current{font-size:9.333px !important}
+#breakdownPage .bd-subtoggle button{font-size:8.667px !important}
+#breakdownPage .section-head h2{font-size:13.333px !important}
+#breakdownPage .section-head .sub{font-size:9.333px !important}
+#breakdownPage .bd-kpi-label{font-size:8.667px !important}
+#breakdownPage .bd-kpi-value{font-size:21.333px !important}
+#breakdownPage .bd-kpi-delta{font-size:10px !important}
+#breakdownPage .bd-table{font-size:10.667px !important}
+#breakdownPage .bd-school,
+#breakdownPage .bd-metric-value{font-size:10.667px !important}
+#breakdownPage .bd-vs{font-size:9.333px !important}
+#breakdownPage .bd-count-pill{font-size:9.333px !important}
+#breakdownPage .bd-bar-label,
+#breakdownPage .bd-bar-value{font-size:9.333px !important}
+#breakdownPage .bd-note{font-size:8.667px !important}
+
+/* ===== v12: larger typography, tighter Primary width, larger inter-section gaps ===== */
+
+/* Slightly rebalance the three main overview columns:
+   Primary Attendance narrower; Behaviour and Attainment gain room. */
+#overviewPage .view.active{
+  grid-template-columns:minmax(0,27fr) minmax(0,23fr) minmax(0,50fr) !important;
+  column-gap:clamp(18px,1.55vw,34px) !important;
+  row-gap:clamp(16px,1.25vw,28px) !important;
+}
+
+/* More visual separation between the three main cards/sections */
+#overviewPage .overview-attendance-col,
+#overviewPage .overview-behaviour-col,
+#overviewPage .overview-attainment-col{
+  margin:0 !important;
+}
+
+/* Another ~2px typography increase across Overview */
+#overviewPage .header h1{font-size:clamp(19.333px,1.167vw,28px) !important}
+#overviewPage .header p{font-size:clamp(10.667px,.653vw,14px) !important}
+
+#overviewPage .header-school-cards .school-card .label{
+  font-size:clamp(9px,.547vw,11.333px) !important;
+}
+/* Make the three top summary numbers especially prominent */
+#overviewPage .header-school-cards .school-card .value{
+  font-size:clamp(18px,1.133vw,25.333px) !important;
+  line-height:1 !important;
+  font-weight:800 !important;
+}
+#overviewPage .header-school-cards .school-card .sub{
+  font-size:clamp(8.667px,.52vw,10.667px) !important;
+}
+
+#overviewPage .toggle button,
+#overviewPage .school-selector{font-size:clamp(10.667px,.633vw,13.333px) !important}
+#overviewPage .school-selector-wrap label{font-size:clamp(10px,.587vw,12px) !important}
+
+#overviewPage .section-head h2{font-size:clamp(14px,.9vw,19.333px) !important}
+#overviewPage .section-head .sub{font-size:clamp(10px,.587vw,12.667px) !important}
+#overviewPage .metric-title{font-size:clamp(11.333px,.68vw,14.667px) !important}
+
+#overviewPage .overall-label,
+#overviewPage .national-label,
+#overviewPage .school-spread-label,
+#overviewPage .breakdown-side-title,
+#overviewPage .breakdown-name,
+#overviewPage .bcard .label{
+  font-size:clamp(10px,.587vw,12.667px) !important;
+}
+
+#overviewPage .overall-value{font-size:clamp(22.667px,1.5vw,32.667px) !important}
+#overviewPage .national-value,
+#overviewPage .breakdown-value{font-size:clamp(15.333px,.967vw,20.667px) !important}
+#overviewPage .national-variance{font-size:clamp(10.667px,.667vw,14px) !important}
+
+#overviewPage .breakdown-meta,
+#overviewPage .breakdown-spread,
+#overviewPage .spread-pill,
+#overviewPage .spread-neutral,
+#overviewPage .bcard .small,
+#overviewPage .behaviour-percent-inline,
+#overviewPage .suspension-share-inline{
+  font-size:clamp(9.667px,.567vw,12px) !important;
+}
+#overviewPage .metric-link{font-size:clamp(9.667px,.573vw,12px) !important}
+#overviewPage .bcard .value{font-size:clamp(20px,1.267vw,27.333px) !important}
+
+#overviewPage .overview-attention-bottom .attention-head h3{
+  font-size:clamp(12px,.733vw,15.333px) !important;
+}
+#overviewPage .overview-attention-bottom .priority-name{
+  font-size:clamp(11.333px,.667vw,14px) !important;
+}
+#overviewPage .overview-attention-bottom .priority-level{
+  font-size:9.333px !important;
+}
+#overviewPage .overview-attention-bottom .priority-score .k{
+  font-size:clamp(9px,.52vw,10.667px) !important;
+}
+#overviewPage .overview-attention-bottom .priority-score .v{
+  font-size:clamp(12px,.7vw,14.667px) !important;
+}
+#overviewPage .overview-attention-bottom .priority-narrative{
+  font-size:clamp(9.667px,.56vw,11.667px) !important;
+}
+#overviewPage .overview-attention-bottom .priority-method{
+  font-size:clamp(9px,.52vw,10.667px) !important;
+}
+
+/* Another ~2px increase on Breakdown pages */
+#breakdownPage .header h1{font-size:clamp(20px,1.2vw,28px) !important}
+#breakdownPage .header p{font-size:clamp(10.667px,.653vw,13.333px) !important}
+#breakdownPage .year{font-size:11.333px !important}
+#breakdownPage .bd-back{font-size:10px !important}
+#breakdownPage .bd-current{font-size:10.667px !important}
+#breakdownPage .bd-subtoggle button{font-size:10px !important}
+#breakdownPage .section-head h2{font-size:14.667px !important}
+#breakdownPage .section-head .sub{font-size:10.667px !important}
+#breakdownPage .bd-kpi-label{font-size:10px !important}
+#breakdownPage .bd-kpi-value{font-size:22.667px !important}
+#breakdownPage .bd-kpi-delta{font-size:11.333px !important}
+#breakdownPage .bd-table{font-size:12px !important}
+#breakdownPage .bd-school,
+#breakdownPage .bd-metric-value{font-size:12px !important}
+#breakdownPage .bd-vs{font-size:10.667px !important}
+#breakdownPage .bd-count-pill{font-size:10.667px !important}
+#breakdownPage .bd-bar-label,
+#breakdownPage .bd-bar-value{font-size:10.667px !important}
+#breakdownPage .bd-note{font-size:10px !important}
+
+/* On standard laptop widths keep the Primary column from becoming too cramped */
+@media (min-width:1100px) and (max-width:1390px){
+  #overviewPage .view.active{
+    grid-template-columns:minmax(285px,28fr) minmax(235px,23fr) minmax(0,49fr) !important;
+    column-gap:14px !important;
+  }
+}
+
+/* ===== v13: narrower Behaviour + unified Primary/Secondary layout + readable minimum type ===== */
+
+/* Same 3-column architecture for BOTH Primary and Secondary:
+   Attendance gets more room, Behaviour becomes deliberately compact,
+   Attainment gets the largest share. */
+#overviewPage .view.active{
+  grid-template-columns:minmax(0,31fr) minmax(0,17fr) minmax(0,52fr) !important;
+  grid-template-areas:
+    "attendance behaviour attainment"
+    "attention attention attention" !important;
+  column-gap:clamp(20px,1.65vw,38px) !important;
+  row-gap:clamp(17px,1.3vw,30px) !important;
+}
+
+/* Prevent the Behaviour column from forcing unnecessary width */
+#overviewPage .overview-behaviour-col{
+  min-width:0 !important;
+}
+#overviewPage .overview-behaviour-col .bcard{
+  min-width:0 !important;
+}
+#overviewPage .overview-behaviour-col .behaviour-grid{
+  min-width:0 !important;
+}
+
+/* Raise the smallest text tier so it visually matches the next tier up.
+   Tiny helper/meta text should no longer look like footnotes. */
+#overviewPage .header-school-cards .school-card .label,
+#overviewPage .header-school-cards .school-card .sub,
+#overviewPage .section-head .sub,
+#overviewPage .overall-label,
+#overviewPage .national-label,
+#overviewPage .school-spread-label,
+#overviewPage .breakdown-side-title,
+#overviewPage .breakdown-name,
+#overviewPage .breakdown-meta,
+#overviewPage .breakdown-spread,
+#overviewPage .spread-pill,
+#overviewPage .spread-neutral,
+#overviewPage .bcard .label,
+#overviewPage .bcard .small,
+#overviewPage .behaviour-percent-inline,
+#overviewPage .suspension-share-inline,
+#overviewPage .metric-link,
+#overviewPage .priority-level,
+#overviewPage .overview-attention-bottom .priority-score .k,
+#overviewPage .overview-attention-bottom .priority-narrative,
+#overviewPage .overview-attention-bottom .priority-method{
+  font-size:clamp(10px,.6vw,12.667px) !important;
+  line-height:1.35 !important;
+}
+
+/* Keep secondary controls/labels on the same readable scale */
+#overviewPage .toggle button,
+#overviewPage .school-selector,
+#overviewPage .school-selector-wrap label{
+  font-size:clamp(10.667px,.633vw,13.333px) !important;
+}
+
+/* Behaviour values remain strong despite the narrower column */
+#overviewPage .overview-behaviour-col .bcard .value{
+  font-size:clamp(20.667px,1.3vw,28px) !important;
+}
+#overviewPage .overview-behaviour-col .bcard{
+  padding:clamp(13px,.85vw,18px) !important;
+}
+
+/* Laptop safeguard: preserve the same visual hierarchy without crushing Behaviour */
+@media (min-width:1100px) and (max-width:1390px){
+  #overviewPage .view.active{
+    grid-template-columns:minmax(315px,31fr) minmax(190px,18fr) minmax(0,51fr) !important;
+    column-gap:14px !important;
+  }
+  #overviewPage .header-school-cards .school-card .label,
+  #overviewPage .header-school-cards .school-card .sub,
+  #overviewPage .section-head .sub,
+  #overviewPage .overall-label,
+  #overviewPage .national-label,
+  #overviewPage .school-spread-label,
+  #overviewPage .breakdown-side-title,
+  #overviewPage .breakdown-name,
+  #overviewPage .breakdown-meta,
+  #overviewPage .breakdown-spread,
+  #overviewPage .spread-pill,
+  #overviewPage .spread-neutral,
+  #overviewPage .bcard .label,
+  #overviewPage .bcard .small,
+  #overviewPage .behaviour-percent-inline,
+  #overviewPage .suspension-share-inline,
+  #overviewPage .metric-link{
+    font-size:9.333px !important;
+  }
+}
+
+/* ===== v16: benchmark equality + year label refinements ===== */
+:root{
+  --equal:#B88912;
+  --equal-soft:#FFF4CC;
+  --equal-border:#D7B44A;
+}
+.year-tag{
+  white-space:nowrap !important;
+  flex:0 0 auto !important;
+}
+.spread-pill.equal{
+  background:var(--equal-soft) !important;
+  color:#7A5A00 !important;
+  border:1px solid var(--equal-border) !important;
+}
+.national-box.equal{
+  background:var(--equal-soft) !important;
+  border-color:var(--equal-border) !important;
+}
+.equal-text{color:#8A6500 !important;}
+.bd-count-pill.neutral,
+.bd-count-pill.equal,
+.bd-vs.equal{
+  color:#7A5A00 !important;
+  background:var(--equal-soft) !important;
+  border-color:var(--equal-border) !important;
+}
+
+/* ===== v17: majority-only spread highlighting + slightly wider Behaviour ===== */
+
+/* Give Behaviour a little more room so the heading stays on one line,
+   while keeping Attainment dominant. */
+#overviewPage .view.active{
+  grid-template-columns:minmax(0,30fr) minmax(0,19fr) minmax(0,51fr) !important;
+  column-gap:clamp(20px,1.55vw,36px) !important;
+}
+
+/* Prevent Behaviour title and year from wrapping */
+#overviewPage .overview-behaviour-col .section-head-row{
+  flex-wrap:nowrap !important;
+  gap:10px !important;
+}
+#overviewPage .overview-behaviour-col .section-head h2,
+#overviewPage .overview-behaviour-col .year-tag{
+  white-space:nowrap !important;
+}
+
+/* Neutral spread state: the default when no side has a majority */
+.spread-pill.neutral{
+  background:#F2F4F7 !important;
+  color:#5F6B78 !important;
+  border:1px solid #D8DEE6 !important;
+}
+
+/* Equal remains gold when it is the highlighted majority state */
+.spread-pill.equal{
+  background:var(--equal-soft) !important;
+  color:#7A5A00 !important;
+  border:1px solid var(--equal-border) !important;
+}
+
+/* Laptop safeguard */
+@media (min-width:1100px) and (max-width:1390px){
+  #overviewPage .view.active{
+    grid-template-columns:minmax(305px,30fr) minmax(210px,20fr) minmax(0,50fr) !important;
+    column-gap:14px !important;
+  }
+}
+
+.bd-count-pill.neutral{
+  color:#5F6B78 !important;
+  background:#F2F4F7 !important;
+  border-color:#D8DEE6 !important;
+}
+
+/* ===== v21: landscape-first breakdown redesign ===== */
+
+/* Use the full screen, matching the fluid Overview behaviour */
+#breakdownPage{
+  min-height:100vh !important;
+  background:#F5F5F3 !important;
+}
+#breakdownPage .header{
+  padding:
+    clamp(11px,.75vw,17px)
+    clamp(22px,2vw,48px) !important;
+}
+#breakdownPage .header-row{
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) auto auto !important;
+  align-items:center !important;
+  gap:clamp(18px,1.5vw,34px) !important;
+}
+#breakdownPage .header h1{
+  margin:3px 0 2px !important;
+  font-size:clamp(18px,1.1vw,25.333px) !important;
+  line-height:1.05 !important;
+}
+#breakdownPage .header p{
+  margin:0 !important;
+  font-size:clamp(9.333px,.533vw,12px) !important;
+}
+#breakdownPage .header .year{
+  white-space:nowrap !important;
+  font-size:clamp(9.333px,.533vw,12px) !important;
+}
+#breakdownPage .seeat-logo{
+  width:clamp(68px,4.5vw,98px) !important;
+}
+#breakdownPage .bd-backline{margin-bottom:2px !important}
+#breakdownPage .bd-back{
+  padding:clamp(6px,.42vw,9px) clamp(9px,.65vw,13px) !important;
+  font-size:clamp(8px,.453vw,10px) !important;
+}
+
+/* Full-width landscape body */
+#breakdownPage > main.page{
+  width:100% !important;
+  max-width:none !important;
+  margin:0 !important;
+  padding:
+    clamp(12px,.8vw,18px)
+    clamp(18px,1.7vw,40px)
+    clamp(16px,1vw,24px) !important;
+  display:flex !important;
+  flex-direction:column !important;
+  gap:clamp(10px,.7vw,15px) !important;
+}
+
+/* Compact phase/metric navigation */
+#breakdownPage .bd-controls{
+  margin:0 !important;
+  min-height:clamp(48px,3.6vw,64px) !important;
+  padding:clamp(7px,.5vw,10px) clamp(10px,.75vw,15px) !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:space-between !important;
+  gap:18px !important;
+}
+#breakdownPage .toggle button,
+#breakdownPage .bd-current{
+  font-size:clamp(9.333px,.547vw,12px) !important;
+}
+#breakdownPage .bd-current{
+  white-space:nowrap !important;
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+}
+
+/* Main breakdown card fills the useful viewport */
+#breakdownPage .bd-section{
+  margin:0 !important;
+  flex:1 1 auto !important;
+  min-height:0 !important;
+  border-radius:clamp(12px,.85vw,18px) !important;
+  overflow:hidden !important;
+}
+#breakdownPage .bd-section-head{
+  padding:clamp(11px,.72vw,16px) clamp(14px,1vw,22px) !important;
+  min-height:clamp(64px,4.6vw,84px) !important;
+}
+#breakdownPage .bd-section-head h2{
+  margin:0 0 3px !important;
+  font-size:clamp(14.667px,.9vw,20px) !important;
+  line-height:1.05 !important;
+}
+#breakdownPage .bd-section-head .sub{
+  font-size:clamp(9.333px,.547vw,12px) !important;
+}
+#breakdownPage .bd-subtoggle{
+  flex-wrap:nowrap !important;
+}
+#breakdownPage .bd-subtoggle button{
+  white-space:nowrap !important;
+  padding:clamp(8px,.55vw,11px) clamp(12px,.8vw,17px) !important;
+  font-size:clamp(9.333px,.533vw,12px) !important;
+}
+
+/* KPI area: large enough to read, compact enough to preserve table height */
+#breakdownPage .bd-kpis{
+  grid-template-columns:minmax(0,1.35fr) minmax(0,.65fr) !important;
+  gap:clamp(12px,.85vw,18px) !important;
+  padding:clamp(12px,.8vw,18px) clamp(14px,1vw,22px) !important;
+}
+#breakdownPage .bd-kpi{
+  min-height:clamp(105px,7.2vw,150px) !important;
+  padding:clamp(13px,.9vw,20px) !important;
+  display:flex !important;
+  flex-direction:column !important;
+  justify-content:center !important;
+}
+#breakdownPage .bd-kpi-label{
+  font-size:clamp(9.333px,.547vw,12px) !important;
+  letter-spacing:.035em !important;
+}
+#breakdownPage .bd-kpi-value{
+  margin-top:5px !important;
+  font-size:clamp(22.667px,1.467vw,33.333px) !important;
+}
+#breakdownPage .bd-kpi-delta{
+  margin-top:7px !important;
+  font-size:clamp(10px,.6vw,13.333px) !important;
+}
+#breakdownPage .bd-kpi-benchmark-note{
+  margin-top:7px;
+  font-size:clamp(8.667px,.5vw,10.667px);
+  font-weight:650;
+  color:var(--muted);
+}
+#breakdownPage .bd-not-supplied{
+  font-size:clamp(16.667px,1.033vw,24px) !important;
+}
+
+/* Benchmark panel uses the same semantic signal as the Overview */
+#breakdownPage .bd-benchmark-kpi.good{
+  background:#F2FAF5 !important;
+  border-color:#73B791 !important;
+}
+#breakdownPage .bd-benchmark-kpi.bad{
+  background:#FFF5F5 !important;
+  border-color:#DF9999 !important;
+}
+#breakdownPage .bd-benchmark-kpi.equal{
+  background:#FFF4CC !important;
+  border-color:#D7B44A !important;
+}
+#breakdownPage .bd-benchmark-kpi.neutral{
+  background:#F7F8FA !important;
+  border-color:#D8DEE6 !important;
+}
+
+/* School spread */
+#breakdownPage .bd-counts{
+  margin-top:8px !important;
+  gap:clamp(6px,.45vw,9px) !important;
+}
+#breakdownPage .bd-count-pill{
+  padding:clamp(5px,.38vw,8px) clamp(8px,.58vw,12px) !important;
+  font-size:clamp(8.667px,.5vw,10.667px) !important;
+}
+
+/* Standard diagnostic table: grouped All / DA / SEND hierarchy */
+#breakdownPage .bd-table-wrap{
+  padding:0 clamp(14px,1vw,22px) clamp(12px,.8vw,18px) !important;
+  overflow:auto !important;
+}
+#breakdownPage .bd-table{
+  width:100% !important;
+  table-layout:fixed !important;
+  font-size:clamp(9.333px,.547vw,12px) !important;
+}
+#breakdownPage .bd-table th,
+#breakdownPage .bd-table td{
+  padding:clamp(8px,.55vw,12px) clamp(8px,.55vw,12px) !important;
+}
+#breakdownPage .bd-table th{
+  position:sticky;
+  top:0;
+  z-index:2;
+}
+#breakdownPage .bd-standard-table .bd-group-head th{
+  background:#EEF3F7 !important;
+  color:var(--navy) !important;
+  text-align:center !important;
+  font-size:clamp(9.333px,.547vw,12px) !important;
+  border-bottom:1px solid #D7E0E8 !important;
+}
+#breakdownPage .bd-standard-table .bd-group-head th:first-child{
+  text-align:left !important;
+}
+#breakdownPage .bd-standard-table .bd-sub-head th{
+  background:#FAFBFC !important;
+  text-align:center !important;
+  font-size:clamp(8.667px,.5vw,10.667px) !important;
+}
+#breakdownPage .bd-standard-table td:not(:first-child){
+  text-align:center !important;
+}
+#breakdownPage .bd-standard-table th:first-child,
+#breakdownPage .bd-standard-table td:first-child{
+  width:13% !important;
+}
+#breakdownPage .bd-school,
+#breakdownPage .bd-metric-value{
+  font-size:clamp(9.333px,.547vw,12px) !important;
+}
+#breakdownPage .bd-metric-cell{
+  min-width:0 !important;
+}
+#breakdownPage .bd-mini-track{
+  height:clamp(7px,.45vw,10px) !important;
+  margin-top:5px !important;
+}
+#breakdownPage .bd-vs{
+  padding:clamp(5px,.36vw,7px) clamp(7px,.5vw,10px) !important;
+  font-size:clamp(8.667px,.5vw,10.667px) !important;
+}
+
+/* Behaviour: exploit landscape width rather than creating a very tall page */
+#breakdownPage .bd-beh-landscape{
+  display:grid;
+  grid-template-columns:minmax(300px,.8fr) minmax(0,1.6fr);
+  gap:clamp(14px,1vw,22px);
+  padding:0 clamp(14px,1vw,22px) clamp(14px,1vw,22px);
+}
+#breakdownPage .bd-beh-chart-panel{
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:#FCFDFE;
+  overflow:hidden;
+}
+#breakdownPage .bd-panel-title{
+  padding:clamp(10px,.7vw,14px) clamp(12px,.8vw,16px);
+  font-size:clamp(10px,.6vw,13.333px);
+  font-weight:800;
+  color:var(--navy);
+  border-bottom:1px solid var(--line);
+}
+#breakdownPage .bd-beh-chart{
+  padding:clamp(10px,.7vw,15px) clamp(12px,.85vw,18px) !important;
+}
+#breakdownPage .bd-bar-row{
+  grid-template-columns:clamp(80px,6vw,120px) 1fr clamp(42px,3vw,64px) !important;
+  gap:clamp(8px,.6vw,13px) !important;
+  margin:clamp(9px,.65vw,14px) 0 !important;
+}
+#breakdownPage .bd-bar-label,
+#breakdownPage .bd-bar-value{
+  font-size:clamp(8.667px,.507vw,11.333px) !important;
+}
+#breakdownPage .bd-bar-track{
+  height:clamp(13px,.85vw,18px) !important;
+}
+#breakdownPage .bd-beh-table-wrap{
+  padding:0 !important;
+  border:1px solid var(--line);
+  border-radius:12px;
+  overflow:auto !important;
+  background:#fff;
+}
+#breakdownPage .bd-concentration{
+  display:inline-flex;
+  padding:5px 8px;
+  border-radius:8px;
+  font-weight:800;
+  color:var(--grey);
+  background:#F2F4F7;
+  border:1px solid #D8DEE6;
+}
+#breakdownPage .bd-concentration.alert{
+  color:var(--red);
+  background:var(--red-soft);
+  border-color:#F0B9B9;
+}
+
+/* Sixth Form table */
+#breakdownPage .bd-subject-table-wrap .bd-table th:first-child,
+#breakdownPage .bd-subject-table-wrap .bd-table td:first-child{
+  width:28% !important;
+}
+#breakdownPage .bd-subject-table-wrap .bd-table td:not(:first-child){
+  text-align:center !important;
+}
+
+/* Fit common laptop landscape sizes without shrinking text into unreadability */
+@media (min-width:1100px) and (max-height:820px){
+  #breakdownPage .header{
+    padding-top:8px !important;
+    padding-bottom:8px !important;
+  }
+  #breakdownPage .bd-kpi{
+    min-height:92px !important;
+    padding-top:10px !important;
+    padding-bottom:10px !important;
+  }
+  #breakdownPage .bd-section-head{
+    min-height:58px !important;
+    padding-top:9px !important;
+    padding-bottom:9px !important;
+  }
+  #breakdownPage .bd-table th,
+  #breakdownPage .bd-table td{
+    padding-top:7px !important;
+    padding-bottom:7px !important;
+  }
+}
+
+/* Narrow screens can stack, but desktop remains landscape-first */
+@media(max-width:1000px){
+  #breakdownPage .header-row{
+    grid-template-columns:1fr auto !important;
+  }
+  #breakdownPage .header-brand{display:none !important}
+  #breakdownPage .bd-beh-landscape{
+    grid-template-columns:1fr !important;
+  }
+}
+@media(max-width:760px){
+  #breakdownPage .bd-kpis{
+    grid-template-columns:1fr !important;
+  }
+  #breakdownPage .bd-controls{
+    align-items:flex-start !important;
+    flex-direction:column !important;
+  }
+  #breakdownPage .bd-current{white-space:normal !important}
+}
+
+
+/* ===== v22: unified breakdown cards + restrained typography + meaningful bar emphasis ===== */
+
+/* Three consistent summary cards: Trust / Disadvantaged / SEND */
+#breakdownPage .bd-three-kpis{
+  grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+}
+#breakdownPage .bd-single-kpi{
+  grid-template-columns:minmax(320px,1fr) !important;
+}
+#breakdownPage .bd-group-kpi{
+  justify-content:flex-start !important;
+  border-width:1px !important;
+  border-style:solid !important;
+}
+#breakdownPage .bd-group-kpi.good{
+  background:#F8FCFA !important;
+  border-color:#B9D9C7 !important;
+}
+#breakdownPage .bd-group-kpi.bad{
+  background:#FFF9F9 !important;
+  border-color:#E9C0C0 !important;
+}
+#breakdownPage .bd-group-kpi.equal{
+  background:#FFFBEB !important;
+  border-color:#E3CE82 !important;
+}
+#breakdownPage .bd-group-kpi.neutral{
+  background:#FCFDFE !important;
+  border-color:var(--line) !important;
+}
+
+/* Benchmark is secondary information inside the group card */
+#breakdownPage .bd-benchmark-inline{
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:12px;
+  margin-top:clamp(9px,.65vw,13px);
+  padding-top:clamp(8px,.55vw,11px);
+  border-top:1px solid #E4E8ED;
+}
+#breakdownPage .bd-benchmark-inline-label{
+  font-size:clamp(8.667px,.5vw,10.667px);
+  font-weight:500;
+  color:var(--muted);
+}
+#breakdownPage .bd-benchmark-inline-value{
+  font-size:clamp(11.333px,.667vw,14.667px);
+  font-weight:650;
+  color:var(--navy);
+}
+#breakdownPage .bd-kpi-label{
+  font-weight:650 !important;
+}
+#breakdownPage .bd-kpi-value{
+  font-weight:750 !important;
+}
+#breakdownPage .bd-kpi-delta{
+  font-weight:600 !important;
+}
+#breakdownPage .bd-kpi-benchmark-note{
+  font-weight:450 !important;
+}
+
+/* Typography discipline: tables should not look bold everywhere */
+#breakdownPage .bd-table{
+  font-weight:400 !important;
+}
+#breakdownPage .bd-table th{
+  font-weight:600 !important;
+  color:#52606D !important;
+}
+#breakdownPage .bd-standard-table .bd-group-head th{
+  font-weight:650 !important;
+}
+#breakdownPage .bd-standard-table .bd-sub-head th{
+  font-weight:500 !important;
+}
+#breakdownPage .bd-table td{
+  font-weight:400 !important;
+  color:#263442 !important;
+}
+#breakdownPage .bd-school{
+  font-weight:600 !important;
+}
+#breakdownPage .bd-metric-value{
+  font-weight:500 !important;
+}
+#breakdownPage .bd-vs,
+#breakdownPage .bd-count-pill{
+  font-weight:600 !important;
+}
+#breakdownPage .bd-concentration{
+  font-weight:600 !important;
+}
+#breakdownPage .bd-panel-title{
+  font-weight:650 !important;
+}
+#breakdownPage .bd-bar-label,
+#breakdownPage .bd-bar-value{
+  font-weight:500 !important;
+}
+
+/* Behaviour bars: neutral middle schools, explicit high/low contrast */
+#breakdownPage .bd-bar-fill{
+  background:#9EADBA !important;
+}
+#breakdownPage .bd-bar-fill.highest{
+  background:var(--red) !important;
+}
+#breakdownPage .bd-bar-fill.lowest{
+  background:var(--green) !important;
+  min-width:6px;
+}
+#breakdownPage .bd-bar-row.highest .bd-bar-label,
+#breakdownPage .bd-bar-row.highest .bd-bar-value{
+  color:var(--red) !important;
+  font-weight:650 !important;
+}
+#breakdownPage .bd-bar-row.lowest .bd-bar-label,
+#breakdownPage .bd-bar-row.lowest .bd-bar-value{
+  color:var(--green) !important;
+  font-weight:650 !important;
+}
+#breakdownPage .bd-bar-legend{
+  float:right;
+  display:inline-flex;
+  gap:8px;
+  font-size:clamp(7.333px,.433vw,9.333px);
+  font-weight:500;
+}
+#breakdownPage .bd-bar-legend span{
+  padding:3px 7px;
+  border-radius:999px;
+}
+#breakdownPage .bd-bar-legend .low{
+  color:var(--green);
+  background:var(--green-soft);
+}
+#breakdownPage .bd-bar-legend .high{
+  color:var(--red);
+  background:var(--red-soft);
+}
+
+/* Keep the three cards landscape-friendly on common laptop widths */
+@media (min-width:1100px) and (max-width:1390px){
+  #breakdownPage .bd-three-kpis{
+    gap:10px !important;
+  }
+  #breakdownPage .bd-group-kpi{
+    padding:12px !important;
+  }
+}
+@media(max-width:900px){
+  #breakdownPage .bd-three-kpis{
+    grid-template-columns:1fr !important;
+  }
+}
+
+
+/* ===== v23: stronger Overview hierarchy + comparative breakdown bars ===== */
+
+/* Overview: make Trust/selected-school values clearly dominant */
+#overviewPage .overall-value{
+  font-size:clamp(28px,1.867vw,41.333px) !important;
+  line-height:.95 !important;
+  font-weight:800 !important;
+  letter-spacing:-.025em !important;
+}
+
+/* Selected school label replaces Trust overall, with normal sentence casing */
+#overviewPage .overall-label{
+  text-transform:none !important;
+  letter-spacing:0 !important;
+  font-size:clamp(10px,.6vw,12.667px) !important;
+  font-weight:600 !important;
+}
+
+/* These are descriptive labels, not headings: use sentence case */
+#overviewPage .national-label,
+#overviewPage .school-spread-label{
+  text-transform:none !important;
+  letter-spacing:0 !important;
+  font-weight:500 !important;
+}
+
+/* Breakdown tables: larger, calmer text */
+#breakdownPage .bd-table{
+  font-size:clamp(10.667px,.667vw,14px) !important;
+}
+#breakdownPage .bd-table th{
+  font-size:clamp(10px,.6vw,12.667px) !important;
+}
+#breakdownPage .bd-standard-table .bd-group-head th{
+  font-size:clamp(10.667px,.64vw,13.333px) !important;
+}
+#breakdownPage .bd-standard-table .bd-sub-head th{
+  font-size:clamp(10px,.587vw,12px) !important;
+}
+#breakdownPage .bd-school,
+#breakdownPage .bd-metric-value{
+  font-size:clamp(10.667px,.667vw,14px) !important;
+}
+#breakdownPage .bd-vs{
+  font-size:clamp(9.333px,.56vw,12px) !important;
+}
+
+/* Comparative mini-bars: neutral middle, low green, high red */
+#breakdownPage .bd-mini-track{
+  height:clamp(9px,.58vw,13px) !important;
+  margin-top:7px !important;
+  background:#EEF1F4 !important;
+}
+#breakdownPage .bd-mini-fill{
+  background:#A6B4C0 !important;
+  transition:width .2s ease !important;
+}
+#breakdownPage .bd-mini-fill.highest{
+  background:var(--red) !important;
+}
+#breakdownPage .bd-mini-fill.lowest{
+  background:var(--green) !important;
+  min-width:5px;
+}
+#breakdownPage .bd-metric-cell.highest .bd-metric-value{
+  color:var(--red) !important;
+  font-weight:650 !important;
+}
+#breakdownPage .bd-metric-cell.lowest .bd-metric-value{
+  color:var(--green) !important;
+  font-weight:650 !important;
+}
+
+/* Slightly more breathing room now that table text is larger */
+#breakdownPage .bd-table th,
+#breakdownPage .bd-table td{
+  padding:clamp(9px,.62vw,13px) clamp(9px,.62vw,13px) !important;
+}
+
+
+/* ===== v24: label hierarchy + direction-aware extrema colours ===== */
+
+/* Overview labels: calm, not bold. TRUST OVERALL remains uppercase. */
+#overviewPage .overall-label,
+#overviewPage .national-label,
+#overviewPage .school-spread-label{
+  font-weight:400 !important;
+  letter-spacing:0 !important;
+}
+#overviewPage .overall-label{
+  text-transform:none !important;
+}
+
+/* Breakdown labels: same hierarchy */
+#breakdownPage .bd-kpi-label,
+#breakdownPage .bd-benchmark-inline-label{
+  font-weight:400 !important;
+  letter-spacing:0 !important;
+  text-transform:none !important;
+}
+
+/* Only extrema are highlighted; colour reflects whether that extreme is good or bad. */
+#breakdownPage .bd-mini-fill{
+  background:#A6B4C0 !important;
+}
+#breakdownPage .bd-mini-fill.highest,
+#breakdownPage .bd-mini-fill.lowest{
+  background:#A6B4C0 !important;
+}
+#breakdownPage .bd-mini-fill.positive{
+  background:var(--green) !important;
+}
+#breakdownPage .bd-mini-fill.negative{
+  background:var(--red) !important;
+}
+#breakdownPage .bd-metric-cell.highest .bd-metric-value,
+#breakdownPage .bd-metric-cell.lowest .bd-metric-value{
+  font-weight:650 !important;
+  color:inherit !important;
+}
+#breakdownPage .bd-metric-cell.positive .bd-metric-value{
+  color:var(--green) !important;
+}
+#breakdownPage .bd-metric-cell.negative .bd-metric-value{
+  color:var(--red) !important;
+}
+
+
+/* ===== v26: purpose-built Y6 RWM breakdown ===== */
+#breakdownPage .y6-group-toggle{
+  gap:4px !important;
+  flex-wrap:nowrap !important;
+}
+#breakdownPage .y6-group-toggle button{
+  white-space:nowrap !important;
+  font-size:clamp(9.333px,.547vw,12px) !important;
+  padding:clamp(8px,.55vw,11px) clamp(13px,.9vw,19px) !important;
+}
+
+#breakdownPage .bd-y6-cards{
+  grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+  gap:clamp(10px,.75vw,16px) !important;
+}
+#breakdownPage .bd-y6-kpi{
+  min-width:0 !important;
+  justify-content:flex-start !important;
+  border:1px solid var(--line) !important;
+  background:#FCFDFE !important;
+}
+#breakdownPage .bd-y6-kpi.good{
+  border-color:#B9D9C7 !important;
+  background:#F8FCFA !important;
+}
+#breakdownPage .bd-y6-kpi.bad{
+  border-color:#E9C0C0 !important;
+  background:#FFF9F9 !important;
+}
+#breakdownPage .bd-y6-kpi.equal{
+  border-color:#E3CE82 !important;
+  background:#FFFBEB !important;
+}
+#breakdownPage .bd-y6-card-title{
+  min-height:2.5em;
+  font-size:clamp(9.333px,.547vw,12px);
+  font-weight:600;
+  color:var(--navy);
+  line-height:1.25;
+}
+#breakdownPage .bd-y6-card-title span{
+  font-weight:400;
+  color:var(--muted);
+}
+#breakdownPage .bd-y6-kpi .bd-kpi-value{
+  font-size:clamp(22.667px,1.367vw,32px) !important;
+  margin-top:8px !important;
+}
+#breakdownPage .bd-y6-table{
+  min-width:1180px;
+}
+#breakdownPage .bd-y6-table th:first-child,
+#breakdownPage .bd-y6-table td:first-child{
+  width:10% !important;
+}
+#breakdownPage .bd-y6-table .bd-group-head th{
+  text-align:center !important;
+}
+#breakdownPage .bd-y6-table .bd-group-head th:first-child{
+  text-align:left !important;
+}
+#breakdownPage .bd-y6-table td:not(:first-child){
+  text-align:center !important;
+}
+
+/* Four cards remain landscape-friendly; stack only on genuinely narrow screens. */
+@media(max-width:1050px){
+  #breakdownPage .bd-y6-cards{
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  }
+}
+@media(max-width:650px){
+  #breakdownPage .bd-y6-cards{
+    grid-template-columns:1fr !important;
+  }
+}
+
+
+/* ===== v28: audited vs-National semantic colours ===== */
+
+/* vs National badges always encode performance, not raw mathematical direction */
+#breakdownPage .bd-vs.good{
+  color:#1F6F43 !important;
+  background:#EAF6EF !important;
+  border-color:#8FC4A6 !important;
+}
+#breakdownPage .bd-vs.bad{
+  color:#A61B1B !important;
+  background:#FDECEC !important;
+  border-color:#E5A6A6 !important;
+}
+#breakdownPage .bd-vs.equal{
+  color:#7A5A00 !important;
+  background:#FFF4CC !important;
+  border-color:#D7B44A !important;
+}
+#breakdownPage .bd-vs.neutral{
+  color:#5F6B78 !important;
+  background:#F2F4F7 !important;
+  border-color:#D8DEE6 !important;
+}
+
+/* KPI deltas use exactly the same semantic meaning */
+#breakdownPage .good-text{color:#1F6F43 !important;}
+#breakdownPage .bad-text{color:#A61B1B !important;}
+#breakdownPage .equal-text{color:#8A6500 !important;}
+
+
+/* ===== v29: Executive Insights page ===== */
+.insights-banner-btn{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  border:1px solid rgba(255,255,255,.28);
+  background:rgba(255,255,255,.10);
+  color:#fff;
+  border-radius:12px;
+  padding:9px 13px;
+  font:inherit;
+  font-size:clamp(8.667px,.52vw,11.333px);
+  font-weight:600;
+  cursor:pointer;
+  transition:.18s ease;
+}
+.insights-banner-btn:hover{
+  background:#fff;
+  color:var(--navy);
+  transform:translateY(-1px);
+  box-shadow:0 6px 16px rgba(0,0,0,.12);
+}
+.insights-banner-btn svg{
+  width:20px;
+  height:20px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1.8;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+
+#insightsPage{
+  min-height:100vh;
+  background:var(--bg);
+}
+#insightsPage .insights-header{
+  padding:clamp(14px,1vw,22px) clamp(24px,2vw,48px);
+}
+#insightsPage .insights-header h1{
+  margin:4px 0 2px;
+  font-size:clamp(20px,1.267vw,29.333px);
+  line-height:1;
+}
+#insightsPage .insights-header p{
+  margin:0;
+  font-size:clamp(9.333px,.547vw,12px);
+}
+.insights-back{
+  border:0;
+  background:transparent;
+  color:#fff;
+  opacity:.86;
+  padding:0;
+  cursor:pointer;
+  font-size:clamp(8px,.467vw,10px);
+}
+.insights-header-tag{
+  color:#fff;
+  border:1px solid rgba(255,255,255,.3);
+  background:rgba(255,255,255,.10);
+  padding:9px 13px;
+  border-radius:999px;
+  font-size:clamp(7.333px,.433vw,9.333px);
+  letter-spacing:.08em;
+  font-weight:700;
+}
+.insights-page{
+  width:100%;
+  padding:clamp(18px,1.4vw,30px) clamp(24px,2vw,48px) clamp(28px,2vw,44px);
+}
+.insights-hero{
+  border-radius:16px;
+  background:#fff;
+  border:1px solid var(--line);
+  padding:clamp(18px,1.35vw,28px);
+  box-shadow:0 8px 28px rgba(20,42,65,.06);
+}
+.insights-hero-kicker{
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  font-size:clamp(7.333px,.44vw,9.333px);
+  color:var(--gold);
+  font-weight:700;
+  margin-bottom:7px;
+}
+.insights-hero-text{
+  color:var(--navy);
+  font-size:clamp(13.333px,.9vw,20px);
+  line-height:1.25;
+  font-weight:650;
+  max-width:1400px;
+}
+.insights-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:clamp(16px,1.25vw,28px);
+  margin-top:clamp(16px,1.15vw,24px);
+}
+.insights-panel{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:16px;
+  overflow:hidden;
+}
+.insights-panel-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:clamp(14px,1vw,20px);
+  background:#F8FAFC;
+  border-bottom:1px solid var(--line);
+}
+.insights-phase{
+  font-size:clamp(13.333px,.833vw,18.667px);
+  font-weight:700;
+  color:var(--navy);
+}
+.insights-status{
+  padding:6px 10px;
+  border-radius:999px;
+  background:#FFF4CC;
+  color:#7A5A00;
+  font-size:clamp(7.333px,.433vw,9.333px);
+  font-weight:600;
+}
+.insights-status.alert{
+  background:#FDECEC;
+  color:#A61B1B;
+}
+.insight-card{
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:14px;
+  padding:clamp(14px,1vw,20px);
+  border-bottom:1px solid #E9EDF1;
+}
+.insight-card:last-child{border-bottom:0}
+.insight-number{
+  width:34px;
+  height:34px;
+  border-radius:50%;
+  background:#EEF3F7;
+  color:var(--navy);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:8px;
+  font-weight:700;
+}
+.insight-card h3{
+  margin:0 0 5px;
+  color:var(--navy);
+  font-size:clamp(10.667px,.667vw,14.667px);
+  font-weight:650;
+}
+.insight-card p{
+  margin:0;
+  color:#52606D;
+  font-size:clamp(9.333px,.547vw,12px);
+  line-height:1.42;
+}
+.insights-priority{
+  margin-top:clamp(16px,1.15vw,24px);
+  background:var(--navy);
+  color:#fff;
+  border-radius:16px;
+  padding:clamp(16px,1.2vw,24px);
+}
+.insights-priority-title{
+  font-size:clamp(11.333px,.667vw,14.667px);
+  font-weight:700;
+  margin-bottom:12px;
+}
+.insights-priority-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+}
+.insights-priority-grid>div{
+  display:grid;
+  grid-template-columns:auto 1fr;
+  column-gap:10px;
+  row-gap:2px;
+  align-items:center;
+  padding:12px 14px;
+  border-radius:12px;
+  background:rgba(255,255,255,.08);
+}
+.insights-priority-grid span{
+  grid-row:1 / span 2;
+  width:30px;
+  height:30px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:50%;
+  background:var(--gold);
+  color:#fff;
+  font-weight:700;
+}
+.insights-priority-grid strong{
+  font-size:clamp(9.333px,.567vw,12px);
+}
+.insights-priority-grid small{
+  font-size:clamp(8px,.48vw,10px);
+  opacity:.82;
+}
+@media(max-width:900px){
+  .insights-grid,
+  .insights-priority-grid{grid-template-columns:1fr}
+}
+
+/* ===== v30: insight story — signal → driver → action ===== */
+#insightsPage .insights-page-v2{
+  width:100%;
+  padding:clamp(18px,1.25vw,28px) clamp(24px,2vw,48px) clamp(30px,2vw,46px);
+}
+
+.insights-topline{
+  background:linear-gradient(135deg,#FFFFFF 0%,#F7F9FB 100%);
+  border:1px solid var(--line);
+  border-left:6px solid var(--gold);
+  border-radius:16px;
+  padding:clamp(18px,1.35vw,28px) clamp(20px,1.5vw,32px);
+  box-shadow:0 8px 28px rgba(20,42,65,.05);
+}
+.insights-topline-kicker,
+.insights-phase-eyebrow{
+  font-size:clamp(7.333px,.433vw,9.333px);
+  font-weight:700;
+  letter-spacing:.09em;
+  color:var(--gold);
+  text-transform:uppercase;
+}
+.insights-topline h2{
+  margin:6px 0 7px;
+  color:var(--navy);
+  font-size:clamp(16px,1.033vw,22.667px);
+  line-height:1.15;
+}
+.insights-topline p{
+  margin:0;
+  max-width:1400px;
+  color:#52606D;
+  font-size:clamp(10px,.6vw,12.667px);
+  line-height:1.48;
+}
+
+.insights-flow-labels{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+  margin:clamp(15px,1vw,22px) 0;
+}
+.insights-flow-labels>div{
+  display:grid;
+  grid-template-columns:auto 1fr;
+  grid-template-rows:auto auto;
+  column-gap:10px;
+  align-items:center;
+  padding:10px 14px;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:12px;
+}
+.insights-flow-labels span{
+  grid-row:1 / span 2;
+  width:28px;
+  height:28px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:50%;
+  background:var(--navy);
+  color:#fff;
+  font-size:8px;
+  font-weight:700;
+}
+.insights-flow-labels strong{
+  color:var(--navy);
+  font-size:clamp(8.667px,.52vw,10.667px);
+}
+.insights-flow-labels small{
+  color:var(--muted);
+  font-size:clamp(7.333px,.433vw,9.333px);
+}
+
+.insights-phase-section{
+  margin-top:clamp(18px,1.3vw,28px);
+}
+.insights-phase-heading{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:18px;
+  margin-bottom:12px;
+}
+.insights-phase-heading h2{
+  margin:4px 0 0;
+  color:var(--navy);
+  font-size:clamp(14px,.867vw,19.333px);
+  line-height:1.15;
+}
+.secondary-section .insights-phase-eyebrow{color:#A61B1B}
+
+.insights-story-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:clamp(12px,.9vw,18px);
+}
+.insight-story{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:15px;
+  overflow:hidden;
+  box-shadow:0 6px 20px rgba(20,42,65,.045);
+}
+.insight-story-title{
+  padding:clamp(13px,.9vw,18px);
+  background:#F7F9FB;
+  color:var(--navy);
+  font-size:clamp(11.333px,.667vw,14.667px);
+  font-weight:700;
+  border-bottom:1px solid var(--line);
+}
+.insight-story-row{
+  display:grid;
+  grid-template-columns:minmax(112px,.7fr) minmax(0,2fr);
+  gap:12px;
+  padding:clamp(12px,.85vw,17px);
+  border-bottom:1px solid #EBEEF2;
+}
+.insight-story-row:last-child{border-bottom:0}
+.insight-story-label{
+  font-size:clamp(7.333px,.427vw,9.333px);
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:.045em;
+  color:#6B7280;
+}
+.insight-story-row p{
+  margin:0;
+  color:#3B4856;
+  font-size:clamp(8.667px,.52vw,11.333px);
+  line-height:1.42;
+}
+.insight-story-row p strong{
+  color:var(--navy);
+  font-weight:700;
+}
+.insight-story-row.signal{background:#FFFFFF}
+.insight-story-row.driver{background:#FBFCFD}
+.insight-story-row.action{
+  background:#F8FBF9;
+  border-left:3px solid #73B791;
+}
+.insight-story-row.action .insight-story-label{color:#2E7D32}
+
+.insights-exec-summary{
+  display:grid;
+  grid-template-columns:minmax(0,1.05fr) minmax(420px,.95fr);
+  gap:clamp(18px,1.4vw,30px);
+  margin-top:clamp(20px,1.5vw,32px);
+  padding:clamp(20px,1.5vw,32px);
+  border-radius:17px;
+  background:var(--navy);
+  color:#fff;
+}
+.insights-exec-copy .insights-phase-eyebrow{color:var(--gold)}
+.insights-exec-copy h2{
+  margin:6px 0 8px;
+  color:#fff;
+  font-size:clamp(16.667px,1.067vw,24px);
+  line-height:1.1;
+}
+.insights-exec-copy p{
+  margin:0;
+  color:rgba(255,255,255,.82);
+  font-size:clamp(9.333px,.567vw,12px);
+  line-height:1.48;
+}
+.insights-exec-copy strong{color:#fff}
+
+.insights-priority-list{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+.priority-rank{
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:10px;
+  align-items:center;
+  padding:9px 11px;
+  border-radius:11px;
+  background:rgba(255,255,255,.08);
+}
+.priority-rank>span{
+  width:28px;
+  height:28px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:50%;
+  background:var(--gold);
+  color:#fff;
+  font-size:8px;
+  font-weight:700;
+}
+.priority-rank strong{
+  display:block;
+  color:#fff;
+  font-size:clamp(8.667px,.52vw,10.667px);
+}
+.priority-rank small{
+  display:block;
+  margin-top:1px;
+  color:rgba(255,255,255,.68);
+  font-size:clamp(7.333px,.433vw,9.333px);
+}
+
+@media(max-width:1100px){
+  .insights-story-grid{grid-template-columns:1fr}
+  .insights-exec-summary{grid-template-columns:1fr}
+}
+@media(max-width:760px){
+  .insights-flow-labels{grid-template-columns:1fr}
+  .insight-story-row{grid-template-columns:1fr}
+}
+
+/* ===== v31: clearer phase-level executive summaries and school focus ===== */
+.phase-executive-summary{
+  margin:0 0 14px;
+  padding:14px 16px;
+  border:1px solid var(--line);
+  border-radius:13px;
+  background:#FBFCFD;
+}
+.phase-executive-summary p{
+  margin:0;
+  color:#3F4C59;
+  font-size:clamp(9.333px,.56vw,12px);
+  line-height:1.45;
+}
+.phase-executive-summary p strong{
+  color:var(--navy);
+  font-weight:650;
+}
+.phase-priority-schools{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:10px;
+}
+.priority-label{
+  color:var(--muted);
+  font-size:clamp(8px,.467vw,10px);
+  font-weight:600;
+  margin-right:2px;
+}
+.school-chip{
+  display:inline-flex;
+  align-items:center;
+  border-radius:999px;
+  padding:5px 9px;
+  font-size:clamp(8px,.467vw,10px);
+  font-weight:700;
+}
+.school-chip.high{
+  background:#FDECEC;
+  color:#A61B1B;
+  border:1px solid #E5A6A6;
+}
+.school-chip.medium{
+  background:#FFF4CC;
+  color:#7A5A00;
+  border:1px solid #D7B44A;
+}
+.priority-reason{
+  color:#52606D;
+  font-size:clamp(8px,.467vw,10px);
+  margin-right:8px;
+}
+
+/* ===== v32: extreme outcome warning flag ===== */
+.extreme-warning-tag{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  margin-left:8px;
+  padding:5px 9px 5px 7px;
+  border-radius:999px;
+  background:#FFF4B8;
+  color:#5E4700;
+  border:2px solid #E0B800;
+  box-shadow:
+    0 0 0 3px rgba(255,217,59,.18),
+    0 4px 10px rgba(122,90,0,.18);
+  font-size:clamp(6.667px,.427vw,8.667px);
+  font-weight:900;
+  line-height:1;
+  letter-spacing:.02em;
+  vertical-align:middle;
+  white-space:nowrap;
+  text-transform:uppercase;
+}
+.extreme-warning-icon{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:0;
+  height:0;
+  border-left:10px solid transparent;
+  border-right:10px solid transparent;
+  border-bottom:18px solid #FFD93B;
+  position:relative;
+  filter:drop-shadow(0 2px 2px rgba(93,71,0,.18));
+  margin-right:1px;
+}
+.extreme-warning-icon::after{
+  content:'!';
+  position:absolute;
+  left:-2px;
+  top:4px;
+  color:#4E3B00;
+  font-size:8px;
+  font-weight:950;
+  line-height:1;
+}
+.extreme-warning-wrap{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:4px;
+}
+
+/* Entire metric/subgroup area gets a subtle warning state */
+.extreme-warning-cell{
+  background:#FFFBEA !important;
+  border:2px solid #E6C547 !important;
+  box-shadow:
+    inset 4px 0 0 #FFD93B,
+    0 0 0 2px rgba(255,217,59,.10);
+  border-radius:10px;
+}
+
+
+.extreme-warning-tag:hover{
+  transform:translateY(-1px) scale(1.03);
+  box-shadow:
+    0 0 0 4px rgba(255,217,59,.22),
+    0 6px 14px rgba(122,90,0,.20);
+}
+
+/* ===== v35: simplified Primary schools needing attention ===== */
+.attention-head-clean{
+  padding:14px 16px 12px;
+}
+.attention-subtitle{
+  margin-top:4px;
+  color:var(--muted);
+  font-size:clamp(7.333px,.453vw,9.333px);
+  line-height:1.4;
+}
+.priority-grid-clean{
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:12px;
+}
+.priority-grid-clean .priority-card{
+  min-height:145px;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-start;
+  padding:14px 15px;
+}
+.priority-card-warning{
+  background:#FFFDF3;
+  border:1px solid #E7CD70;
+  box-shadow:inset 4px 0 0 #F2C94C;
+}
+.priority-card-focus{
+  background:#F8FAFC;
+  border:1px solid #CBD6E2;
+  box-shadow:inset 4px 0 0 var(--navy);
+}
+.attention-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  flex:0 0 auto;
+  border-radius:999px;
+  padding:5px 8px;
+  font-size:clamp(6.667px,.413vw,8px);
+  font-weight:800;
+  white-space:nowrap;
+}
+.attention-badge.warning{
+  background:#FFF4B8;
+  color:#5E4700;
+  border:1px solid #E0B800;
+}
+.attention-badge.focus{
+  background:#EAF0F6;
+  color:var(--navy);
+  border:1px solid #B9C8D8;
+}
+.attention-triangle{
+  position:relative;
+  width:0;
+  height:0;
+  border-left:8px solid transparent;
+  border-right:8px solid transparent;
+  border-bottom:14px solid #FFD93B;
+  display:inline-block;
+  margin-right:1px;
+  transform:translateY(-1px);
+  color:transparent;
+  font-size:0;
+}
+.attention-triangle::after{
+  content:"!";
+  position:absolute;
+  left:-2px;
+  top:3px;
+  color:#4E3B00;
+  font-size:6.667px;
+  line-height:1;
+  font-weight:900;
+}
+.priority-grid-clean .priority-narrative{
+  margin-top:12px;
+  padding-top:10px;
+  border-top:1px solid rgba(15,47,84,.10);
+  font-size:clamp(8px,.48vw,10px) !important;
+  line-height:1.5;
+  color:#4E5A67;
+}
+.priority-grid-clean .priority-narrative strong{
+  color:var(--navy);
+  font-weight:700;
+}
+.priority-grid-clean .priority-name{
+  font-size:clamp(10px,.6vw,12px);
+}
+.priority-grid-clean .priority-scores,
+.priority-grid-clean + .priority-method{
+  display:none !important;
+}
+@media(max-width:1050px){
+  .priority-grid-clean{grid-template-columns:1fr}
+  .priority-grid-clean .priority-card{min-height:auto}
+}
+
+
+/* ===== v36: simplified Secondary schools needing attention ===== */
+.secondary-priority-grid{
+  grid-template-columns:repeat(2,minmax(0,1fr));
+}
+.secondary-priority-grid .priority-card{
+  min-height:150px;
+}
+@media(max-width:900px){
+  .secondary-priority-grid{grid-template-columns:1fr}
+}
+
+
+/* ===== v37: revised Executive Insights page ===== */
+.insights-page-v3{
+  width:100%;
+  padding:clamp(18px,1.25vw,28px) clamp(24px,2vw,48px) clamp(30px,2vw,46px);
+}
+.focus-list{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:clamp(12px,.9vw,18px);
+}
+.focus-card{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:clamp(14px,1vw,19px);
+  box-shadow:0 5px 18px rgba(15,47,84,.045);
+}
+.focus-card-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:12px;
+  margin-bottom:9px;
+}
+.focus-card-head h3{
+  margin:0;
+  color:var(--navy);
+  font-size:clamp(11.333px,.667vw,14.667px);
+}
+.focus-card-head span{
+  display:inline-flex;
+  padding:5px 8px;
+  border-radius:999px;
+  background:#EEF2F6;
+  color:#566473;
+  font-size:clamp(6.667px,.413vw,8.667px);
+  font-weight:700;
+  white-space:nowrap;
+}
+.focus-card p{
+  margin:0;
+  color:#44515E;
+  font-size:clamp(8.667px,.52vw,11.333px);
+  line-height:1.45;
+}
+.focus-card p strong{color:var(--navy)}
+.focus-action{
+  margin-top:11px;
+  padding-top:10px;
+  border-top:1px solid #E8ECF0;
+  color:#4A5866;
+  font-size:clamp(8px,.48vw,10px);
+  line-height:1.4;
+}
+.focus-action strong{color:var(--navy)}
+.focus-card.warning-focus{
+  background:#FFFDF3;
+  border-color:#E7CD70;
+  box-shadow:inset 4px 0 0 #F2C94C,0 5px 18px rgba(15,47,84,.035);
+}
+.focus-card.good-practice{
+  background:#F5FBF7;
+  border-color:#B9D9C4;
+  box-shadow:inset 4px 0 0 #55A36C,0 5px 18px rgba(15,47,84,.035);
+}
+.focus-card.good-practice .focus-card-head span{
+  background:#E6F4EA;
+  color:#2E6B3B;
+}
+.insights-recommendations{
+  margin-top:clamp(24px,1.6vw,34px);
+  padding:clamp(20px,1.5vw,30px);
+  border-radius:17px;
+  background:var(--navy);
+}
+.insights-recommendations h2{
+  margin:5px 0 16px;
+  color:#fff;
+  font-size:clamp(16px,1vw,22.667px);
+}
+.recommendation-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px 14px;
+}
+.recommendation-item{
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:10px;
+  align-items:start;
+  padding:11px 12px;
+  border-radius:11px;
+  background:rgba(255,255,255,.08);
+}
+.recommendation-item span{
+  width:28px;height:28px;
+  display:flex;align-items:center;justify-content:center;
+  border-radius:50%;
+  background:var(--gold);
+  color:#fff;
+  font-size:8px;
+  font-weight:800;
+}
+.recommendation-item p{
+  margin:0;
+  color:rgba(255,255,255,.82);
+  font-size:clamp(8px,.48vw,10px);
+  line-height:1.4;
+}
+.recommendation-item strong{color:#fff}
+@media(max-width:1000px){
+  .focus-list,.recommendation-grid{grid-template-columns:1fr}
+}
+
+/* ===== v38: Primary strengths + progression insight ===== */
+.focus-card.standout-strength{
+  background:#F3FBF5;
+  border-color:#9FCFAE;
+  box-shadow:inset 4px 0 0 #2E8B57,0 5px 18px rgba(15,47,84,.035);
+}
+.focus-card.standout-strength .focus-card-head span{
+  background:#DFF3E5;
+  color:#256B3B;
+}
+.focus-card.progression-focus{
+  background:#F8FAFD;
+  border-color:#C9D5E2;
+  box-shadow:inset 4px 0 0 #6A86A6,0 5px 18px rgba(15,47,84,.035);
+}
+.focus-card.progression-focus .focus-card-head span{
+  background:#EAF0F6;
+  color:#3E5873;
+}
+
+/* ===== v39: Primary insights split into Observed Results / Focus Areas ===== */
+.primary-insight-columns{
+  display:grid;
+  grid-template-columns:minmax(0,1.08fr) minmax(360px,.92fr);
+  gap:clamp(16px,1.3vw,26px);
+  align-items:start;
+}
+.primary-insight-col{min-width:0}
+.insight-col-head{margin-bottom:12px}
+.insight-col-kicker{
+  font-size:clamp(7.333px,.427vw,8.667px);
+  font-weight:800;
+  letter-spacing:.08em;
+  color:var(--muted);
+}
+.insight-col-head h3{
+  margin:4px 0 0;
+  color:var(--navy);
+  font-size:clamp(12.667px,.767vw,16.667px);
+}
+.observation-group + .observation-group{margin-top:16px}
+.observation-group-title{
+  margin-bottom:8px;
+  font-size:clamp(8px,.48vw,10px);
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.05em;
+}
+.positive-title{color:#2E7D4F}
+.concern-title{color:#8A6900}
+
+.observation-card,.focus-grey-card{
+  border-radius:13px;
+  padding:13px 15px;
+  margin-bottom:10px;
+}
+.observation-card h4,.focus-grey-card h4{
+  margin:0 0 5px;
+  font-size:clamp(10px,.6vw,12px);
+  line-height:1.2;
+}
+.observation-card p,.focus-grey-card p{
+  margin:0;
+  font-size:clamp(8px,.493vw,10px);
+  line-height:1.45;
+}
+.observation-card.positive{
+  background:#F3FBF5;
+  border:1px solid #A9D7B7;
+  box-shadow:inset 4px 0 0 #3E9A5F;
+}
+.observation-card.positive h4{color:#256B3B}
+.observation-card.positive p{color:#3F5C49}
+.observation-card.concern{
+  background:#FFFBEA;
+  border:1px solid #E7D47D;
+  box-shadow:inset 4px 0 0 #E0B800;
+}
+.observation-card.concern h4{color:#6A5200}
+.observation-card.concern p{color:#62583A}
+.focus-grey-card{
+  background:#F5F7F9;
+  border:1px solid #DCE2E8;
+  box-shadow:inset 4px 0 0 #A8B3BE;
+}
+.focus-grey-card h4{color:var(--navy)}
+.focus-grey-card p{color:#4F5D6A}
+@media(max-width:1050px){
+  .primary-insight-columns{grid-template-columns:1fr}
+}
+
+/* ===== v40: Secondary insights split and ordered by criticality/relevance ===== */
+.secondary-insight-columns{
+  display:grid;
+  grid-template-columns:minmax(0,1.08fr) minmax(360px,.92fr);
+  gap:clamp(16px,1.3vw,26px);
+  align-items:start;
+}
+.secondary-insight-col{min-width:0}
+@media(max-width:1050px){
+  .secondary-insight-columns{grid-template-columns:1fr}
+}
+
+/* ===== v41: merged Primary Y6 insight + larger Insights typography ===== */
+#insightsPage{
+  font-size:10.667px;
+}
+#insightsPage .insights-topline-kicker,
+#insightsPage .insights-phase-eyebrow,
+#insightsPage .insight-col-kicker,
+#insightsPage .observation-group-title{
+  font-size:clamp(8.667px,.507vw,10.667px) !important;
+}
+#insightsPage .insights-topline p,
+#insightsPage .phase-executive-summary p{
+  font-size:clamp(10.667px,.627vw,13.333px) !important;
+  line-height:1.5;
+}
+#insightsPage .insights-topline h2{
+  font-size:clamp(17.333px,1.1vw,24px) !important;
+}
+#insightsPage .insights-phase-heading h2{
+  font-size:clamp(15.333px,.947vw,20.667px) !important;
+}
+#insightsPage .insights-status{
+  font-size:clamp(8px,.48vw,10px) !important;
+}
+#insightsPage .insight-col-head h3{
+  font-size:clamp(14px,.833vw,18px) !important;
+}
+#insightsPage .observation-card h4,
+#insightsPage .focus-grey-card h4{
+  font-size:clamp(11.333px,.667vw,13.333px) !important;
+}
+#insightsPage .observation-card p,
+#insightsPage .focus-grey-card p{
+  font-size:clamp(9.333px,.56vw,11.333px) !important;
+  line-height:1.5;
+}
+#insightsPage .recommendation-item p{
+  font-size:clamp(9.333px,.547vw,11.333px) !important;
+  line-height:1.45;
+}
+#insightsPage .recommendation-item span{
+  width:31px;
+  height:31px;
+  font-size:9.333px !important;
+}
+#insightsPage .insights-recommendations h2{
+  font-size:clamp(17.333px,1.1vw,24px) !important;
+}
+#insightsPage .focus-card-head span{
+  font-size:clamp(8px,.467vw,9.333px) !important;
+}
+
+/* ===== v43: expanded Primary attention + behaviour concentration warnings ===== */
+#primaryView .priority-grid-clean{
+  grid-template-columns:repeat(3,minmax(0,1fr));
+}
+#primaryView .priority-grid-clean .priority-card:nth-child(4),
+#primaryView .priority-grid-clean .priority-card:nth-child(5){
+  grid-column:auto;
+}
+@media(max-width:1200px){
+  #primaryView .priority-grid-clean{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:760px){
+  #primaryView .priority-grid-clean{grid-template-columns:1fr}
+}
+.behaviour-percent-inline.extreme-behaviour-warning{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:5px 8px;
+  border-radius:999px;
+  background:#FFF4B8;
+  color:#5E4700 !important;
+  border:2px solid #E0B800;
+  box-shadow:0 0 0 3px rgba(255,217,59,.16);
+  font-weight:900 !important;
+}
+.behaviour-percent-inline.extreme-behaviour-warning::before{
+  content:"!";
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:18px;height:18px;
+  border-radius:50%;
+  background:#FFD93B;
+  color:#4E3B00;
+  font-weight:950;
+  font-size:8px;
+}
+
+/* ===== v44: complete focus coverage + priority ordering ===== */
+#insightsPage .focus-grey-card[class*="priority-"]{
+  position:relative;
+}
+#insightsPage .focus-grey-card.priority-1{box-shadow:inset 4px 0 0 #7F8A96}
+#insightsPage .focus-grey-card.priority-2{box-shadow:inset 4px 0 0 #98A3AE}
+#insightsPage .focus-grey-card.priority-3{box-shadow:inset 4px 0 0 #AAB3BC}
+#insightsPage .focus-grey-card.priority-4{box-shadow:inset 4px 0 0 #BBC2C9}
+
+/* ===== v45: Sixth Form column heatmap ===== */
+.sf-heatmap-legend{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:7px;
+  padding:13px 16px 5px;
+  color:#5C6773;
+  font-size:8.667px;
+}
+.sf-legend-title{
+  color:var(--navy);
+  font-weight:800;
+  margin-right:4px;
+}
+.sf-legend-box{
+  width:18px;
+  height:18px;
+  border-radius:5px;
+  border:1px solid rgba(15,47,84,.10);
+  display:inline-block;
+}
+.sf-legend-box.lowest{background:#FFF0B8}
+.sf-legend-box.mid{background:#F3F5F7}
+.sf-legend-box.highest{background:#D8F0E0}
+.sf-legend-note{
+  margin-left:6px;
+  color:var(--muted);
+}
+.sf-heatmap-table th:not(:first-child),
+.sf-heatmap-table td:not(:first-child){
+  text-align:center;
+}
+.sf-heat{
+  font-weight:750;
+  color:#24313E;
+  transition:transform .12s ease, box-shadow .12s ease;
+}
+.sf-heat.lowest{
+  background:#FFF0B8;
+  color:#6A5200;
+}
+.sf-heat.low{
+  background:#FFF8DD;
+  color:#665A30;
+}
+.sf-heat.mid{
+  background:#F3F5F7;
+  color:#46525E;
+}
+.sf-heat.high{
+  background:#EAF6EE;
+  color:#2F6342;
+}
+.sf-heat.highest{
+  background:#D8F0E0;
+  color:#1F6339;
+  font-weight:850;
+}
+.sf-heat:hover{
+  position:relative;
+  z-index:2;
+  transform:scale(1.025);
+  box-shadow:0 3px 10px rgba(15,47,84,.12);
+}
+.sf-subject{
+  background:#fff;
+  position:sticky;
+  left:0;
+  z-index:1;
+}
+
+/* ===== v46: stronger Secondary severity framing ===== */
+#insightsPage .secondary-section .insights-status.alert{
+  background:#FFF1C9 !important;
+  color:#6A5200 !important;
+  border-color:#E2C45B !important;
+}
+#insightsPage .secondary-section .insights-phase-heading h2{
+  color:#17314E;
+}
+#insightsPage .secondary-section .observation-group-title.concern-title{
+  color:#7A5A00;
+}
+
+/* ===== v49: leadership priorities aligned to full insight story ===== */
+#insightsPage .recommendation-item.recommendation-secondary-primary{
+  border-left:4px solid #13A59B;
+  background:linear-gradient(90deg,rgba(199,160,67,.08),rgba(255,255,255,0));
+}
+
+/* ===== v52: Leadership priorities in vertical reading order ===== */
+#insightsPage .insights-recommendations .recommendation-grid{
+  display:grid !important;
+  grid-template-columns:1fr !important;
+  gap:12px !important;
+}
+#insightsPage .insights-recommendations .recommendation-item{
+  width:100% !important;
+  min-width:0 !important;
+}
+
+/* ===== v58: compact spacing proportional to 2/3 typography ===== */
+
+/* OVERVIEW — overall page density */
+#overviewPage .page{
+  padding:clamp(8px,.72vw,16px) clamp(12px,1.15vw,28px) clamp(14px,1vw,24px) !important;
+}
+#overviewPage .view.active{
+  gap:clamp(7px,.65vw,14px) !important;
+}
+#overviewPage .section,
+#overviewPage .attention-strip{
+  margin-bottom:10px !important;
+  border-radius:11px !important;
+}
+
+/* Top banner */
+#overviewPage .header{
+  padding:clamp(8px,.62vw,14px) clamp(14px,1.25vw,30px) !important;
+}
+#overviewPage .header-row{
+  gap:12px !important;
+}
+#overviewPage .seeat-logo{
+  width:clamp(46px,3.2vw,72px) !important;
+}
+#overviewPage .header-brand{
+  gap:8px !important;
+}
+
+/* Three KPI cards inside banner */
+#overviewPage .header-school-cards{
+  max-width:clamp(390px,32vw,620px) !important;
+  min-width:330px !important;
+  gap:clamp(5px,.4vw,8px) !important;
+}
+#overviewPage .header-school-cards .school-card{
+  min-height:clamp(34px,2.7vw,52px) !important;
+  padding:clamp(4px,.34vw,7px) clamp(6px,.46vw,10px) !important;
+  border-radius:8px !important;
+}
+#overviewPage .header-school-cards .school-card .value{
+  margin-top:1px !important;
+}
+#overviewPage .header-school-cards .school-card .sub{
+  margin-top:1px !important;
+  line-height:1.15 !important;
+}
+
+/* Controls */
+#overviewPage .controls{
+  min-height:clamp(36px,2.7vw,48px) !important;
+  padding:clamp(5px,.42vw,8px) clamp(7px,.58vw,12px) !important;
+  margin-bottom:10px !important;
+  border-radius:10px !important;
+}
+#overviewPage .toggle button{
+  padding:6px 11px !important;
+  border-radius:7px !important;
+}
+#overviewPage .school-selector{
+  padding:6px 24px 6px 8px !important;
+  border-radius:7px !important;
+}
+
+/* Main sections/cards */
+#overviewPage .section-head{
+  padding:9px 11px !important;
+}
+#overviewPage .section-head .sub{
+  margin-top:1px !important;
+}
+#overviewPage .metric-grid{
+  gap:8px !important;
+  padding:9px !important;
+}
+#overviewPage .metric{
+  padding:9px !important;
+  border-radius:10px !important;
+}
+#overviewPage .metric-title{
+  margin-bottom:7px !important;
+  gap:6px !important;
+}
+#overviewPage .metric-body{
+  gap:8px !important;
+}
+#overviewPage .overall-panel{
+  padding-right:8px !important;
+}
+#overviewPage .overall-value{
+  margin:3px 0 8px !important;
+}
+#overviewPage .national-box{
+  padding:7px 8px !important;
+  margin-bottom:6px !important;
+  border-radius:8px !important;
+}
+#overviewPage .national-value{
+  margin-top:1px !important;
+}
+#overviewPage .national-variance{
+  margin-top:2px !important;
+}
+#overviewPage .school-spread{
+  margin-top:6px !important;
+}
+#overviewPage .school-spread-label{
+  margin-bottom:3px !important;
+}
+#overviewPage .school-spread-pills,
+#overviewPage .breakdown-spread{
+  gap:4px !important;
+}
+#overviewPage .spread-pill,
+#overviewPage .spread-neutral{
+  padding:3px 5px !important;
+}
+#overviewPage .breakdown-side-title{
+  margin-bottom:3px !important;
+}
+#overviewPage .breakdown-line{
+  padding:6px 0 !important;
+}
+#overviewPage .breakdown-meta{
+  gap:5px !important;
+  margin-top:2px !important;
+}
+#overviewPage .breakdown-spread{
+  margin-top:3px !important;
+}
+
+/* Behaviour */
+#overviewPage .behaviour-grid{
+  gap:7px !important;
+  padding:9px !important;
+}
+#overviewPage .bcard{
+  padding:8px !important;
+  border-radius:9px !important;
+}
+#overviewPage .bcard .value{
+  margin-top:2px !important;
+}
+#overviewPage .behaviour-value-row{
+  gap:5px !important;
+}
+#overviewPage .behaviour-percent-inline{
+  padding:2px 5px !important;
+  border-radius:6px !important;
+}
+
+/* Attention cards */
+#overviewPage .attention-head,
+#overviewPage .attention-head-clean{
+  padding:8px 10px 6px !important;
+}
+#overviewPage .attention-subtitle{
+  margin-top:2px !important;
+}
+#overviewPage .priority-grid,
+#overviewPage .priority-grid-clean{
+  gap:7px !important;
+  padding:8px 10px 9px !important;
+}
+#overviewPage .priority-grid-clean .priority-card,
+#overviewPage .priority-card{
+  min-height:auto !important;
+  padding:8px 9px !important;
+  border-radius:8px !important;
+}
+#overviewPage .priority-narrative,
+#overviewPage .priority-grid-clean .priority-narrative{
+  margin-top:6px !important;
+  padding-top:6px !important;
+  line-height:1.3 !important;
+}
+#overviewPage .attention-badge{
+  padding:3px 5px !important;
+}
+
+/* Remove excessive minimum height now that text/cards are smaller */
+#overviewPage .overview-attendance-col,
+#overviewPage .overview-behaviour-col,
+#overviewPage .overview-attainment-col{
+  min-height:clamp(335px,26vw,500px) !important;
+}
+
+/* BREAKDOWN — proportional compaction */
+#breakdownPage .header{
+  padding:clamp(8px,.62vw,14px) clamp(14px,1.25vw,30px) !important;
+}
+#breakdownPage .seeat-logo{
+  width:clamp(46px,3.2vw,72px) !important;
+}
+#breakdownPage .page,
+#breakdownPage .bd-page{
+  padding:clamp(8px,.7vw,16px) clamp(12px,1.15vw,28px) clamp(14px,1vw,24px) !important;
+}
+#breakdownPage .bd-toolbar,
+#breakdownPage .bd-metric-head{
+  padding:8px 10px !important;
+}
+#breakdownPage .bd-kpis{
+  gap:8px !important;
+}
+#breakdownPage .bd-kpi{
+  padding:9px 10px !important;
+  border-radius:9px !important;
+}
+#breakdownPage .bd-table th,
+#breakdownPage .bd-table td{
+  padding:6px 7px !important;
+}
+#breakdownPage .bd-table-wrap{
+  border-radius:9px !important;
+}
+#breakdownPage .sf-heatmap-legend{
+  padding:8px 10px 3px !important;
+  gap:5px !important;
+}
+
+/* INSIGHTS — boxes and vertical spacing */
+#insightsPage .insights-header{
+  padding:9px 16px !important;
+}
+#insightsPage .insights-page,
+#insightsPage .insights-page-v3{
+  padding:12px 18px 20px !important;
+}
+#insightsPage .insights-topline{
+  padding:11px 13px !important;
+  border-radius:10px !important;
+}
+#insightsPage .insights-topline h2{
+  margin:3px 0 4px !important;
+}
+#insightsPage .insights-phase-section{
+  margin-top:15px !important;
+}
+#insightsPage .insights-phase-heading{
+  margin-bottom:7px !important;
+}
+#insightsPage .phase-executive-summary{
+  margin:0 0 8px !important;
+  padding:8px 10px !important;
+  border-radius:9px !important;
+}
+#insightsPage .primary-insight-columns,
+#insightsPage .secondary-insight-columns{
+  gap:12px !important;
+}
+#insightsPage .insight-col-head{
+  margin-bottom:7px !important;
+}
+#insightsPage .observation-group + .observation-group{
+  margin-top:10px !important;
+}
+#insightsPage .observation-group-title{
+  margin-bottom:5px !important;
+}
+#insightsPage .observation-card,
+#insightsPage .focus-grey-card{
+  padding:8px 10px !important;
+  margin-bottom:6px !important;
+  border-radius:8px !important;
+}
+#insightsPage .observation-card h4,
+#insightsPage .focus-grey-card h4{
+  margin-bottom:3px !important;
+}
+#insightsPage .insights-recommendations{
+  margin-top:15px !important;
+  padding:12px 14px !important;
+  border-radius:10px !important;
+}
+#insightsPage .insights-recommendations h2{
+  margin:3px 0 9px !important;
+}
+#insightsPage .recommendation-grid{
+  gap:7px !important;
+}
+#insightsPage .recommendation-item{
+  gap:7px !important;
+  padding:7px 8px !important;
+  border-radius:7px !important;
+}
+#insightsPage .recommendation-item span{
+  width:21px !important;
+  height:21px !important;
+}
+
+
+/* ===== v59: Primary Behaviour cards — shorter cards, larger numbers ===== */
+#primaryView .overview-behaviour-col .behaviour-grid{
+  align-content:start !important;
+  grid-auto-rows:min-content !important;
+  gap:6px !important;
+}
+
+#primaryView .overview-behaviour-col .bcard{
+  min-height:0 !important;
+  height:auto !important;
+  padding:6px 8px !important;
+  border-radius:8px !important;
+}
+
+#primaryView .overview-behaviour-col .bcard .label{
+  line-height:1.15 !important;
+  margin:0 !important;
+}
+
+#primaryView .overview-behaviour-col .bcard .value{
+  font-size:clamp(22px,1.65vw,31px) !important;
+  line-height:.95 !important;
+  margin-top:2px !important;
+  font-weight:820 !important;
+}
+
+#primaryView .overview-behaviour-col .behaviour-value-row{
+  align-items:center !important;
+  gap:5px !important;
+  margin-top:1px !important;
+}
+
+#primaryView .overview-behaviour-col .behaviour-percent-inline{
+  padding:2px 4px !important;
+  line-height:1 !important;
+}
+
+#primaryView .overview-behaviour-col .bcard[data-beh="pex"] .value{
+  font-size:clamp(20px,1.45vw,28px) !important;
+}
+
+
+/* ===== v60: Behaviour cards — slightly more padding, same compact height, both phases ===== */
+#primaryView .overview-behaviour-col .behaviour-grid,
+#secondaryView .overview-behaviour-col .behaviour-grid{
+  align-content:start !important;
+  grid-auto-rows:min-content !important;
+  gap:7px !important;
+}
+
+#primaryView .overview-behaviour-col .bcard,
+#secondaryView .overview-behaviour-col .bcard{
+  min-height:0 !important;
+  height:auto !important;
+  padding:8px 10px !important;
+  border-radius:9px !important;
+}
+
+#primaryView .overview-behaviour-col .bcard .label,
+#secondaryView .overview-behaviour-col .bcard .label{
+  line-height:1.2 !important;
+  margin:0 !important;
+}
+
+#primaryView .overview-behaviour-col .bcard .value,
+#secondaryView .overview-behaviour-col .bcard .value{
+  font-size:clamp(22px,1.65vw,31px) !important;
+  line-height:1 !important;
+  margin-top:3px !important;
+  font-weight:820 !important;
+}
+
+#primaryView .overview-behaviour-col .behaviour-value-row,
+#secondaryView .overview-behaviour-col .behaviour-value-row{
+  align-items:center !important;
+  gap:6px !important;
+  margin-top:2px !important;
+}
+
+#primaryView .overview-behaviour-col .behaviour-percent-inline,
+#secondaryView .overview-behaviour-col .behaviour-percent-inline{
+  padding:3px 5px !important;
+  line-height:1 !important;
+}
+
+#primaryView .overview-behaviour-col .bcard[data-beh="pex"] .value,
+#secondaryView .overview-behaviour-col .bcard[data-beh="pex"] .value{
+  font-size:clamp(20px,1.45vw,28px) !important;
+}
+
+
+/* Northstar theme — explicit overrides for legacy selector priority */
+:root {--navy:#273155;--navy2:#4C426E;--gold:#13A59B;--bg:#F4F4FA;--green:#17816C;--green-soft:#E7F5F0;--red:#BE5369;--red-soft:#FFF0F2;--line:#E3E5EF;--text:#27304A;--muted:#707B8C}
+.header{background:linear-gradient(125deg,#273155 0%,#4C426E 70%,#336B77 100%)!important}
+.seeat-logo{width:clamp(42px,3vw,60px)!important;height:clamp(42px,3vw,60px)!important;border-radius:11px}
+.demo-disclosure{font-size:11px;font-weight:600;background:#DBF4F0;color:#245F65;padding:8px 14px;margin:0 0 12px;border-left:4px solid #13A59B;border-radius:8px;line-height:1.4}
+.metric-link{color:#27877E!important}
+.bd-back-btn,.bd-school,.section-head h2{color:#273155}
+</style>
+<style>
+.behavior-illustrative-ref{font-size:10px;line-height:1.3;margin-top:5px;color:#537283;border-top:1px solid #e0e8ed;padding-top:4px}
+.bd-table th small{font-weight:500;font-size:.85em;color:#718498}
+.reference-note{margin:6px 0 0;color:#d4e8ec;font-size:11px}
+</style>
+<style>
+/* v5 – Ocean Breeze theme */
+:root{
+ --navy:#111722!important;--navy2:#3D4569!important;--gold:#BDC9F1!important;
+ --bg:#F1F4EE!important;--card:#FFFFFF!important;
+ --text:#20293A!important;--muted:#667184!important;--line:#DAE0E6!important;
+ --green:#4D753D!important;--green-soft:#EDF3DE!important;
+ --red:#B34E55!important;--red-soft:#FBECEF!important;
+ --grey:#778194!important;--grey-soft:#F0F2F6!important;
+}
+body{background:var(--bg)!important;color:var(--text)!important}
+.header,#overviewPage .header,#breakdownPage .header{
+ background:linear-gradient(120deg,#111722 0%,#252D47 48%,#3D4569 100%)!important;
+}
+.header h1{color:#FFFFFF!important}
+.header p,.header .reference-note{color:#DAE3F7!important}
+.header .year{color:#EFF2FF!important;border-color:rgba(189,201,241,.47)!important}
+.seeat-logo{background:#F1F4EE!important;border:1px solid rgba(189,201,241,.6)!important}
+.header-school-cards .school-card{
+ background:#F7F9FC!important;border-color:#CAD4E8!important;
+}
+.school-card,.controls,.section,.attention-strip,.metric,.bcard,
+.bd-kpi,.bd-card,.bd-section,.observation-card,.focus-grey-card{
+ border-color:var(--line)!important;
+}
+.school-card,.controls,.section,.attention-strip{
+ background:#FFFFFF!important;box-shadow:0 3px 14px rgba(17,23,34,.055)!important;
+}
+.metric,.bcard{background:#F9FAFC!important}
+.toggle button.active{background:#3D4569!important;border-color:#3D4569!important;color:#fff!important}
+.toggle button:not(.active){background:#F7F8FB!important;color:#3D4569!important;border-color:#D4DCF0!important}
+.metric-link,.bd-back-btn{color:#3D4569!important}
+.metric-link:hover,.bd-back-btn:hover{color:#25345F!important}
+.year-tag,.spread-neutral,.behaviour-percent-inline:not(.alert){
+ background:#E8EDFB!important;color:#435173!important;
+}
+.national-box.good{background:#EDF3DE!important;border-color:#D5E3BC!important}
+.national-box.bad{background:#FBECEF!important;border-color:#F1CAD0!important}
+.national-box.neutral{background:#F0F2F6!important;border-color:#DAE0E6!important}
+.good-text{color:#4D753D!important}.bad-text{color:#B34E55!important}
+.spread-pill.good{background:#EDF3DE!important;color:#4D753D!important}
+.spread-pill.bad{background:#FBECEF!important;color:#B34E55!important}
+.behaviour-percent-inline.alert{background:#FBECEF!important;color:#B34E55!important}
+.priority-card,.attention-school{background:#F6F7FC!important;border-color:#CCD5EF!important}
+.attention-badge,.priority-level{
+ background:#E9EEFD!important;color:#394972!important;border-color:#C4D0F3!important;
+}
+.behavior-illustrative-ref{border-color:#D9E0E8!important;color:#5A667A!important}
+.demo-disclosure{
+ background:#E8EDF9!important;color:#3D4569!important;border-left:4px solid #BDC9F1!important;
+}
+.bd-table th{background:#E5EAF8!important;color:#283559!important}
+.bd-table tr:nth-child(even){background:#F7F9FC!important}
+.sf-heat.lowest{background:#F4D7D9!important;color:#943E49!important}
+.sf-heat.low{background:#F8E8E9!important;color:#995963!important}
+.sf-heat.mid{background:#EDF0F6!important;color:#556073!important}
+.sf-heat.high{background:#E7EFDA!important;color:#536F3C!important}
+.sf-heat.highest{background:#BED18A!important;color:#344D25!important}
+</style>
+</head>
+<body><div id="overviewPage">
+<header class="header"><div class="header-row"><div><h1>Northstar Learning Trust</h1><p>Fictional trust • Performance dashboard • Illustrative data only</p><p class="reference-note">All comparison figures are fictional illustrative benchmarks; not official national statistics.</p></div><div class="year">2025/26  •  SYNTHETIC DEMO</div><section class="header-school-cards">
+<div class="school-card"><div class="label">Total schools</div><div class="value">12</div><div class="sub">Schools represented in the sample dashboard</div></div>
+<div class="school-card"><div class="label">Primary schools</div><div class="value">6</div><div class="sub">Primary A–F</div></div>
+<div class="school-card"><div class="label">Secondary schools</div><div class="value">6</div><div class="sub">Secondary A–F</div></div>
+</section><div class="header-brand"><img alt="Illustrative Northstar Learning Trust logo" class="seeat-logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMjIgMTIyIj48cmVjdCB3aWR0aD0iMTIyIiBoZWlnaHQ9IjEyMiIgcng9IjI1IiBmaWxsPSIjRjFGNEVFIi8+PHBhdGggZD0iTTYxIDE1IDcxIDQ3IDEwNCA0NyA3NyA2NyA4NyAxMDAgNjEgODAgMzUgMTAwIDQ1IDY3IDE4IDQ3IDUxIDQ3WiIgZmlsbD0iI0JEQzlGMSIvPjxjaXJjbGUgY3g9IjYxIiBjeT0iNjEiIHI9IjEzIiBmaWxsPSIjMTExNzIyIi8+PHBhdGggZD0iTTMwIDEwN2g2MiIgc3Ryb2tlPSIjQkVEMThBIiBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjwvc3ZnPg=="/></div></div></header>
+<main class="page">
+<section class="controls"><div class="toggle"><button class="active" data-target="primaryView">Primary</button><button data-target="secondaryView">Secondary</button></div><div class="school-selector-wrap"><label for="schoolSelector">School</label><select class="school-selector" id="schoolSelector"></select></div></section><div class="demo-disclosure">SIMULATED DATA • All schools, values and comparisons are invented for layout demonstration. National reference figures are illustrative, not live published benchmarks. Trust values are simple school averages (not pupil-weighted).</div><div class="view active" id="primaryView">
+<section class="attention-strip source-attention-strip overview-attention-bottom" style="">
+<div class="attention-head attention-head-clean">
+<div>
+<h3>Primary schools needing attention</h3>
+<div class="attention-subtitle">Schools are shown when they trigger an extreme-value warning or have a strong concentration of low-ranked / below-benchmark outcomes.</div>
+</div>
+</div>
+<div class="priority-grid priority-grid-clean"><div class="priority-card priority-card-warning"><div class="priority-top"><div class="priority-name">Primary School E</div><div class="attention-badge warning">Attention</div></div><div class="priority-narrative">Extreme outcome: SEND Y6 RWM – All 6% • Disadvantaged Y6 RWM – All: 20% vs 47% benchmark • Overall Y6 RWM – All: 38% vs 63% benchmark</div></div><div class="priority-card priority-card-focus"><div class="priority-top"><div class="priority-name">Primary School B</div><div class="attention-badge focus">Priority focus</div></div><div class="priority-narrative">Disadvantaged Y6 RWM – All: 25% vs 47% benchmark • Overall Y6 RWM – All: 42% vs 63% benchmark</div></div><div class="priority-card priority-card-focus"><div class="priority-top"><div class="priority-name">Primary School D</div><div class="attention-badge focus">Priority focus</div></div><div class="priority-narrative">Overall Y6 RWM – All: 54% vs 63% benchmark • Disadvantaged Y6 RWM – All: 39% vs 47% benchmark</div></div></div>
+</section>
+<section class="section overview-attendance-col"><div class="section-head"><h2>Primary Attendance</h2></div>
+<div class="metric-grid">
+<div class="metric" data-metric="Overall Attendance"><div class="metric-title"><span>Overall Attendance</span><span class="year-tag">Data 25/26</span><button class="metric-link" onclick="openBreakdown('primary', &quot;Overall Attendance&quot;)" type="button">View breakdown →</button></div><div class="metric-body">
+<div class="overall-panel"><div class="overall-label">TRUST OVERALL</div><div class="overall-value">94.8%</div><div class="national-box bad"><div class="national-label-row"><div class="national-label">Illustrative benchmark</div></div><div class="national-value">95%</div><div class="national-variance bad-text">-0.2pp vs reference</div></div><div class="school-spread"><div class="school-spread-label">School spread vs illustrative benchmark</div><div class="school-spread-pills"><span class="spread-neutral">3 above</span><span class="spread-neutral">3 below</span></div></div></div>
+<div class="breakdown-side"><div class="breakdown-side-title">Breakdown</div><div class="breakdown-line"><div class="breakdown-top"><div class="breakdown-name">Disadvantaged</div><div class="breakdown-value">91.8%</div></div><div class="breakdown-meta"><div class="breakdown-bench">Illustrative benchmark <b>89%</b></div><div class="breakdown-delta good-text">+2.8pp</div></div><div class="breakdown-spread"><span class="spread-pill good">4 above</span> <span class="spread-neutral">2 below</span> </div></div><div class="breakdown-line"><div class="breakdown-top"><div class="breakdown-name">SEND</div><div class="breakdown-value">89.5%</div></div><div class="breakdown-meta"><div class="breakdown-bench">Illustrative benchmark <b>89%</b></div><div class="breakdown-delta good-text">+0.5pp</div></div><div class="breakdown-spread"><span class="spread-neutral">3 above</span> <span class="spread-neutral">3 below</span> </div></div></div></div></div>
+<div class="metric" data-metric="Persistent Absence"><div class="metric-title"><span>Persistent Absence</span><span class="year-tag">Data 25/26</span><button class="metric-link" onclick="openBreakdown('primary', &quot;Persistent Absence&quot;)" type="button">View breakdown →</button></div><div class="metric-body">
+<div class="overall-panel"><div class="overall-label">TRUST OVERALL</div><div class="overall-value">17.7%</div><div class="national-box good"><div class="national-label-row"><div class="national-label">Illustrative benchmark</div></div><div class="national-value">19%</div><div class="national-variance good-text">-1.3pp vs reference</div></div><div class="school-spread"><div class="school-spread-label">School spread vs illustrative benchmark</div><div class="school-spread-pills"><span class="spread-neutral">3 above</span><span class="spread-neutral">2 below</span><span class="spread-neutral">1 equal</span></div></div></div>
+<div class="breakdown-side"><div class="breakdown-side-title">Breakdown</div><div class="breakdown-line"><div class="breakdown-top"><div class="breakdown-name">Disadvantaged</div><div class="breakdown-value">34.7%</div></div><div class="breakdown-meta"><div class="breakdown-bench">Illustrative benchmark <b>37%</b></div><div class="breakdown-delta good-text">-2.3pp</div></div><div class="breakdown-spread"><span class="spread-neutral">3 above</span> <span class="spread-neutral">3 below</span> </div></div><div class="breakdown-line"><div class="breakdown-top"><div class="breakdown-name">SEND</div><div class="breakdown-value">34.7%</div></div><div class="breakdown-meta"><div class="breakdown-bench">Illustrative benchmark <b>34%</b></div><div class="breakdown-delta bad-text">+0.7pp</div></div><div class="breakdown-spread"><span class="spread-neutral">3 above</span> <span class="spread-neutral">3 below</span> </div></div></div></div></div>
+</div></section>
+<section class="section overview-behaviour-col" data-section="behaviour"><div class="section-head"><div class="section-head-row"><h2>Behaviour</h2><span class="year-tag">Data 25/26</span><button class="metric-link" onclick="openBreakdown('primary', 'Behaviour')" type="button">View breakdown →</button></div></div>
+<div class="behaviour-grid">
+<div class="bcard" data-beh="susp"><div class="label">Suspensions</div><div class="value">117</div><div class="behavior-illustrative-ref">Benchmark: 15 (suspensions per school)</div></div>
+<div class="bcard" data-beh="da"><div class="label">Disadvantaged Suspensions</div><div class="behaviour-value-row"><div class="value">64</div><span class="behaviour-percent-inline alert">(54.7% of total)</span></div><div class="behavior-illustrative-ref">Benchmark: 40% (share of suspensions (%))</div></div>
+<div class="bcard" data-beh="send"><div class="label">SEND Suspensions</div><div class="behaviour-value-row"><div class="value">82</div><span class="behaviour-percent-inline alert">(70.1% of total)</span></div><div class="behavior-illustrative-ref">Benchmark: 35% (share of suspensions (%))</div></div>
+<div class="bcard" data-beh="pex"><div class="label">Permanent Exclusions</div><div class="value">3</div><div class="behavior-illustrative-ref">Benchmark: 0.5 (exclusions per school)</div></div>
+</div></section>
+<section class="section overview-attainment-col"><div class="section-head"><h2>Attainment</h2><div class="sub">Key attainment measures; illustrative benchmark year shown separately where different.</div></div>
+<div class="metric-grid">
+<div class="metric" data-metric="GLD – All"><div class="metric-title"><span>GLD – All</span><span class="year-tag">Data 24/25</span><button class="metric-link" onclick="openBreakdown('primary', &quot;GLD \u2013 All&quot;)" type="button">View breakdown →</button></div><div class="metric-body"><div class="overall-panel"><div class="overall-label">TRUST OVERALL</div><div class="overall-value">72.3%</div><div class="national-box good"><div class="national-label-row"><div class="national-label">Illustrative benchmark</div></div><div class="national-value">68%</div><div class="national-variance good-text">+4.3pp vs reference</div></div><div class="school-spread"><div class="school-spread-label">School spread vs illustrative benchmark</div><div class="school-spread-pills"><span class="spread-pill good">4 above</span><span class="spread-neutral">2 below</span></div></div></div><div class="breakdown-side"><div class="breakdown-side-title">Breakdown</div><div class="breakdown-line"><div class="breakdown-top"><div class="breakdown-name">Disadvantaged</div><div class="breakdown-value">61.8%</div></div><div class="breakdown-meta"><div class="breakdown-bench">Illustrative benchmark <b>51%</b></div><div class="breakdown-delta good-text">+10.8pp</div></div><div class="breakdown-spread"><span class="spread-pill good">4 above</span> <span class="spread-neutral">2 below</span> </div></div><div class="breakdown-line"><div class="breakdown-top"><div class="breakdown-name">SEND</div><div class="breakdown-value">25%</div></div><div class="breakdown-meta"><div class="breakdown-bench">Illustrative benchmark <b>21%</b></div><div class="breakdown-delta good-text">+4.0pp</div></div><div class="breakdown-spread"><span class="spread-neutral">3 above</span> <span class="spread-neutral">3 below</span> </div></div></div></div></div>
+<div class="metric" data-metric="Phonics – All"><div class="metric-title"><span>Phonics – All</span><span class="year-tag">Data 24/25</span><button class="metric-link" onclick="openBreakdown('primary', &quot;Phonics \u2013 All&quot;)" type="button">View breakdown →</button></div><div class="metric-body"><div class="overall-panel"><div class="overall-label">TRUST OVERALL</div><div class="overall-value">84.8%</div><div class="national-box good"><div class="national-label-row"><div class="national-label">Illustrative benchmark</div></div><div class="national-value">80%</div><div class="national-variance good-text">+4.8pp vs reference</div></div><div class="school-spread"><div class="school-spread-label">School spread vs illustrative benchmark</div><div class="school-spread-pills"><span class="spread-pill good">4 above</span><span class="spread-neutral">2 below</span></div></div></div><div class="breakdown-side"><div class="breakdown-side-title">Breakdown</div><div class="breakdown-line"><div class="breakdown-top"><div class="breakdown-name">Disadvantaged</div><div class="breakdown-value">73.7%</div></div><div class="breakdown-meta"><div class="breakdown-bench">Illustrative benchmark <b>67%</b></div><div class="breakdown-delta good-text">+6.7pp</div></div><div class="breakdown-spread"><span class="spread-pill good">4 above</span> <span class="spread-neutral">2 below</span> </div></div><div class="breakdown-line"><div class="breakdown-top"><div class="breakdown-name">SEND</div><div class="breakdown-value">49.2%</div></div><div class="breakdown-meta"><div class="breakdown-bench">Illustrative benchmark <b>43%</b></div><div class="breakdown-delta good-text">+6.2pp</div></div><div class="breakdown-spread"><span class="spread-pill good">4 above</span> <span class="spread-neutral">2 below</span> </div></div></div></div></div>
+<div class="metric" data-metric="Y4 MTC ≥20/25"><div class="metric-title"><span>Y4 MTC ≥20/25</span><span class="year-tag">Data 25/26</span><button class="metric-link" onclick="openBreakdown('primary', &quot;Y4 MTC \u226520/25&quot;)" type="button">View breakdown →</button></div><div class="metric-body"><div class="overall-panel"><div class="overall-label">TRUST OVERALL</div><div class="overall-value">65.8%</div><div class="national-box bad"><div class="national-label-row"><div class="national-label">Illustrative benchmark</div></div><div class="national-value">67%</div><div class="national-variance bad-text">-1.2pp vs reference</div></div></div><div class="breakdown-side"><div class="breakdown-side-title">Breakdown</div><div class="breakdown-line"><div class="breakdown-top"><div class="breakdown-name">Disadvantaged</div><div class="breakdown-value">53.7%</div></div><div class="breakdown-meta"><span>Reference 51%</span><span class="breakdown-delta good-text">+2.7pp</span></div></div><div class="breakdown-line"><div class="breakdown-top"><div class="breakdown-name">SEND</div><div class="breakdown-value">33.7%</div></div><div class="breakdown-meta"><span>Reference 30%</span><span class="breakdown-delta good-text">+3.7pp</span></div></div></div></div></div>
+<div class="metric" data-metric="Y6 RWM – All"><div class="metric-title"><span>Y6 RWM – All</span><span class="year-tag">Data 25/26</span><button class="metric-link" onclick="openBreakdown('primary', &quot;Y6 RWM \u2013 All&quot;)" type="button">View breakdown →</button></div><div class="metric-body"><div class="overall-panel"><div class="overall-label">TRUST OVERALL</div><div class="overall-value">59.2%</div><div class="national-box bad"><div class="national-label-row"><div class="national-label">Illustrative benchmark</div></div><div class="national-value">63%</div><div class="national-variance bad-text">-3.8pp vs reference</div></div><div class="school-spread"><div class="school-spread-label">School spread vs illustrative benchmark</div><div class="school-spread-pills"><span class="spread-neutral">3 above</span><span class="spread-neutral">3 below</span></div></div></div><div class="breakdown-side"><div class="breakdown-side-title">Breakdown</div><div class="breakdown-line"><div class="breakdown-top"><div class="breakdown-name">Disadvantaged</div><div class="breakdown-value">45.7%</div></div><div class="breakdown-meta"><div class="breakdown-bench">Illustrative benchmark <b>47%</b></div><div class="breakdown-delta bad-text">-1.3pp</div></div><div class="breakdown-spread"><span class="spread-neutral">3 above</span> <span class="spread-neutral">3 below</span> </div></div><div class="breakdown-line"><div class="breakdown-top"><div class="breakdown-name">SEND</div><div class="breakdown-value">20.7%</div></div><div class="breakdown-meta"><div class="breakdown-bench">Illustrative benchmark <b>22%</b></div><div class="breakdown-delta bad-text">-1.3pp</div></div><div class="breakdown-spread"><span class="spread-neutral">3 above</span> <span class="spread-neutral">3 below</span> </div></div></div></div></div>
+</div></section>
+</div><div class="view" id="secondaryView">
+<section class="attention-strip source-attention-strip overview-attention-bottom" style="">
+<div class="attention-head attention-head-clean">
+<div>
+<h3>Secondary schools needing attention</h3>
+<div class="attention-subtitle">Schools are shown when they trigger an extreme-value warning or have a strong concentration of low-ranked / below-benchmark outcomes.</div>
+</div>
+</div>
+<div class="priority-grid priority-grid-clean secondary-priority-grid"><div class="priority-card priority-card-focus"><div class="priority-top"><div class="priority-name">Secondary School D</div><div class="attention-badge focus">Priority focus</div></div><div class="priority-narrative">Overall Persistent Absence: 68% vs 19% benchmark • SEND Persistent Absence: 76% vs 34% benchmark</div></div><div class="priority-card priority-card-focus"><div class="priority-top"><div class="priority-name">Secondary School B</div><div class="attention-badge focus">Priority focus</div></div><div class="priority-narrative">Overall Persistent Absence: 51% vs 19% benchmark • SEND Persistent Absence: 65% vs 34% benchmark</div></div><div class="priority-card priority-card-focus"><div class="priority-top"><div class="priority-name">Secondary School F</div><div class="attention-badge focus">Priority focus</div></div><div class="priority-narrative">SEND Persistent Absence: 58% vs 34% benchmark • Overall Persistent Absence: 41% vs 19% benchmark</div></div><div class="priority-card priority-card-focus"><div class="priority-top"><div class="priority-name">Secondary School C</div><div class="attention-badge focus">Priority focus</div></div><div class="priority-narrative">SEND Persistent Absence: 49% vs 34% benchmark • Overall Persistent Absence: 30% vs 19% benchmark</div></div></div>
+</section>
+<section class="section overview-attendance-col"><div class="section-head"><h2>Secondary Attendance</h2></div>
+<div class="metric-grid">
+<div class="metric" data-metric="Overall Attendance"><div class="metric-title"><span>Overall Attendance</span><span class="year-tag">Data 25/26</span><button class="metric-link" onclick="openBreakdown('secondary', &quot;Overall Attendance&quot;)" type="button">View breakdown →</button></div><div class="metric-body"><div class="overall-panel"><div class="overall-label">TRUST OVERALL</div><div class="overall-value">91%</div><div class="national-box equal"><div class="national-label-row"><div class="national-label">Illustrative benchmark</div></div><div class="national-value">91%</div><div class="national-variance equal-text">0.0pp vs reference</div></div><div class="school-spread"><div class="school-spread-label">School spread vs illustrative benchmark</div><div class="school-spread-pills"><span class="spread-neutral">3 above</span><span class="spread-neutral">3 below</span></div></div></div><div class="breakdown-side"><div class="breakdown-side-title">Breakdown</div><div class="breakdown-line"><div class="breakdown-top"><div class="breakdown-name">Disadvantaged</div><div class="breakdown-value">88.2%</div></div><div class="breakdown-meta"><div class="breakdown-bench">Illustrative benchmark <b>89%</b></div><div class="breakdown-delta bad-text">-0.8pp</div></div><div class="breakdown-spread"><span class="spread-neutral">2 above</span> <span class="spread-neutral">3 below</span> </div></div><div class="breakdown-line"><div class="breakdown-top"><div class="breakdown-name">SEND</div><div class="breakdown-value">84.7%</div></div><div class="breakdown-meta"><div class="breakdown-bench">Illustrative benchmark <b>89%</b></div><div class="breakdown-delta bad-text">-4.3pp</div></div><div class="breakdown-spread"><span class="spread-neutral">1 above</span> <span class="spread-pill bad">4 below</span> </div></div></div></div></div>
+<div class="metric" data-metric="Persistent Absence"><div class="metric-title"><span>Persistent Absence</span><span class="year-tag">Data 25/26</span><button class="metric-link" onclick="openBreakdown('secondary', &quot;Persistent Absence&quot;)" type="button">View breakdown →</button></div><div class="metric-body"><div class="overall-panel"><div class="overall-label">TRUST OVERALL</div><div class="overall-value">36.2%</div><div class="national-box bad"><div class="national-label-row"><div class="national-label">Illustrative benchmark</div></div><div class="national-value">19%</div><div class="national-variance bad-text">+17.2pp vs reference</div></div><div class="school-spread"><div class="school-spread-label">School spread vs illustrative benchmark</div><div class="school-spread-pills"><span class="spread-neutral">2 above</span><span class="spread-pill bad">4 below</span></div></div></div><div class="breakdown-side"><div class="breakdown-side-title">Breakdown</div><div class="breakdown-line"><div class="breakdown-top"><div class="breakdown-name">Disadvantaged</div><div class="breakdown-value">48.2%</div></div><div class="breakdown-meta"><div class="breakdown-bench">Illustrative benchmark <b>37%</b></div><div class="breakdown-delta bad-text">+11.2pp</div></div><div class="breakdown-spread"><span class="spread-neutral">2 above</span> <span class="spread-pill bad">4 below</span> </div></div><div class="breakdown-line"><div class="breakdown-top"><div class="breakdown-name">SEND</div><div class="breakdown-value">50.8%</div></div><div class="breakdown-meta"><div class="breakdown-bench">Illustrative benchmark <b>34%</b></div><div class="breakdown-delta bad-text">+16.8pp</div></div><div class="breakdown-spread"><span class="spread-neutral">2 above</span> <span class="spread-pill bad">4 below</span> </div></div></div></div></div>
+</div></section>
+<section class="section overview-behaviour-col" data-section="behaviour"><div class="section-head"><div class="section-head-row"><h2>Behaviour</h2><span class="year-tag">Data 25/26</span><button class="metric-link" onclick="openBreakdown('secondary', 'Behaviour')" type="button">View breakdown →</button></div></div>
+<div class="behaviour-grid">
+<div class="bcard" data-beh="susp"><div class="label">Suspensions</div><div class="value">1048</div><div class="behavior-illustrative-ref">Benchmark: 90 (suspensions per school)</div></div>
+<div class="bcard" data-beh="da"><div class="label">Disadvantaged Suspensions</div><div class="behaviour-value-row"><div class="value">717</div><span class="behaviour-percent-inline alert">(68.4% of total)</span></div><div class="behavior-illustrative-ref">Benchmark: 45% (share of suspensions (%))</div></div>
+<div class="bcard" data-beh="send"><div class="label">SEND Suspensions</div><div class="behaviour-value-row"><div class="value">533</div><span class="behaviour-percent-inline alert">(50.9% of total)</span></div><div class="behavior-illustrative-ref">Benchmark: 30% (share of suspensions (%))</div></div>
+<div class="bcard" data-beh="pex"><div class="label">Permanent Exclusions</div><div class="value">15</div><div class="behavior-illustrative-ref">Benchmark: 1.5 (exclusions per school)</div></div>
+</div></section>
+<section class="section overview-attainment-col"><div class="section-head"><h2>Attainment</h2><div class="sub">GCSE and Sixth Form headline attainment measures.</div></div>
+<div class="metric-grid">
+<div class="metric" data-metric="Attainment 8 – All"><div class="metric-title"><span>Attainment 8 – All</span><span class="year-tag">Data 2026</span><button class="metric-link" onclick="openBreakdown('secondary', &quot;Attainment 8 \u2013 All&quot;)" type="button">View breakdown →</button></div><div class="metric-body"><div class="overall-panel"><div class="overall-label">TRUST OVERALL</div><div class="overall-value">49.3</div><div class="national-box bad"><div class="national-label-row"><div class="national-label">Illustrative benchmark</div></div><div class="national-value">50</div><div class="national-variance bad-text">-0.7 pts vs reference</div></div></div><div class="breakdown-side"><div class="breakdown-side-title">Breakdown</div><div class="breakdown-line"><div class="breakdown-top"><div class="breakdown-name">Disadvantaged</div><div class="breakdown-value">40.3</div></div><div class="breakdown-meta"><span>Reference 42</span><span class="breakdown-delta bad-text">-1.7 pts</span></div></div><div class="breakdown-line"><div class="breakdown-top"><div class="breakdown-name">SEND</div><div class="breakdown-value">28.5</div></div><div class="breakdown-meta"><span>Reference 29</span><span class="breakdown-delta bad-text">-0.5 pts</span></div></div></div></div></div>
+<div class="metric" data-metric="Sixth Form Attainment – Average Point Score (APS)"><div class="metric-title"><span>Sixth Form Attainment – Average Point Score (APS)</span><span class="year-tag">Data 25/26</span><button class="metric-link" onclick="openBreakdown('secondary', &quot;Sixth Form Attainment \u2013 Average Point Score (APS)&quot;)" type="button">View breakdown →</button></div><div class="metric-body"><div class="overall-panel"><div class="overall-label">TRUST OVERALL</div><div class="overall-value">38.8</div><div class="national-box bad"><div class="national-label-row"><div class="national-label">Illustrative benchmark</div></div><div class="national-value">39.5</div><div class="national-variance bad-text">-0.7 pts vs reference</div></div></div><div class="breakdown-side"><div class="breakdown-side-title">Supporting distribution</div><div class="breakdown-line"><div class="breakdown-top"><div class="breakdown-name">A*–A</div><div class="breakdown-value">31%</div></div><div class="breakdown-meta">Illustrative reference 33% • -2.0pp</div></div><div class="breakdown-line"><div class="breakdown-top"><div class="breakdown-name">A*–B</div><div class="breakdown-value">65%</div></div><div class="breakdown-meta">Illustrative reference 68% • -3.0pp</div></div><div class="breakdown-line"><div class="breakdown-top"><div class="breakdown-name">A*–C</div><div class="breakdown-value">89.9%</div></div><div class="breakdown-meta">Illustrative reference 88% • +1.9pp</div></div></div></div></div>
+</div></section>
+</div><div class="note" style="padding:4px 2px 0;margin-top:4px;">Attention-score denominators use the number of key metrics actually available for each school, so schools are not penalised for missing source data.</div>
+</main>
+<script>
+const buttons=document.querySelectorAll('.toggle button');
+const views=document.querySelectorAll('.view');
+const schoolSelector=document.getElementById('schoolSelector');
+
+const phaseSchools={"primaryView": ["All schools", "A", "B", "C", "D", "E", "F"], "secondaryView": ["All schools", "A", "B", "C", "D", "E", "F"]};
+const schoolData={"primaryView": {"A": {"Overall Attendance": {"overall": "97.6%", "da": "96%", "send": "94%"}, "Persistent Absence": {"overall": "8%", "da": "17%", "send": "19%"}, "GLD – All": {"overall": "82%", "da": "75%", "send": "37%"}, "Phonics – All": {"overall": "93%", "da": "85%", "send": "62%"}, "Y4 MTC ≥20/25": {"overall": "86%", "da": "79%", "send": "53%"}, "Y6 RWM – All": {"overall": "78%", "da": "68%", "send": "34%"}, "Behaviour": {"susp": "5", "da": "1", "send": "2", "pex": "0"}}, "B": {"Overall Attendance": {"overall": "93.1%", "da": "88%", "send": "86%"}, "Persistent Absence": {"overall": "26%", "da": "49%", "send": "45%"}, "GLD – All": {"overall": "65%", "da": "49%", "send": "18%"}, "Phonics – All": {"overall": "79%", "da": "63%", "send": "39%"}, "Y4 MTC ≥20/25": {"overall": "52%", "da": "34%", "send": "22%"}, "Y6 RWM – All": {"overall": "42%", "da": "25%", "send": "12%"}, "Behaviour": {"susp": "32", "da": "19", "send": "17", "pex": "1"}}, "C": {"Overall Attendance": {"overall": "95.7%", "da": "94%", "send": "91%"}, "Persistent Absence": {"overall": "13%", "da": "26%", "send": "31%"}, "GLD – All": {"overall": "77%", "da": "70%", "send": "33%"}, "Phonics – All": {"overall": "88%", "da": "79%", "send": "56%"}, "Y4 MTC ≥20/25": {"overall": "71%", "da": "62%", "send": "42%"}, "Y6 RWM – All": {"overall": "69%", "da": "58%", "send": "27%"}, "Behaviour": {"susp": "12", "da": "4", "send": "9", "pex": "0"}}, "D": {"Overall Attendance": {"overall": "94.1%", "da": "91%", "send": "88%"}, "Persistent Absence": {"overall": "19%", "da": "40%", "send": "37%"}, "GLD – All": {"overall": "71%", "da": "57%", "send": "20%"}, "Phonics – All": {"overall": "83%", "da": "69%", "send": "46%"}, "Y4 MTC ≥20/25": {"overall": "62%", "da": "48%", "send": "28%"}, "Y6 RWM – All": {"overall": "54%", "da": "39%", "send": "15%"}, "Behaviour": {"susp": "18", "da": "8", "send": "13", "pex": "0"}}, "E": {"Overall Attendance": {"overall": "92.3%", "da": "87%", "send": "85%"}, "Persistent Absence": {"overall": "30%", "da": "56%", "send": "53%"}, "GLD – All": {"overall": "59%", "da": "43%", "send": "11%"}, "Phonics – All": {"overall": "75%", "da": "58%", "send": "32%"}, "Y4 MTC ≥20/25": {"overall": "45%", "da": "26%", "send": "9%"}, "Y6 RWM – All": {"overall": "38%", "da": "20%", "send": "6%"}, "Behaviour": {"susp": "46", "da": "31", "send": "40", "pex": "2"}}, "F": {"Overall Attendance": {"overall": "96.2%", "da": "95%", "send": "93%"}, "Persistent Absence": {"overall": "10%", "da": "20%", "send": "23%"}, "GLD – All": {"overall": "80%", "da": "77%", "send": "31%"}, "Phonics – All": {"overall": "91%", "da": "88%", "send": "60%"}, "Y4 MTC ≥20/25": {"overall": "79%", "da": "73%", "send": "48%"}, "Y6 RWM – All": {"overall": "74%", "da": "64%", "send": "30%"}, "Behaviour": {"susp": "4", "da": "1", "send": "1", "pex": "0"}}}, "secondaryView": {"A": {"Overall Attendance": {"overall": "94%", "da": "92%", "send": "89%"}, "Persistent Absence": {"overall": "15%", "da": "23%", "send": "32%"}, "Attainment 8 – All": {"overall": "64", "da": "55", "send": "39"}, "Sixth Form Attainment – Average Point Score (APS)": {"overall": "42.8", "da": null, "send": null}, "Behaviour": {"susp": "45", "da": "15", "send": "20", "pex": "0"}}, "B": {"Overall Attendance": {"overall": "89%", "da": "85%", "send": "81%"}, "Persistent Absence": {"overall": "51%", "da": "68%", "send": "65%"}, "Attainment 8 – All": {"overall": "38", "da": "29", "send": "21"}, "Sixth Form Attainment – Average Point Score (APS)": {"overall": "35.2", "da": null, "send": null}, "Behaviour": {"susp": "287", "da": "203", "send": "110", "pex": "4"}}, "C": {"Overall Attendance": {"overall": "92%", "da": "89%", "send": "85%"}, "Persistent Absence": {"overall": "30%", "da": "43%", "send": "49%"}, "Attainment 8 – All": {"overall": "52", "da": "42", "send": "29"}, "Sixth Form Attainment – Average Point Score (APS)": {"overall": "40.6", "da": null, "send": null}, "Behaviour": {"susp": "103", "da": "57", "send": "48", "pex": "1"}}, "D": {"Overall Attendance": {"overall": "86%", "da": "82%", "send": "78%"}, "Persistent Absence": {"overall": "68%", "da": "79%", "send": "76%"}, "Attainment 8 – All": {"overall": "29", "da": "20", "send": "14"}, "Sixth Form Attainment – Average Point Score (APS)": {"overall": "30.9", "da": null, "send": null}, "Behaviour": {"susp": "402", "da": "304", "send": "242", "pex": "7"}}, "E": {"Overall Attendance": {"overall": "95%", "da": "94%", "send": "91%"}, "Persistent Absence": {"overall": "12%", "da": "19%", "send": "25%"}, "Attainment 8 – All": {"overall": "70", "da": "63", "send": "45"}, "Sixth Form Attainment – Average Point Score (APS)": {"overall": "45.3", "da": null, "send": null}, "Behaviour": {"susp": "21", "da": "6", "send": "10", "pex": "0"}}, "F": {"Overall Attendance": {"overall": "90%", "da": "87%", "send": "84%"}, "Persistent Absence": {"overall": "41%", "da": "57%", "send": "58%"}, "Attainment 8 – All": {"overall": "43", "da": "33", "send": "23"}, "Sixth Form Attainment – Average Point Score (APS)": {"overall": "37.7", "da": null, "send": null}, "Behaviour": {"susp": "190", "da": "132", "send": "103", "pex": "3"}}}};
+
+function activeViewId(){
+  return document.querySelector('.view.active')?.id || 'primaryView';
+}
+
+function populateSchools(){
+  const vid=activeViewId();
+  schoolSelector.innerHTML='';
+  phaseSchools[vid].forEach(s=>{
+    const o=document.createElement('option');
+    o.value=s;
+    o.textContent=s==="All schools" ? "All schools" : `School ${s}`;
+    schoolSelector.appendChild(o);
+  });
+  schoolSelector.value="All schools";
+  document.body.classList.remove('single-school');
+}
+
+function parseNum(v){
+  if(v===null||v===undefined) return null;
+  const m=String(v).match(/-?\d+(\.\d+)?/);
+  return m?parseFloat(m[0]):null;
+}
+
+function extremeWarningHTML(value,higherBetter=true){
+  const n=parseNum(value);
+  if(n===null) return '';
+  const isExtreme = higherBetter ? n<10 : n>90;
+  if(!isExtreme) return '';
+  const reason = higherBetter ? 'Positive outcome below 10%' : 'Negative outcome above 90%';
+  return `<span class="extreme-warning-tag" title="${reason}">
+    <span class="extreme-warning-icon"></span>Attention
+  </span>`;
+}
+
+function applyOverviewExtremeWarnings(root=document){
+  root.querySelectorAll('.metric').forEach(metric=>{
+    const metricName=metric.dataset.metric || '';
+    const higherBetter=!metricName.includes('Persistent Absence');
+
+    metric.querySelectorAll('.extreme-warning-cell').forEach(x=>x.classList.remove('extreme-warning-cell'));
+
+    const candidates=[
+      ...metric.querySelectorAll('.overall-value'),
+      ...metric.querySelectorAll('.breakdown-value')
+    ];
+
+    candidates.forEach(el=>{
+      const parent=el.parentElement;
+      if(parent){
+        parent.querySelectorAll(':scope > .extreme-warning-tag').forEach(x=>x.remove());
+      }
+
+      const txt=el.textContent.trim();
+      if(!txt.includes('%')) return;
+
+      const warning=extremeWarningHTML(txt,higherBetter);
+      if(warning){
+        el.insertAdjacentHTML('afterend',warning);
+
+        // Highlight the nearest logical value block, not the entire card.
+        const cell =
+          el.closest('.breakdown-item') ||
+          el.closest('.overall-block') ||
+          el.closest('.metric-overall') ||
+          el.closest('.bd-kpi-card') ||
+          el.parentElement;
+
+        if(cell) cell.classList.add('extreme-warning-cell');
+      }
+    });
+  });
+}
+
+function updateDelta(metricEl, selectedValue){
+  const nationalText=metricEl.querySelector('.national-value')?.textContent || '';
+  const national=parseNum(nationalText);
+  const val=parseNum(selectedValue);
+  const deltaEl=metricEl.querySelector('.national-variance');
+  const box=metricEl.querySelector('.national-box');
+  if(!deltaEl||!box||national===null||val===null) return;
+
+  const title=metricEl.dataset.metric || '';
+  const adverse=title.includes('Persistent Absence');
+  const diff=val-national;
+  const good=adverse ? diff<0 : diff>0;
+  const equal=Math.abs(diff)<0.0001;
+
+  deltaEl.textContent=`${diff>0?'+':''}${diff.toFixed(1)}${metricEl.dataset.metric?.includes('Attainment 8') || metricEl.dataset.metric?.includes('Average Point Score') ? ' pts' : 'pp'} vs reference`;
+  deltaEl.className='national-variance '+(equal?'equal-text':good?'good-text':'bad-text');
+  box.className='national-box '+(equal?'equal':good?'good':'bad');
+}
+
+function restoreAll(){
+  location.reload();
+}
+
+function showSchool(school){
+  const vid=activeViewId();
+  if(school==="All schools"){
+    restoreAll();
+    return;
+  }
+  document.body.classList.add('single-school');
+  const data=schoolData[vid][school];
+
+  const view=document.getElementById(vid);
+  view.querySelectorAll('.overall-label').forEach(label=>{
+    label.textContent = ['Trust','All Trust','All'].includes(school) ? 'TRUST OVERALL' : `School ${school}`;
+  });
+  view.querySelectorAll('.metric').forEach(metric=>{
+    const name=metric.dataset.metric;
+    const d=data[name];
+    if(!d) return;
+
+    const ov=metric.querySelector('.overall-value');
+    if(ov) ov.textContent=d.overall ?? '—';
+
+    const lines=metric.querySelectorAll('.breakdown-line');
+    lines.forEach(line=>{
+      const nm=line.querySelector('.breakdown-name')?.textContent.trim();
+      const vv=line.querySelector('.breakdown-value');
+      if(!vv) return;
+      if(nm==="Disadvantaged") vv.textContent=d.da ?? '—';
+      if(nm==="SEND") vv.textContent=d.send ?? '—';
+    });
+
+    updateDelta(metric,d.overall);
+  });
+
+  applyOverviewExtremeWarnings(view);
+
+  const beh=data.Behaviour;
+  if(beh){
+    view.querySelectorAll('[data-beh]').forEach(card=>{
+      const key=card.dataset.beh;
+      const value=card.querySelector('.value');
+      if(value) value.textContent=beh[key] ?? '—';
+      const pct=card.querySelector('.behaviour-percent-inline');
+      if(pct && (key==='da'||key==='send')){
+        const total=parseNum(beh.susp), count=parseNum(beh[key]);
+        if(total && count!==null){
+          const p=count/total*100;
+          pct.textContent=`(${p.toFixed(1)}% of total)`;
+          const extreme = p>90;
+          pct.className='behaviour-percent-inline'+(extreme?' extreme-behaviour-warning':(p>50?' alert':''));
+          pct.title = extreme ? 'Attention: negative outcome concentration above 90% of total suspensions' : '';
+        } else {
+          pct.textContent='—';
+          pct.className='behaviour-percent-inline';
+        }
+      }
+    });
+  }
+}
+
+buttons.forEach(btn=>btn.addEventListener('click',()=>{
+  buttons.forEach(b=>b.classList.remove('active'));
+  views.forEach(v=>v.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(btn.dataset.target).classList.add('active');
+  populateSchools();
+}));
+
+schoolSelector.addEventListener('change',e=>showSchool(e.target.value));
+populateSchools();
+</script>
+</div>
+<div class="bd-page" id="breakdownPage" style="display:none">
+<header class="header">
+<div class="header-row">
+<div>
+<div class="bd-backline">
+<button class="bd-back" onclick="backToOverview()">← Back to Overview</button>
+</div>
+<h1 id="bdPageTitle">Performance Breakdown</h1>
+<p id="bdPageSubtitle">School and subgroup drivers behind the Trust headline.</p>
+</div>
+<div class="year" id="bdYear">Academic Year 2025/26</div>
+<div class="header-brand"><img alt="Illustrative Northstar Learning Trust logo" class="seeat-logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMjIgMTIyIj48cmVjdCB3aWR0aD0iMTIyIiBoZWlnaHQ9IjEyMiIgcng9IjI1IiBmaWxsPSIjRURGOUY3Ii8+PHBhdGggZD0iTTYxIDE1IDcxIDQ3IDEwNCA0NyA3NyA2NyA4NyAxMDAgNjEgODAgMzUgMTAwIDQ1IDY3IDE4IDQ3IDUxIDQ3WiIgZmlsbD0iIzE0QTY5QyIvPjxjaXJjbGUgY3g9IjYxIiBjeT0iNjEiIHI9IjEzIiBmaWxsPSIjMjczMTU1Ii8+PHBhdGggZD0iTTMwIDEwN2g2MiIgc3Ryb2tlPSIjMjYzMTUxIiBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjwvc3ZnPg=="/></div></div>
+</header>
+<main class="page">
+<section class="controls bd-controls">
+<div class="toggle" id="bdPhaseToggle">
+<button id="bdPrimaryBtn" onclick="setBreakdownPhase('primary')">Primary</button>
+<button id="bdSecondaryBtn" onclick="setBreakdownPhase('secondary')">Secondary</button>
+</div>
+<div class="toggle y6-group-toggle" id="y6GroupToggle" style="display:none">
+<button id="y6AllBtn" onclick="setY6Group('all')">Trust overall</button>
+<button id="y6DABtn" onclick="setY6Group('da')">Disadvantaged</button>
+<button id="y6SENBtn" onclick="setY6Group('sen')">SEN</button>
+</div>
+<div class="bd-current" id="bdCurrentMetric"></div>
+</section>
+<section class="section bd-section">
+<div class="section-head bd-section-head">
+<div>
+<h2 id="bdMetricTitle">Metric</h2>
+<div class="sub" id="bdMetricMeta"></div>
+</div>
+<div class="bd-subtoggle" id="bdSubToggle" style="display:none">
+<button id="bdAttendanceBtn" onclick="setAttendanceMode('Overall Attendance')">Attendance</button>
+<button id="bdPABtn" onclick="setAttendanceMode('Persistent Absence')">Persistent Absence</button>
+</div>
+</div>
+<div id="bdContent"></div>
+</section>
+</main>
+</div>
+<script>
+const breakdownData = {"primary": {"Overall Attendance": {"year": "2025/26", "benchmarkYear": "", "higherBetter": true, "trust": 94.8, "bench": 95, "daBench": 89, "sendBench": 89, "rows": [["A", 97.6, 96, 94], ["B", 93.1, 88, 86], ["C", 95.7, 94, 91], ["D", 94.1, 91, 88], ["E", 92.3, 87, 85], ["F", 96.2, 95, 93]]}, "Persistent Absence": {"year": "2025/26", "benchmarkYear": "", "higherBetter": false, "trust": 17.7, "bench": 19, "daBench": 37, "sendBench": 34, "rows": [["A", 8, 17, 19], ["B", 26, 49, 45], ["C", 13, 26, 31], ["D", 19, 40, 37], ["E", 30, 56, 53], ["F", 10, 20, 23]]}, "GLD – All": {"year": "2024/25", "benchmarkYear": "", "higherBetter": true, "trust": 72.3, "bench": 68, "daBench": 51, "sendBench": 21, "rows": [["A", 82, 75, 37], ["B", 65, 49, 18], ["C", 77, 70, 33], ["D", 71, 57, 20], ["E", 59, 43, 11], ["F", 80, 77, 31]]}, "Phonics – All": {"year": "2024/25", "benchmarkYear": "", "higherBetter": true, "trust": 84.8, "bench": 80, "daBench": 67, "sendBench": 43, "rows": [["A", 93, 85, 62], ["B", 79, 63, 39], ["C", 88, 79, 56], ["D", 83, 69, 46], ["E", 75, 58, 32], ["F", 91, 88, 60]]}, "Y4 MTC ≥20/25": {"year": "2025/26", "benchmarkYear": "Illustrative", "higherBetter": true, "trust": 65.8, "bench": 67, "daBench": 51, "sendBench": 30, "rows": [["A", 86, 79, 53], ["B", 52, 34, 22], ["C", 71, 62, 42], ["D", 62, 48, 28], ["E", 45, 26, 9], ["F", 79, 73, 48]]}, "Y6 RWM – All": {"year": "2025/26", "benchmarkYear": "", "higherBetter": true, "trust": 59.2, "bench": 63, "daBench": 47, "sendBench": 22, "rows": [["A", 78, 68, 34], ["B", 42, 25, 12], ["C", 69, 58, 27], ["D", 54, 39, 15], ["E", 38, 20, 6], ["F", 74, 64, 30]]}, "Behaviour": {"year": "2025/26", "rows": [["A", 5, 1, 2, 0], ["B", 32, 19, 17, 1], ["C", 12, 4, 9, 0], ["D", 18, 8, 13, 0], ["E", 46, 31, 40, 2], ["F", 4, 1, 1, 0]]}}, "secondary": {"Overall Attendance": {"year": "2025/26", "benchmarkYear": "", "higherBetter": true, "trust": 91.0, "bench": 91, "daBench": 89, "sendBench": 89, "rows": [["A", 94.0, 92, 89], ["B", 89.0, 85, 81], ["C", 92.0, 89, 85], ["D", 86.0, 82, 78], ["E", 95.0, 94, 91], ["F", 90.0, 87, 84]]}, "Persistent Absence": {"year": "2025/26", "benchmarkYear": "", "higherBetter": false, "trust": 36.2, "bench": 19, "daBench": 37, "sendBench": 34, "rows": [["A", 15, 23, 32], ["B", 51, 68, 65], ["C", 30, 43, 49], ["D", 68, 79, 76], ["E", 12, 19, 25], ["F", 41, 57, 58]]}, "Attainment 8 – All": {"year": "2025/26", "benchmarkYear": "Illustrative", "higherBetter": true, "trust": 49.3, "bench": 50, "daBench": 42, "sendBench": 29, "rows": [["A", 64, 55, 39], ["B", 38, 29, 21], ["C", 52, 42, 29], ["D", 29, 20, 14], ["E", 70, 63, 45], ["F", 43, 33, 23]]}, "Behaviour": {"year": "2025/26", "rows": [["A", 45, 15, 20, 0], ["B", 287, 203, 110, 4], ["C", 103, 57, 48, 1], ["D", 402, 304, 242, 7], ["E", 21, 6, 10, 0], ["F", 190, 132, 103, 3]]}, "Sixth Form Attainment – Average Point Score (APS)": {"year": "2025/26", "subjectLevel": true, "trust": 38.8, "subjects": [["Art", 18, 44.7, 41.4, 75.4, 100], ["Biology", 63, 39.2, 29.8, 63.8, 88.8], ["Business Studies", 42, 36.1, 23.3, 57.3, 82.3], ["Chemistry", 66, 38.8, 29.0, 63.0, 88.0], ["Computing", 24, 35.6, 22.3, 56.3, 81.3], ["Drama", 13, 45.1, 42.2, 76.2, 100], ["Economics", 36, 39.5, 30.5, 64.5, 89.5], ["English Literature", 29, 41.6, 34.9, 68.9, 93.9], ["Geography", 22, 42.2, 36.1, 70.1, 95.1], ["History", 31, 40.7, 33.0, 67.0, 92.0], ["Mathematics", 117, 38.4, 28.1, 62.1, 87.1], ["Physics", 35, 33.9, 18.7, 52.7, 77.7], ["Psychology", 95, 41.1, 33.8, 67.8, 92.8], ["Sociology", 43, 39.8, 31.1, 65.1, 90.1]]}}};
+
+const y6RwmComponentData = {"all": {"label": "TRUST OVERALL", "trust": [59.2, 71.7, 71.2, 70.3], "bench": [63, 75, 73, 75], "rows": [["A", 78, 88, 86, 84], ["B", 42, 56, 61, 50], ["C", 69, 76, 79, 86], ["D", 54, 72, 60, 66], ["E", 38, 53, 54, 47], ["F", 74, 85, 87, 89]]}, "da": {"label": "DISADVANTAGED", "trust": [45.7, 58.2, 57.7, 56.8], "bench": [47, 64, 61, 63], "rows": [["A", 68, 78, 76, 74], ["B", 25, 39, 44, 33], ["C", 58, 65, 68, 75], ["D", 39, 57, 45, 51], ["E", 20, 35, 36, 29], ["F", 64, 75, 77, 79]]}, "sen": {"label": "SEN", "trust": [20.7, 33.2, 32.7, 31.8], "bench": [22, 39, 31, 36], "rows": [["A", 34, 44, 42, 40], ["B", 12, 26, 31, 20], ["C", 27, 34, 37, 44], ["D", 15, 33, 21, 27], ["E", 6, 21, 22, 15], ["F", 30, 41, 43, 45]]}};
+let y6Group='all';
+
+let bdPhase = 'primary';
+let bdMetric = 'Overall Attendance';
+
+function shortYear(y){
+  if(!y) return '';
+  return String(y).replace(/^20(\d{2})\/(\d{2})$/, '$1/$2');
+}
+function pct(v) {
+  if (v === null || v === undefined) return '—';
+  return (Math.round(v*100)/100).toString() + '%';
+}
+function bdDelta(v,b,higherBetter) {
+  if(v===null||v===undefined||b===null||b===undefined) return null;
+  const d=v-b;
+  const equal=Math.abs(d)<0.0001;
+  if(equal) return {text:'0.0pp', cls:'equal', positive:false, negative:false};
+  const positive = higherBetter ? d>0 : d<0;
+  return {
+    text:(d>0?'+':'')+d.toFixed(1)+'pp',
+    cls:positive?'good':'bad',
+    positive:positive,
+    negative:!positive
+  };
+}
+function bdBadge(v,b,higherBetter) {
+  const x=bdDelta(v,b,higherBetter);
+  if(!x) return '<span class="bd-vs neutral">—</span>';
+  return `<span class="bd-vs ${x.cls}" title="${x.cls==='good'?'Positive performance vs reference':x.cls==='bad'?'Negative performance vs reference':'Equal to reference'}">${x.text}</span>`;
+}
+function bdMetricCell(v, opts={}) {
+  if(v===null||v===undefined) return '—';
+  const display=opts.raw ? String(Math.round(v*100)/100) : pct(v);
+  const w=opts.width===undefined ? Math.max(0,Math.min(100,v)) : opts.width;
+  const level=opts.level || '';
+  const warning=(!opts.raw && opts.higherBetter!==undefined) ? extremeWarningHTML(v,opts.higherBetter) : '';
+  return `<div class="bd-metric-cell ${level} ${warning?'extreme-warning-cell':''}">
+    <div class="bd-metric-value extreme-warning-wrap">${display}${warning}</div>
+    <div class="bd-mini-track"><div class="bd-mini-fill ${level}" style="width:${w}%"></div></div>
+  </div>`;
+}
+
+
+function spreadMajorityClass(kind, count, total){
+  if(!total || count <= total/2) return 'neutral';
+  if(kind === 'above') return 'good';
+  if(kind === 'below') return 'bad';
+  if(kind === 'equal') return 'equal';
+  return 'neutral';
+}
+
+function openBreakdown(phase, metric) {
+  bdPhase=phase;
+  bdMetric=metric;
+  document.getElementById('overviewPage').style.display='none';
+  document.getElementById('breakdownPage').style.display='block';
+  window.scrollTo(0,0);
+  renderBreakdown();
+}
+function backToOverview() {
+  document.getElementById('breakdownPage').style.display='none';
+  document.getElementById('overviewPage').style.display='block';
+  window.scrollTo(0,0);
+}
+
+function setY6Group(group){
+  y6Group=group;
+  renderBreakdown();
+}
+
+function setBreakdownPhase(phase) {
+  bdPhase=phase;
+  const available=Object.keys(breakdownData[phase]);
+  if(!available.includes(bdMetric)) bdMetric=available[0];
+  renderBreakdown();
+}
+function setAttendanceMode(metric) {
+  bdMetric=metric;
+  renderBreakdown();
+}
+function renderBreakdown() {
+  const primaryBtn=document.getElementById('bdPrimaryBtn');
+  const secondaryBtn=document.getElementById('bdSecondaryBtn');
+  primaryBtn.classList.toggle('active',bdPhase==='primary');
+  secondaryBtn.classList.toggle('active',bdPhase==='secondary');
+
+  const d=breakdownData[bdPhase][bdMetric];
+  const phaseName=bdPhase==='primary'?'Primary':'Secondary';
+  const isY6 = bdPhase==='primary' && bdMetric==='Y6 RWM – All';
+
+  document.getElementById('bdPageTitle').textContent=`${phaseName} Performance Breakdown`;
+  document.getElementById('bdCurrentMetric').textContent=`Current metric: ${bdMetric}`;
+  document.getElementById('bdMetricTitle').textContent=bdMetric;
+  document.getElementById('bdYear').textContent=`Data ${shortYear(d.year)}`;
+
+  document.getElementById('bdPhaseToggle').style.display=isY6?'none':'flex';
+  document.getElementById('y6GroupToggle').style.display=isY6?'flex':'none';
+
+  if(isY6){
+    document.getElementById('bdSubToggle').style.display='none';
+    document.getElementById('y6AllBtn').classList.toggle('active',y6Group==='all');
+    document.getElementById('y6DABtn').classList.toggle('active',y6Group==='da');
+    document.getElementById('y6SENBtn').classList.toggle('active',y6Group==='sen');
+    renderY6RwmBreakdown();
+    return;
+  }
+
+  const isAttendance = bdMetric==='Overall Attendance' || bdMetric==='Persistent Absence';
+  document.getElementById('bdSubToggle').style.display=isAttendance?'flex':'none';
+  document.getElementById('bdAttendanceBtn').classList.toggle('active',bdMetric==='Overall Attendance');
+  document.getElementById('bdPABtn').classList.toggle('active',bdMetric==='Persistent Absence');
+
+  if(bdMetric==='Behaviour') {
+    renderBehaviourBreakdown(d,phaseName);
+    return;
+  }
+  if(d.subjectLevel) {
+    renderSubjectBreakdown(d,phaseName);
+    return;
+  }
+  renderMetricBreakdown(d,phaseName);
+}
+
+function renderY6RwmBreakdown(){
+  const g=y6RwmComponentData[y6Group];
+  const metricNames=['RWM (Combined)','Reading','Writing','Maths'];
+
+  document.getElementById('bdMetricMeta').textContent=
+    `Data 25/26 • ${g.label==='TRUST OVERALL'?'Trust overall':g.label.charAt(0)+g.label.slice(1).toLowerCase()} view`;
+
+  const spreadFor=(idx,bench)=>{
+    if(bench===null || bench===undefined) return '';
+    const values=g.rows.map(r=>r[idx+1]).filter(v=>v!==null && v!==undefined);
+    const above=values.filter(v=>v>bench).length;
+    const below=values.filter(v=>v<bench).length;
+    const equal=values.filter(v=>Math.abs(v-bench)<0.0001).length;
+    const total=above+below+equal;
+    return `<div class="bd-counts">
+      <span class="bd-count-pill ${spreadMajorityClass('above',above,total)}">${above} above reference</span>
+      <span class="bd-count-pill ${spreadMajorityClass('below',below,total)}">${below} below reference</span>
+      ${equal?`<span class="bd-count-pill ${spreadMajorityClass('equal',equal,total)}">${equal} equal to reference</span>`:''}
+    </div>`;
+  };
+
+  const cards=metricNames.map((name,idx)=>{
+    const value=g.trust[idx];
+    const bench=g.bench[idx];
+    const delta=bdDelta(value,bench,true);
+    return `<div class="bd-kpi bd-y6-kpi ${delta?delta.cls:'neutral'}">
+      <div class="bd-y6-card-title">${name} <span>— ${g.label}</span></div>
+      <div class="bd-kpi-value extreme-warning-wrap">${pct(value)}${extremeWarningHTML(value,true)}</div>
+      <div class="bd-benchmark-inline">
+        <span class="bd-benchmark-inline-label">Illustrative benchmark</span>
+        <span class="bd-benchmark-inline-value">${bench===null||bench===undefined?'Not supplied':pct(bench)}</span>
+      </div>
+      ${delta?`<div class="bd-kpi-delta ${delta.cls==='equal'?'equal-text':delta.cls==='good'?'good-text':'bad-text'}">${isA8?delta.text.replace('pp',' pts'):delta.text} vs reference</div>`:
+        `<div class="bd-kpi-benchmark-note">Illustrative reference comparison</div>`}
+      ${spreadFor(idx,bench)}
+    </div>`;
+  }).join('');
+
+  const stats=[1,2,3,4].map(col=>{
+    const vals=g.rows.map(r=>r[col]).filter(v=>v!==null&&v!==undefined);
+    return {min:Math.min(...vals),max:Math.max(...vals)};
+  });
+  const cell=(v,st)=>{
+    const level=v===st.max?'highest positive':v===st.min?'lowest negative':'';
+    const width=st.max===st.min?60:18+((v-st.min)/(st.max-st.min))*82;
+    return bdMetricCell(v,{level,width,higherBetter:true});
+  };
+
+  const rows=g.rows.map(r=>`<tr>
+    <td class="bd-school">School ${r[0]}</td>
+    <td>${cell(r[1],stats[0])}</td><td>${bdBadge(r[1],g.bench[0],true)}</td>
+    <td>${cell(r[2],stats[1])}</td><td>${bdBadge(r[2],g.bench[1],true)}</td>
+    <td>${cell(r[3],stats[2])}</td><td>${bdBadge(r[3],g.bench[2],true)}</td>
+    <td>${cell(r[4],stats[3])}</td><td>${bdBadge(r[4],g.bench[3],true)}</td>
+  </tr>`).join('');
+
+  document.getElementById('bdContent').innerHTML=`
+    <div class="bd-kpis bd-y6-cards">${cards}</div>
+    <div class="bd-table-wrap">
+      <table class="bd-table bd-standard-table bd-y6-table">
+        <thead>
+          <tr class="bd-group-head">
+            <th rowspan="2">School</th>
+            <th colspan="2">RWM (Combined)</th>
+            <th colspan="2">Reading</th>
+            <th colspan="2">Writing</th>
+            <th colspan="2">Maths</th>
+          </tr>
+          <tr class="bd-sub-head">
+            <th>Value</th><th>vs National</th>
+            <th>Value</th><th>vs National</th>
+            <th>Value</th><th>vs National</th>
+            <th>Value</th><th>vs National</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>`;
+}
+
+function renderMetricBreakdown(d,phaseName) {
+  const hb=d.higherBetter!==false;
+  document.getElementById('bdMetricMeta').textContent=
+    `Data ${shortYear(d.year)}${d.bench===null?' • Illustrative reference':''}`;
+
+  const isA8=bdMetric.includes('Attainment 8');
+  const formatValue=v => {
+    if(v===null || v===undefined) return '—';
+    return isA8 ? (Math.round(v*100)/100).toString() : pct(v);
+  };
+  const mean=vals => {
+    const valid=vals.filter(v=>v!==null && v!==undefined);
+    if(!valid.length) return null;
+    return Math.round(valid.reduce((a,b)=>a+b,0)/valid.length*10)/10;
+  };
+  const groupSpread=(colIndex, bench) => {
+    if(bench===null || bench===undefined) return '';
+    const valid=d.rows.map(r=>r[colIndex]).filter(v=>v!==null && v!==undefined);
+    const above=valid.filter(v=>hb ? v>bench : v<bench).length;
+    const below=valid.filter(v=>hb ? v<bench : v>bench).length;
+    const equal=valid.filter(v=>Math.abs(v-bench)<0.0001).length;
+    const total=above+below+equal;
+    return `<div class="bd-counts">
+      <span class="bd-count-pill ${spreadMajorityClass('above',above,total)}">${above} above reference</span>
+      <span class="bd-count-pill ${spreadMajorityClass('below',below,total)}">${below} below reference</span>
+      ${equal?`<span class="bd-count-pill ${spreadMajorityClass('equal',equal,total)}">${equal} equal to reference</span>`:''}
+    </div>`;
+  };
+  const groupCard=(label,value,bench,colIndex) => {
+    const delta=bdDelta(value,bench,hb);
+    const benchValue=bench===null || bench===undefined ? 'Not supplied' : formatValue(bench);
+    return `<div class="bd-kpi bd-group-kpi ${delta?delta.cls:'neutral'}">
+      <div class="bd-kpi-label">${label}</div>
+      <div class="bd-kpi-value extreme-warning-wrap">${formatValue(value)}${isA8?'':extremeWarningHTML(value,hb)}</div>
+      <div class="bd-benchmark-inline">
+        <span class="bd-benchmark-inline-label">Illustrative benchmark</span>
+        <span class="bd-benchmark-inline-value">${benchValue}</span>
+      </div>
+      ${delta?`<div class="bd-kpi-delta ${delta.cls==='equal'?'equal-text':delta.cls==='good'?'good-text':'bad-text'}">${isA8?delta.text.replace('pp',' pts'):delta.text} vs reference</div>`:
+        `<div class="bd-kpi-benchmark-note">Illustrative reference comparison</div>`}
+      ${groupSpread(colIndex,bench)}
+    </div>`;
+  };
+
+  const daTrust=mean(d.rows.map(r=>r[2]));
+  const sendTrust=mean(d.rows.map(r=>r[3]));
+
+  const cards=`<div class="bd-kpis bd-three-kpis">
+    ${groupCard('TRUST OVERALL',d.trust,d.bench,1)}
+    ${groupCard('Disadvantaged',daTrust,d.daBench,2)}
+    ${groupCard('SEND',sendTrust,d.sendBench,3)}
+  </div>`;
+
+  const colStats=[1,2,3].map(idx=>{
+    const vals=d.rows.map(r=>r[idx]).filter(v=>v!==null && v!==undefined);
+    return {
+      min: vals.length?Math.min(...vals):null,
+      max: vals.length?Math.max(...vals):null
+    };
+  });
+  const visual=(v,stats)=>{
+    if(v===null || v===undefined || stats.min===null || stats.max===null) return {level:'',signal:'',width:0};
+    const level=v===stats.max?'highest':v===stats.min?'lowest':'';
+    let signal='';
+    if(level==='highest') signal=hb?'positive':'negative';
+    if(level==='lowest') signal=hb?'negative':'positive';
+    let width=60;
+    if(stats.max!==stats.min){
+      width=18 + ((v-stats.min)/(stats.max-stats.min))*82;
+    }
+    return {level,signal,width};
+  };
+
+  const rows=d.rows.map(r=>{
+    const [s,all,da,send]=r;
+    const va=visual(all,colStats[0]), vd=visual(da,colStats[1]), vs=visual(send,colStats[2]);
+    const allCell = bdMetricCell(all,{raw:isA8,level:`${va.level} ${va.signal}`.trim(),width:va.width,higherBetter:hb});
+    const daCell = bdMetricCell(da,{raw:isA8,level:`${vd.level} ${vd.signal}`.trim(),width:vd.width,higherBetter:hb});
+    const sendCell = bdMetricCell(send,{raw:isA8,level:`${vs.level} ${vs.signal}`.trim(),width:vs.width,higherBetter:hb});
+    return `<tr>
+      <td class="bd-school">School ${s}</td>
+      <td>${allCell}</td>
+      <td>${isA8?bdBadge(all,d.bench,hb).replace('pp',' pts'):bdBadge(all,d.bench,hb)}</td>
+      <td>${daCell}</td>
+      <td>${isA8?bdBadge(da,d.daBench,hb).replace('pp',' pts'):bdBadge(da,d.daBench,hb)}</td>
+      <td>${sendCell}</td>
+      <td>${isA8?bdBadge(send,d.sendBench,hb).replace('pp',' pts'):bdBadge(send,d.sendBench,hb)}</td>
+    </tr>`;
+  }).join('');
+
+  document.getElementById('bdContent').innerHTML=cards+`
+    <div class="bd-table-wrap"><table class="bd-table bd-standard-table">
+      <thead>
+        <tr class="bd-group-head">
+          <th rowspan="2">School</th>
+          <th colspan="2">All pupils</th>
+          <th colspan="2">Disadvantaged</th>
+          <th colspan="2">SEND</th>
+        </tr>
+        <tr class="bd-sub-head">
+          <th>Value</th><th>vs National</th>
+          <th>Value</th><th>vs National</th>
+          <th>Value</th><th>vs National</th>
+        </tr>
+      </thead>
+      <tbody>${rows}</tbody>
+    </table></div>`;
+}
+function renderBehaviourBreakdown(d,phaseName) {
+  document.getElementById('bdMetricMeta').textContent=`Data ${shortYear(d.year)} • illustrative peer-school reference`;
+  const rows=d.rows;
+  const total=rows.reduce((a,r)=>a+r[1],0);
+  const pex=rows.reduce((a,r)=>a+(r[4]||0),0);
+  const values=rows.map(r=>r[1]);
+  const max=Math.max(...values,1);
+  const min=Math.min(...values);
+  const bars=rows.map(r=>{
+    const level=r[1]===max?'highest':r[1]===min?'lowest':'';
+    return `<div class="bd-bar-row ${level}">
+      <div class="bd-bar-label">School ${r[0]}</div>
+      <div class="bd-bar-track"><div class="bd-bar-fill ${level}" style="width:${r[1]/max*100}%"></div></div>
+      <div class="bd-bar-value">${r[1]}</div>
+    </div>`;
+  }).join('');
+  const table=rows.map(r=>{
+    const daPct=r[1]?r[2]/r[1]*100:0;
+    const sendPct=r[1]?r[3]/r[1]*100:0;
+    return `<tr>
+      <td class="bd-school">School ${r[0]}</td>
+      <td>${r[1]}</td>
+      <td>${r[2]}</td>
+      <td><span class="bd-concentration ${daPct>50?'alert':''}">${daPct.toFixed(1)}%</span></td>
+      <td>${r[3]}</td>
+      <td><span class="bd-concentration ${sendPct>50?'alert':''}">${sendPct.toFixed(1)}%</span></td>
+      <td>${r[4]??'—'}</td>
+    </tr>`;
+  }).join('');
+  document.getElementById('bdContent').innerHTML=`
+    <div class="bd-kpis">
+      <div class="bd-kpi bd-trust-kpi"><div class="bd-kpi-label">Suspensions</div><div class="bd-kpi-value">${total}</div><div class="bd-kpi-benchmark-note">Illustrative phase reference: ${bdPhase==="primary"?90:540} (six schools)</div></div>
+      <div class="bd-kpi"><div class="bd-kpi-label">Permanent exclusions</div><div class="bd-kpi-value">${pex}</div><div class="bd-kpi-benchmark-note">Illustrative phase reference: ${bdPhase==="primary"?3:9} (six schools)</div></div>
+    </div>
+    <div class="bd-beh-landscape">
+      <div class="bd-beh-chart-panel">
+        <div class="bd-panel-title">Suspensions by school <span class="bd-bar-legend"><span class="low">Lowest</span><span class="high">Highest</span></span></div>
+        <div class="bd-beh-chart">${bars}</div>
+      </div>
+      <div class="bd-table-wrap bd-beh-table-wrap">
+        <table class="bd-table">
+          <thead><tr><th>School</th><th>Suspensions<br><small>Peer ref: ${bdPhase==='primary'?15:90}/school</small></th><th>DA</th><th>DA %<br><small>Ref ${bdPhase==='primary'?40:45}%</small></th><th>SEND</th><th>SEND %<br><small>Ref ${bdPhase==='primary'?35:30}%</small></th><th>PEX<br><small>Peer ref ${bdPhase==='primary'?0.5:1.5}/school</small></th></tr></thead>
+          <tbody>${table}</tbody>
+        </table>
+      </div>
+    </div>`;
+}
+function renderSubjectBreakdown(d,phaseName) {
+  document.getElementById('bdMetricMeta').textContent=`Data ${shortYear(d.year)} • subject-level Sixth Form attainment • all benchmarks illustrative`;
+
+  // Heatmap is calculated independently within each numeric column,
+  // so high / low values are easy to see even when columns use different scales.
+  const numericCols=[1,2,3,4,5]; // Entries, APS, A*–A, A*–B, A*–C
+  const stats={};
+  numericCols.forEach(col=>{
+    const vals=d.subjects
+      .map(r=>Number(r[col]))
+      .filter(v=>Number.isFinite(v));
+    stats[col]={
+      min:vals.length?Math.min(...vals):0,
+      max:vals.length?Math.max(...vals):0
+    };
+  });
+
+  const heatCell=(value,col,isPercent=false)=>{
+    const n=Number(value);
+    if(!Number.isFinite(n)) return `<td class="sf-heat neutral">—</td>`;
+
+    const st=stats[col];
+    const t=st.max===st.min ? .5 : (n-st.min)/(st.max-st.min);
+
+    let level='mid';
+    let label='Middle of column range';
+    if(t>=.80){ level='highest'; label='Among highest in this column'; }
+    else if(t>=.60){ level='high'; label='Above the middle of this column'; }
+    else if(t<=.20){ level='lowest'; label='Among lowest in this column'; }
+    else if(t<=.40){ level='low'; label='Below the middle of this column'; }
+
+    const display=isPercent ? `${value}%` : value;
+    return `<td class="sf-heat ${level}" title="${label}">${display}</td>`;
+  };
+
+  const rows=d.subjects.map(r=>`<tr>
+    <td class="bd-school sf-subject">${r[0]}</td>
+    ${heatCell(r[1],1,false)}
+    ${heatCell(r[2],2,false)}
+    ${heatCell(r[3],3,true)}
+    ${heatCell(r[4],4,true)}
+    ${heatCell(r[5],5,true)}
+  </tr>`).join('');
+
+  document.getElementById('bdContent').innerHTML=`
+    <div class="bd-kpis bd-single-kpi">
+      <div class="bd-kpi bd-group-kpi neutral">
+        <div class="bd-kpi-label">Overall APS</div>
+        <div class="bd-kpi-value">${d.trust}</div>
+        <div class="bd-benchmark-inline">
+          <span class="bd-benchmark-inline-label">Illustrative benchmark</span>
+          <span class="bd-benchmark-inline-value">${d.bench}</span>
+        </div>
+        <div class="bd-kpi-benchmark-note">Illustrative reference comparison</div>
+      </div>
+    </div>
+
+    <div class="sf-heatmap-legend">
+      <span class="sf-legend-title">Column heatmap</span>
+      <span class="sf-legend-box lowest"></span><span>Lower</span>
+      <span class="sf-legend-box mid"></span><span>Middle</span>
+      <span class="sf-legend-box highest"></span><span>Higher</span>
+      <span class="sf-legend-note">Each column is scaled independently.</span>
+    </div>
+
+    <div class="bd-table-wrap bd-subject-table-wrap">
+      <table class="bd-table sf-heatmap-table">
+        <thead>
+          <tr>
+            <th>Subject</th>
+            <th>Entries</th>
+            <th>APS</th>
+            <th>A*–A</th>
+            <th>A*–B</th>
+            <th>A*–C</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>`;
+}
+
+</script><script>
+document.addEventListener('DOMContentLoaded',()=>{
+  applyOverviewExtremeWarnings(document.getElementById('overviewPage') || document);
+});
+</script>
+</body></html>
